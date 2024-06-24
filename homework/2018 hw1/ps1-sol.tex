@@ -1,0 +1,231 @@
+% HMC Math dept HW template example
+% v0.04 by Eric J. Malm, 10 Mar 2005
+\documentclass[12pt,letterpaper,boxed]{hmcpset}
+
+% set 1-inch margins in the document
+\usepackage[margin=1in]{geometry}
+\usepackage{alltt}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{mathdots}
+\usepackage{mathtools}
+\usepackage{microtype}
+\usepackage{multirow}
+\usepackage{pdflscape}
+\usepackage{pgfplots}
+\usepackage{siunitx}
+\usepackage{slashed}
+\usepackage{tabularx}
+\usepackage{tikz}
+\usepackage{tkz-euclide}
+\usepackage[normalem]{ulem}
+\usepackage[all]{xy}
+\usepackage{imakeidx}
+\usepackage{enumerate}
+\usepackage{physics}
+
+% include this if you want to import graphics files with /includegraphics
+\usepackage{graphicx}
+
+\newcommand{\yy}{y^{(i)}}
+\newcommand{\xx}{x^{(i)}}
+\renewcommand{\tt}{t^{(i)}}
+
+% info for header block in upper right hand corner
+\name{Runqiu Ye}
+\class{Stanford CS299}
+\assignment{Problem Set \#1}
+\duedate{06/23/2024}
+
+\linespread{1.15}
+\begin{document}
+
+\problemlist{Problem Set \#1: Supervised Learning}
+
+\begin{problem} [Problem 1]
+    \textbf{Linear Classifiers (Logistic Regression and GDA)}
+    
+    Consider two datasets provided in the following files:
+    \begin{enumerate}[i.]
+    	\item \verb*|data/ds1_{train,valid},csv|
+    	\item \verb*|data/ds2_{train,valid},csv|
+    \end{enumerate}
+	Each file contains $m$ examples, one example per row. The $i$-th row contains columns $\xx_0 \in \R$, $\xx_1 \in \R$ and $\yy \in \{0, 1\}$. Use logistic regression and GDA to perform binary classification. 
+\end{problem}
+
+\begin{solution}
+
+\begin{enumerate}[(a)]
+  \item Average empirical loss for logistic regression:
+  \[
+  J(\theta) = -\frac{1}{m} \sum_{i=1}^m \yy \log(h_\theta (\xx)) + (1-\yy)
+    \log(1-h_\theta(\xx)),
+  \]
+  where $\yy \in \{0,1\}$, $h_\theta(\xx) = g(\theta^T x)$ and $g(z) = 1/(1+e^{-z})$.
+  
+  The gradient of the function
+  \[
+  \pdv{J}{\theta_j} = - \frac{1}{m} \sum_{i=1}^m (\yy - h_\theta(\xx)) \xx_j.
+  \]
+  It follows that
+  \[
+  \pdv{J}{\theta_k}{\theta_j} = \frac{1}{m} \sum_{i=1}^m h_\theta(\xx) (1-h_\theta(\xx)) \xx_k \xx_j.
+  \]
+  Hence, The Hessian $H$ of this function is
+  \[
+  H = \frac{1}{m} \sum_{i=1}^m  h_\theta(\xx) (1-h_\theta(\xx)) \xx (\xx)^T.
+  \]
+  
+  Now, for any vector $z$, using Einstein's summation, we have
+  \[
+  \begin{aligned}
+  z^T H z &= \frac{1}{m} \sum_{i=1}^m h_\theta(\xx) (1-h_\theta(\xx)) z_k \xx_k \xx_j z_j \\
+  &= 
+  \frac{1}{m} \sum_{i=1}^m h_\theta(\xx) (1-h_\theta(\xx)) (x^T z)^2\\
+  & \geq 0
+  \end{aligned}
+  \]
+  
+  This shows that $H$ is PSD, and $J$ is convex.
+  
+  \item \textbf{Coding problem.}
+
+  \item 
+  To show that GDA results in a classifier that has a linear decision boundary, we want to show 
+  \[
+  p(y = 1 \mid x; \phi, \mu_0, \mu_1, \Sigma) = \frac{1}{1 + \exp(-(\theta^T x + \theta_0))}
+  \]
+  for some $\theta \in \R^n$ and $\theta_0 \in \R$ as functions of $\phi$, $\Sigma$, $\mu_0$, and $\mu_1$.
+  We have
+  \[
+  \begin{aligned}
+      p(y = 1 \mid x) &= \frac{p(x \mid y=1) p(y=1)}{p(x \mid y=1) p(y=1) + p(x\mid y = 0) p(y = 0)} \\
+      &= \frac{\phi \exp(-\frac{1}{2} (x-\mu_1)^T \Sigma^{-1} (x-\mu_1) )}{\phi \exp(-\frac{1}{2} (x-\mu_1)^T \Sigma^{-1} (x-\mu_1)) + (1-\phi) \exp(-\frac{1}{2} (x-\mu_0)^T \Sigma^{-1} (x-\mu_0))} \\
+      &= \frac{1}{1 + \frac{1-\phi}{\phi} \exp(-\frac{1}{2} (x-\mu_0)^T \Sigma^{-1} (x-\mu_0) + \frac{1}{2} (x-\mu_1)^T \Sigma^{-1} (x-\mu_1))} \\
+      &= \frac{1}{1 +\frac{1-\phi}{\phi} \exp(-((\mu_1 - \mu_0)^T \Sigma^{-1} x + \frac{1}{2} (\mu_0^T \Sigma^{-1} \mu_0 - \mu_1^T \Sigma^{-1} \mu_1)))}.
+  \end{aligned}
+  \]
+  This is the desired form, where
+  \[
+  \begin{aligned}
+      \theta &= \Sigma^{-1} (\mu_1 - \mu_0), \\
+      \theta_0 &= \frac{1}{2} (\mu_0^T \Sigma^{-1} \mu_0 - \mu_1^T \Sigma^{-1} \mu_1) - \log \frac{1-\phi}{\phi}.
+  \end{aligned}
+  \]
+  
+  \item The log-likelihood of the data is
+  \[
+  \begin{aligned}
+      \ell(\phi, \mu_0, \mu_1, \Sigma) &= \log \prod_{i=1}^m p(\xx \mid \yy; \mu_0, \mu_1, \Sigma) p(\yy; \phi) \\
+      &= \sum_{i=1}^m 1\{\yy=1\} \qty(-\frac{1}{2} (\xx-\mu_1)^T \Sigma^{-1} (\xx-\mu_1) + \log \phi) \\
+      & \qquad + \sum_{i=1}^m 1\{\yy=0\} \qty(-\frac{1}{2} (\xx-\mu_0)^T \Sigma^{-1} (\xx-\mu_0) + \log (1-\phi))  \\
+      & \qquad - \frac{m}{2} \log \abs{\Sigma} +  C,
+  \end{aligned}
+  \]
+  where $C$ is some constant independent of the parameters.
+  
+  Let $\nabla_\phi \ell = 0$, we have
+  \[
+  \phi = \frac{1}{m} \sum_{i=1}^m 1\{\yy=1\}.
+  \]
+  Let $\nabla_{\mu_1} \ell = 0$, we have
+  \[
+  \sum_{i=1}^m 1\{\yy=1\} \Sigma^{-1}\xx = \sum_{i=1}^m 1\{\yy=1\} \Sigma^{-1} \mu_1,
+  \]
+  and thus
+  \[
+  \mu_1 = \frac{\sum_{i=1}^m 1\{\yy=1\} \xx}{\sum_{i=1}^m 1\{\yy=1\}}, \quad 
+  \mu_0 = \frac{\sum_{i=1}^m 1\{\yy=0\} \xx}{\sum_{i=1}^m 1\{\yy=0\}}.
+  \]
+  To derive $\Sigma$, recall that $\nabla_{A} \log \abs{A} = (A^{-1})^T$, so we have
+  \[
+  \nabla_{\Sigma^{-1}} \ell = -\frac{m}{2} \Sigma^{-1} + \frac{1}{2}\sum_{i=1}^m (\xx - \mu_{\yy})(\xx-\mu_{\yy})^T.
+  \]
+  Hence,
+  \[
+  \Sigma = \frac{1}{m} \sum_{i=1}^m (\xx - \mu_{\yy})(\xx-\mu_{\yy})^T.
+  \]
+  
+  We conclude that the maximum likelihood estimates of the parameters are given by
+  \[
+  \begin{aligned}
+  	\phi &= \frac{1}{m} \sum_{i=1}^m 1\{\yy = 1\}, \\
+  	\mu_0 &= \frac{\sum_{i=1}^{m} 1\{\yy = 0\} \xx }{\sum_{i=1}^m 1\{\yy = 0\}}, \\
+  	\mu_1 &= \frac{\sum_{i=1}^{m} 1\{\yy = 1\} \xx }{\sum_{i=1}^m 1\{\yy = 1\}} ,\\ 
+  	\Sigma &= \frac{1}{m} \sum_{i=1}^m (\xx - \mu_{\yy})(\xx - \mu_{iy})^T.
+  \end{aligned}
+  \]
+    
+  \item \textbf{Coding problem.}
+  
+  \item See jupyter notebook for plots.
+  
+  \item See jupyter notebook for plots. On Dataset 1 GDA perform worse than logistic regression. This might be the case because for Dataset 1, the distribution of features are not quite multivariate normal.
+  
+  \item *** TO-DO ***
+    
+\end{enumerate}
+\end{solution}
+
+\begin{problem}[Problem 2]
+	\textbf{Incomplete, Positive-Only Labels}
+	
+	Dataset without full access to labels. In particular, we have labels only for a subset of positive examples. All negative examples and the rest of positive examples are unlabeled.
+	
+	Assume dataset $\{ (\xx, \tt, \yy) \}_{i=1}^m$ where $\tt \in \{0,1\}$ is true label and where 
+	\[
+	\yy = \begin{cases}
+		1 & \xx \text{ is labeled}\\
+		0 & \text{otherwise.}
+	\end{cases}
+	\]
+	All labeled examples are positive, which is to say $p(\tt = 1 \mid \yy = 1) = 1$. Goal is to construct a binary classifier $h$ of true label $t$ which only access to partial labels $y$. That is, construct $h$ such that $h(\xx) \approx p(\tt = 1 \mid \xx)$ as closely as possible, using only $x$ and $y$.
+\end{problem}
+
+\begin{solution}
+\begin{enumerate}[(a)]
+	\item Suppose each $\yy$ and $\xx$ conditionally independent given $\tt$:
+	\[
+	p(\yy = 1 \mid \tt = 1, \xx) = p(\yy = 1 \mid \tt = 1).
+	\]
+	That is, labeled examples are selected uniformly at random from positive examples.
+	
+	Want to show $p(\tt = 1 \mid \xx) = p(\yy = 1 \mid \xx) / \alpha$ for some $\alpha \in \R$. As $p(\cdot \mid \xx)$ is a conditional measure, we have
+	\[
+	\begin{aligned}
+		p(\yy = 1 \mid \xx) &= p(\yy = 1 \mid \tt = 1, \xx) p(\tt = 1 \mid \xx) \\
+		& \qquad + p(\yy = 1 \mid \tt = 0, \xx) p(\tt = 0 \mid \xx) \\
+		&= p(\yy = 1 \mid \tt = 1, \xx) p(\tt = 1 \mid \xx) \\
+		&= p(\yy = 1 \mid \tt = 1) p(\tt = 1 \mid \xx).
+	\end{aligned}
+	\]
+	Hence, $p(\tt = 1 \mid \xx) = p(\yy = 1 \mid \xx) / \alpha$ where $\alpha = p(\yy = 1 \mid \tt = 1)$.
+	
+	\item Estimate $\alpha$ using a trained classifier $h$ and a held-out validation set $V$. Let $V_+ = \{\xx \in V \mid \yy = 1\}$. Assuming $h(\xx) \approx p(\yy = 1 \mid \xx)$ for all $\xx$. Want to show
+	\[
+	h(\xx) \approx \alpha \text{ for all } \xx \in V_+.
+	\]
+	May assume that $p(\tt = 1 \mid \xx) \approx 1$ when $\xx \in V_+$.
+	
+	We have
+	\[
+	\begin{aligned}
+		h(\xx) &\approx p(\yy = 1 \mid \xx) \\
+		&= p(\yy = 1 \mid \tt = 1, \xx) p(\tt = 1 \mid \xx) \\
+		&\approx \alpha.
+	\end{aligned}
+	\]
+	
+	\item \textbf{Coding problem.}
+	
+	\item 
+\end{enumerate}
+\end{solution}
+
+\end{document}
