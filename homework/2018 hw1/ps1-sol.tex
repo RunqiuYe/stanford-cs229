@@ -224,8 +224,22 @@
 	
 	\item \textbf{Coding problem.}
 	
-	\item 
+	\item \textbf{Coding problem.}
+	
+	\item \textbf{Coding problem.} Estimate the constant $\alpha$ using validation set.
+  \[
+  \alpha \approx \frac{1}{\abs{V_+}} \sum_{\xx \in V_+} h(\xx).
+  \]
+  To plot the decision boundary, we need to calculate the rescaled $\theta$, write $\theta_*$. The new decision boundary is given by $\frac{1}{\alpha} \frac{1}{1+ \exp(-\theta^T x)} = \frac{1}{2}$. We have
+  \[
+  \theta^T x + \log(\frac{2}{\alpha} - 1) = 0.
+  \]
+  This is equivalent to $\theta_*^T x = 0$. This shows that $\theta_*$ and $\theta$ differs only in the 0-th index by a constant $\log(\frac{2}{\alpha} - 1)$.
 \end{enumerate}
 \end{solution}
+
+\begin{problem}[Problem 3]
+  \textbf{Poisson Regression}
+\end{problem}
 
 \end{document}
