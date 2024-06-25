@@ -102,5 +102,5 @@ class LogisticRegression(LinearModel):
             Outputs of shape (m,).
         """
         # *** START CODE HERE ***
-        return (1 / (1 + np.exp(- np.dot(x, self.theta))) >= 0.5).astype(int)
+        return 1 / (1 + np.exp(- np.dot(x, self.theta)))
         # *** END CODE HERE ***

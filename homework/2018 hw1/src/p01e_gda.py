@@ -75,5 +75,5 @@ class GDA(LinearModel):
             Outputs of shape (m,).
         """
         # *** START CODE HERE ***
-        return (1 / (1 + np.exp(-(np.dot(x, self.theta1) + self.theta0)))) >= 0.5
+        return 1 / (1 + np.exp(-(np.dot(x, self.theta1) + self.theta0)))
         # *** END CODE HERE
