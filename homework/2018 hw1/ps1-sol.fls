@@ -1,8 +1,8 @@
-PWD /Users/runqiuye/Desktop/studies/self study/computer science/ai : ml/standford cs299 machine learning/homework/2018 hw1
+PWD /Users/runqiuye/Desktop/studies/self study/computer science/ai : ml/stanford cs299/homework/2018 hw1
 INPUT /usr/local/texlive/2022/texmf.cnf
 INPUT /usr/local/texlive/2022/texmf-dist/web2c/texmf.cnf
 INPUT /usr/local/texlive/2022/texmf-var/web2c/pdftex/pdflatex.fmt
-INPUT /Users/runqiuye/Desktop/studies/self study/computer science/ai : ml/standford cs299 machine learning/homework/2018 hw1/ps1-sol.tex
+INPUT /Users/runqiuye/Desktop/studies/self study/computer science/ai : ml/stanford cs299/homework/2018 hw1/ps1-sol.tex
 OUTPUT ps1-sol.log
 INPUT ./hmcpset.cls
 INPUT ./hmcpset.cls
@@ -1248,6 +1248,7 @@ INPUT /usr/local/texlive/2022/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7
 INPUT /usr/local/texlive/2022/texmf-dist/fonts/tfm/public/cm/cmr17.tfm
 INPUT /usr/local/texlive/2022/texmf-dist/fonts/tfm/public/cm/cmss17.tfm
 INPUT /usr/local/texlive/2022/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm
+INPUT /usr/local/texlive/2022/texmf-dist/fonts/tfm/public/cm/cmtt12.tfm
 OUTPUT ps1-sol.pdf
 INPUT /usr/local/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map
 INPUT ps1-sol.aux
@@ -1263,5 +1264,6 @@ INPUT /usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmss17.p
 INPUT /usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb
 INPUT /usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb
 INPUT /usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb
+INPUT /usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb
 INPUT /usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msam7.pfb
 INPUT /usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb
