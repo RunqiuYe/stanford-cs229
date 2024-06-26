@@ -225,7 +225,7 @@
 \DeclareMathOperator{\mse}{mse}
 \DeclareMathOperator{\multinomial}{multinomial}
 \DeclareMathOperator{\Poisson}{Poisson}
-\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\Var}{Var}
 \newcommand{\E}{\mathbb{E}}
 \newcommand{\Prob}{\mathbb{P}}
 
