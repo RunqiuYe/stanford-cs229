@@ -241,5 +241,67 @@
 \begin{problem}[Problem 3]
   \textbf{Poisson Regression}
 \end{problem}
+\begin{solution}
+\begin{enumerate}[(a)]
+  \item The poisson distribution parametrized by $\lambda$ is 
+  \[
+  p(y ; \lambda) = \frac{e^{-\lambda} \lambda^y}{y!}.
+  \]
+  Therefore, we have
+  \[
+    p(y ; \lambda) = \frac{1}{y!} \exp(-\lambda + y \log \lambda).
+  \]
+  Compare with $p(y ; \eta) = b(y) \exp (\eta^T T(y) - a(\eta))$, we conclude that the poisson distribution is in the exponential family, with
+  \[
+  \begin{aligned}
+    b(y) &= \frac{1}{y!}, \\
+    T(y) &= y, \\
+    \eta &= \log \lambda, \\
+    a(\eta) &= e^\eta.
+  \end{aligned}
+  \]
+
+  \item The canonical response function for the family
+  \[
+  \E[T(y); \eta] = \E[T(y); \eta] = \lambda = e^\eta.
+  \]
+
+  \item For a general linear model and a training set, the log likelihood
+  \[
+  \begin{aligned}
+    \log p(\yy \mid \xx; \eta) &= \log b(y) \exp(\eta^T T(y) - a(\eta)) \\
+    &= \log b(y) + \eta^T T(y) - a(\eta).
+  \end{aligned}
+  \]
+  
+  For our model with poisson responses y, we have
+  \[
+  \begin{aligned}
+    \ell = \log p(\yy \mid \xx; \theta) &= - \log y! + (\theta^T \xx) \yy - \exp(\theta^T \xx).
+  \end{aligned}
+  \]
+
+  Taking the derivative with respect to $\theta_j$, we have
+  \[
+  \pdv{\ell}{\theta_j} = \qty(\yy - \exp(\theta^T \xx)) \xx_j
+  \]
+
+  Hence, the stochastic gradient ascent update rule for learning using a GLM model with poisson response $y$ is 
+  \[
+  \begin{aligned}
+    \theta_j &:= \theta_j + \alpha \pdv{\ell}{\theta_j} \\
+    &:= \theta_j + \alpha \qty(\yy - \exp(\theta^T \xx)) \xx_j.
+  \end{aligned}
+  \]
+
+  \item \textbf{Coding problem.} To predict the dataset, recall that the hypothese function for our model with poisson response $y$ is
+  \[
+  h_\theta(x) = \E[y \mid x] = e^{\eta} = e^{\theta^T x}.
+  \]
+
+
+
+\end{enumerate}
+\end{solution}
 
 \end{document}

@@ -61,7 +61,7 @@ class GDA(LinearModel):
         self.theta[1:] = np.reshape(theta, (-1,1))
         self.theta0 = theta0
         self.theta1 = theta
-        print(f'Fitting result: theta is {self.theta}')
+        # print(f'Fitting result: theta is {self.theta}')
         return self.theta
         # *** END CODE HERE ***
 
