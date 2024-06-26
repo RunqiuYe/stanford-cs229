@@ -36,6 +36,8 @@
 \newcommand{\yy}{y^{(i)}}
 \newcommand{\xx}{x^{(i)}}
 \renewcommand{\tt}{t^{(i)}}
+\newcommand{\ww}{w^{(i)}}
+
 
 % info for header block in upper right hand corner
 \name{Runqiu Ye}
@@ -399,9 +401,51 @@
 
 \begin{remark}
   \begin{itemize}
-    \item Any GLM model is convex in its model parameters.
+    \item Any GLM model is \emph{convex} in its model parameters.
     \item The exponential family of probability distribution are mathematically nice. We can caucluate the means and variance using derivatives, which is easier that integrals.
   \end{itemize}
 \end{remark}
+
+\begin{problem}[Problem 5]
+  \textbf{Locally weighted linear regression}
+\end{problem}
+\begin{solution}
+\begin{enumerate}[(a)]
+  \item Weighted linear regression. Specifically, want to minimize
+  \[
+  J(\theta) = \frac{1}{2} \sum_{i=1}^m \ww (\theta^T \xx - \yy)^2
+  \]
+  \begin{enumerate}[i.]
+    \item Let $X$ be the $m$ by $n$ matrix where the $i$-th row is $(\xx)^T$, and let $y$ be the $m$ by $1$ matrix where the $i$-the row is $\yy$. Then $J$ can also be written
+    \[
+    J(\theta) = (X\theta - y)^T W (X \theta - y),
+    \]
+    where $W$ is the diagonal matrix
+    \[
+    W_{ij} = \frac{1}{2} \delta_{ij} \ww.
+    \]
+
+    \item If all the $\ww$ is 1, then the normal equation is
+    \[
+    X^T X \theta = X^T y,
+    \]
+    and the value of $\theta$ that minimizes $J(\theta)$ is given by $(X^T X)^{-1} X^T y$. Here, to genrealize the normal equation, we first calculate the derivative
+    \[
+    \nabla_{\theta} J = X^T (2W(X \theta - y)) = 2X^T W X \theta - 2X^T W y.
+    \]
+    Setting this to 0, we get the normal equation
+    \[
+    X^T W X \theta = X^T W y
+    \]
+    and the expression for $\theta$
+    \[
+    \theta = (X^T W X)^{-1} X^T W y.
+    \]
+    Notice that for $\ww = 1$, $W = I$ and we get the original form of the normal equation.
+
+    \item
+  \end{enumerate}
+\end{enumerate}
+\end{solution}
 
 \end{document}
