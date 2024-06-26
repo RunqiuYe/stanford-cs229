@@ -88,7 +88,7 @@ class LogisticRegression(LinearModel):
             old_theta = new_theta
             new_theta = next_theta(old_theta, x, y)
         self.theta = new_theta
-        print(f'Fitting result: theta is {self.theta}')
+        # print(f'Fitting result: theta is {self.theta}')
 
         # *** END CODE HERE ***
 
