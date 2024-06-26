@@ -365,19 +365,43 @@
     \begin{aligned}
       \ell(\theta) &= - \log \prod_{i=1}^m p(\yy \mid \xx ; \eta) \\
       &= - \sum_{i=1}^{m} \log p(\yy \mid \xx ; \eta) \\
-      &= - \sum_{i=1}^{m} \log b(\yy) + \eta \yy - a(\eta) \\
-      &= - \sum_{i=1}^{m} \log b(\yy) + \yy \theta^T \xx - a(\theta^T \xx).
+      &= \sum_{i=1}^{m} - \log b(\yy) - \eta \yy + a(\eta) \\
+      &= \sum_{i=1}^{m} - \log b(\yy) - \yy \theta^T \xx + a(\theta^T \xx).
     \end{aligned}
     \]
     Now, to calculate the Hessian of the loss function w.r.t $\theta$, we first calculate
     \[
     \begin{aligned}
-      \pdv{\ell}{\theta_k} &=
+      \pdv{\ell}{\theta_k} = \sum_{i=1}^m \qty(\pdv{a}{\eta} - \yy) \xx_k.
     \end{aligned}
     \]
+    It follows that
+    \[
+    \pdv{\ell}{\theta_j \theta_k} = \sum_{i=1}^m \pdv[2]{a}{\eta} \xx_j \xx_k.
+    \]
+    Hence, the Hessian of the loss function is 
+    \[
+    H = \sum_{i=1}^m \pdv[2]{a}{\eta} \xx (\xx)^T.
+    \]
 
-
+    To prove the Hessian is always PSD, consider any $z \in \R^n$, where $n$ is the dimension of $\xx$, and
+    \[
+    \begin{aligned}
+      z^T H z &= \sum_{i=1}^m z_j H_{jk} z_k \\
+      &= \sum_{i=1}^m \pdv[2]{a}{\eta} z_j x_j x_k z_k \\
+      &= \sum_{i=1}^m \Var(Y \mid X; \eta) (x^T z)^2 \\
+      &\geq 0,
+    \end{aligned}
+    \]
+    since the variance is always non-negative. This completes the proof that NLL loss of GLM is convex.
   \end{enumerate}
 \end{solution}
+
+\begin{remark}
+  \begin{itemize}
+    \item Any GLM model is convex in its model parameters.
+    \item The exponential family of probability distribution are mathematically nice. We can caucluate the means and variance using derivatives, which is easier that integrals.
+  \end{itemize}
+\end{remark}
 
 \end{document}

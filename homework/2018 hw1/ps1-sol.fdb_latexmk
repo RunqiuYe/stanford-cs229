@@ -1,7 +1,9 @@
 # Fdb version 3
-["pdflatex"] 1719370525 "/Users/runqiuye/Desktop/studies/self study/computer science/ai : ml/stanford cs299/homework/2018 hw1/ps1-sol.tex" "ps1-sol.pdf" "ps1-sol" 1719370528
-  "/Users/runqiuye/Desktop/studies/self study/computer science/ai : ml/stanford cs299/homework/2018 hw1/ps1-sol.tex" 1719370525 13771 ad1c6c149820f8dfec1f18c1d54292a1 ""
+["pdflatex"] 1719371622 "/Users/runqiuye/Desktop/studies/self study/computer science/ai : ml/stanford cs299/homework/2018 hw1/ps1-sol.tex" "ps1-sol.pdf" "ps1-sol" 1719371625
+  "/Users/runqiuye/Desktop/studies/self study/computer science/ai : ml/stanford cs299/homework/2018 hw1/ps1-sol.tex" 1719371612 14781 c5dc4924383d94b8b96f8fd0efdb2bf9 ""
+  "/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
+  "/usr/local/texlive/2022/texmf-dist/fonts/tfm/jknappen/ec/tcrm1200.tfm" 1136768653 1536 74b7293ec3713bb7fdca8dd1bd1f469c ""
   "/usr/local/texlive/2022/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
   "/usr/local/texlive/2022/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1246382020 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm" 1246382020 916 f87d7c45f9c908e672703b83b72241a3 ""
@@ -49,6 +51,7 @@
   "/usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb" 1248133631 24252 1e4e051947e12dfb50fee0b7f4e26e3a ""
   "/usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msam7.pfb" 1248133631 33366 60462f3d16c3d0f024f1f856e64b09cd ""
   "/usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb" 1248133631 34694 ad62b13721ee8eda1dcc8993c8bd7041 ""
+  "/usr/local/texlive/2022/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb" 1215737283 136101 f533469f523533d38317ab5729d00c8a ""
   "/usr/local/texlive/2022/texmf-dist/tex/context/base/mkii/supp-pdf.mkii" 1461363279 71627 94eb9990bed73c364d7f53f960cc8c5b ""
   "/usr/local/texlive/2022/texmf-dist/tex/generic/iftex/ifluatex.sty" 1572645307 492 1994775aa15b0d1289725a0b1bbc2d4c ""
   "/usr/local/texlive/2022/texmf-dist/tex/generic/iftex/ifpdf.sty" 1572645307 480 5778104efadad304ced77548ca2184b1 ""
@@ -300,9 +303,9 @@
   "/usr/local/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1647878959 4410336 7d30a02e9fa9a16d7d1f8d037ba69641 ""
   "/usr/local/texlive/2022/texmf-var/web2c/pdftex/pdflatex.fmt" 1678448550 2826436 192ceea0118c32aad5ddcb5f5712f0af ""
   "/usr/local/texlive/2022/texmf.cnf" 1647878952 577 209b46be99c9075fd74d4c0369380e8c ""
-  "hmcpset.cls" 1719370031 10045 f0b2bcca938270b8f9859ee51fb787d3 ""
-  "ps1-sol.aux" 1719370527 32 f852561997c05a7d986acd1deeb530ec "pdflatex"
-  "ps1-sol.tex" 1719370525 13771 ad1c6c149820f8dfec1f18c1d54292a1 ""
+  "hmcpset.cls" 1719371622 10269 718393079863593e13b3a622c4526b71 ""
+  "ps1-sol.aux" 1719371625 32 f852561997c05a7d986acd1deeb530ec "pdflatex"
+  "ps1-sol.tex" 1719371612 14781 c5dc4924383d94b8b96f8fd0efdb2bf9 ""
   (generated)
   "ps1-sol.aux"
   "ps1-sol.log"
