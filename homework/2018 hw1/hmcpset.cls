@@ -122,6 +122,19 @@
   \end{trivlist}%
 }
 
+\newenvironment{remark}[1][]{%
+  \begin{trivlist}%
+  \def\@tempa{#1}%
+  \ifx\@tempa\empty%
+    \item[]%
+  \else%
+    \item[\hskip\labelsep\relax #1]%
+  \fi%
+}{%
+  \mbox{}\penalty10000\hfill $\triangle$%
+  \end{trivlist}%
+}
+
 % default endmark is small black square
 \def\hmcpset@endmark{\ensuremath{\scriptscriptstyle\blacksquare}}
 
