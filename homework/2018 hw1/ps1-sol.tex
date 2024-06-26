@@ -37,6 +37,7 @@
 \newcommand{\xx}{x^{(i)}}
 \renewcommand{\tt}{t^{(i)}}
 \newcommand{\ww}{w^{(i)}}
+\renewcommand{\ss}{\sigma^{(i)}}
 
 
 % info for header block in upper right hand corner
@@ -420,7 +421,7 @@
     \[
     J(\theta) = (X\theta - y)^T W (X \theta - y),
     \]
-    where $W$ is the diagonal matrix
+    where $W$ is the $m$-by-$m$ diagonal matrix
     \[
     W_{ij} = \frac{1}{2} \delta_{ij} \ww.
     \]
@@ -443,8 +444,33 @@
     \]
     Notice that for $\ww = 1$, $W = I$ and we get the original form of the normal equation.
 
-    \item
+    \item Suppose dataset $\{(\xx, \yy)\}_{i=1}^m$ of $m$ independent examples, but we model $\yy$ as drawn from conditional distributions with different levels of variance $(\ss)^2$. Specifically, assume the model
+    \[
+    p(\yy \mid \xx ; \theta) = \frac{1}{\sqrt{2\pi} \ss} \exp(-\frac{(\yy - \theta^T \xx)^2}{2(\ss)^2}).
+    \]
+    We want to show finding the maximum likelihood estimates of $\theta$ reduces to solving a weighted linear regression problem.
+
+    The log-likelihood
+    \[
+    \begin{aligned}
+      \ell (\theta) &= \log \prod_{i=1}^m p(\yy \mid \xx; \theta) \\
+      &= \sum_{i=1}^{m} -\log \sqrt{2\pi} \ss - \frac{(\yy - \theta^T \xx)^2}{2(\ss)^2}.
+    \end{aligned}
+    \]
+    To find the maximum likelihood estimate of $\theta$, we need to minimize
+    \[
+    J(\theta) = \sum_{i=1}^{m} \frac{(\yy - \theta^T \xx)^2}{2(\ss)^2}.
+    \]
+    Hence this is equivalent to solving a weighted linear regression problem, where
+    \[
+    \ww = \frac{1}{(\ss)^2}.
+    \]
   \end{enumerate}
+
+  \item \textbf{Coding problem.} Implement locally weighted linear regression using normal equation in Part (a) and using
+  \[
+  \ww = \exp(- \frac{\norm{\xx - x}_2^2}{2 \tau^2})
+  \]
 \end{enumerate}
 \end{solution}
 
