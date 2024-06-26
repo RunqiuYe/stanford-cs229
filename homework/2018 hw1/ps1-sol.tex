@@ -298,12 +298,86 @@
   \[
   h_\theta(x) = \E[y \mid x] = e^{\eta} = e^{\theta^T x}.
   \]
+  Also, for the model, we utilize batch gradient ascent:
+  \[
+  \theta_j := \theta_j + \frac{\alpha}{m} \sum_{i=1}^{m}  \qty(\yy - \exp(\theta^T \xx)) \xx_j.
+  \]
 
 \end{enumerate}
 \end{solution}
 
 \begin{problem}[Problem 4]
-  \textbf{Convexity of Generalized Linear Models}
+  \textbf{Convexity of Generalized Linear Models} 
+  
+  Investigate nice properties of GLM. Goal is to show that the negative log-likelihood (NLL) loss of a GLM is convex with respect to the model parameters.
+
+  Recall that for exponential family distribution
+  \[
+  p(y ; \eta) = b(y) \exp(\eta^T T(y) - a(\eta)),
+  \]
+  where $\eta$ is the \emph{natural parameter} of distribution. Our approach is to show the Hessian of loss w.r.t the model parameters is PSD.
+
+  Restrict to the case where $\eta$ is scalar and $\eta$ is modeled as $\theta^T x$. Assume $p(Y \mid X ; \theta) \sim \text{ExponentialFamily}(\eta)$ where $\eta \in \R$ is a scalar and $T(y) = y$. That is
+  \[
+  p(y ; \eta) = b(y) \exp(\eta y - a(\eta)).
+  \]
 \end{problem}
+
+\begin{solution}
+  \begin{enumerate}[(a)]
+    \item The mean of the distribution
+    \[
+    \E[y; \eta] = \int y p(y ; \eta) dy = \int y b(y) \exp(\eta y - a(\eta)) dy.
+    \]
+    Following the hint, observe that
+    \[
+    \begin{aligned}
+      \pd{\eta} \int p(y;\eta) dy &= \int \pd{\eta} p(y ; \eta) dy \\ 
+      &= \int b(y) \qty(y - \pdv{a}{\eta}) \exp(\eta y - a(\eta)) dy.
+    \end{aligned}
+    \]
+    While $\int p(y; \eta) dy = 1$, we have $\pd{\eta} \int p(y; \eta) = 0$ and 
+    \[
+    \E[y ; \eta] = \int b(y) \pdv{a(\eta)}{\eta} \exp(\eta y - a(\eta)) dy.
+    \]
+    Since $\pdv{a(\eta)}{\eta}$ does not depend on $y$, we have
+    \[
+    \E[y ;\eta] = \int b(y) \pdv{a(\eta)}{\eta} \exp(\eta y - a(\eta)) dy = \pdv{a(\eta)}{\eta} \int b(y) \exp(\eta y - a(\eta)) dy = \pdv{a(\eta)}{\eta}.
+    \]
+    This shows that $\E[Y \mid X; \theta]$ can be represented as the gradient of the log-partition function $a$ with respect to the natural parameter $\eta$.
+
+    \item Notice that
+    \[
+    \begin{aligned}
+      \pdv{\E[y; \eta]}{\eta} &= 
+      \pd{\eta} \int y b(y) \exp(\eta y - a(\eta)) dy \\
+      &= \int y b(y) \qty(y - \pdv{a}{\eta}) \exp(\eta y - a(\eta)) dy \\
+      &= \int y^2 b(y) \exp(\eta y - a(\eta)) dy - \int y b(y) \pdv{a}{\eta} \exp(\eta y - a(\eta)) dy \\
+      &= \E[y^2; \eta] - \pdv{a}{\eta} \E[y; \eta] \\
+      &= \E[y^2; \eta] - (\E[y; \eta])^2 \\
+      &= \Var(y; \eta).
+    \end{aligned}
+    \]
+    This completes the proof, and we can see that $\Var(Y \mid X ; \theta)$ can be expressed as the second derivative of the mean w.r.t $\eta$ (i.e. the second derivative of log-partition function $a(\eta)$ w.r.t natural parameter $\eta$).
+
+    \item The loss function $\ell(\theta)$, the NLL of the distribution
+    \[
+    \begin{aligned}
+      \ell(\theta) &= - \log \prod_{i=1}^m p(\yy \mid \xx ; \eta) \\
+      &= - \sum_{i=1}^{m} \log p(\yy \mid \xx ; \eta) \\
+      &= - \sum_{i=1}^{m} \log b(\yy) + \eta \yy - a(\eta) \\
+      &= - \sum_{i=1}^{m} \log b(\yy) + \yy \theta^T \xx - a(\theta^T \xx).
+    \end{aligned}
+    \]
+    Now, to calculate the Hessian of the loss function w.r.t $\theta$, we first calculate
+    \[
+    \begin{aligned}
+      \pdv{\ell}{\theta_k} &=
+    \end{aligned}
+    \]
+
+
+  \end{enumerate}
+\end{solution}
 
 \end{document}
