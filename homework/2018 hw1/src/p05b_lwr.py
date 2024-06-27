@@ -18,19 +18,22 @@ def main(tau, train_path, eval_path):
 
     # *** START CODE HERE ***
     # Fit a LWR model
-    lwr_mode = LocallyWeightedLinearRegression(tau=0.5)
-    lwr_mode.fit(x_train, y_train)
+    lwr_model = LocallyWeightedLinearRegression(tau=0.5)
+    lwr_model.fit(x_train, y_train)
     # Get MSE value on the validation set
     x_valid, y_valid = util.load_dataset(eval_path, add_intercept=True)
+    y_pred = lwr_model.predict(x_valid)
+    mse = np.mean((y_pred - y_valid)**2)
+    print(f'MSE for tau = {tau} is {mse}')
     # Plot validation predictions on top of training set
+    # No need to save predictions
+    # Plot data
     plt.figure()
     plt.plot(x_train, y_train, 'bx')
-    plt.plot(x_valid, lwr_mode.predict(x_valid), 'ro')
+    plt.plot(x_valid, y_pred, 'ro')
     plt.xlabel('x')
     plt.ylabel('y')
     plt.savefig('output/p05b.png')
-    # No need to save predictions
-    # Plot data
     # *** END CODE HERE ***
 
 
