@@ -54,7 +54,7 @@ class PoissonRegression(LinearModel):
             theta = next_theta
             next_theta = theta + alpha * np.dot(x.T, np.reshape(y, (-1,1)) - np.exp(np.dot(x, theta))) / m
         self.theta = next_theta
-        print(f'Fitting results: theta is {self.theta}')
+        # print(f'Fitting results: theta is {self.theta}')
 
 
         # *** END CODE HERE ***
