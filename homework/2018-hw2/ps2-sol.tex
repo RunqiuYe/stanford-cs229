@@ -229,7 +229,24 @@
     \[
     J(\theta) = \norm{X\theta - y}_2^2 + \gamma \norm{\theta}_1.
     \]
-    
+
+    Following the same approach, $\thetamap$ for this model is given by
+    \[
+    \begin{aligned}
+      \thetamap = \argmin_\theta \frac{1}{2\sigma^2} \norm{y-X\theta}_2^2 + \frac{1}{b} \norm{\theta}_1.
+    \end{aligned}
+    \]
+    Hence, this is equivalent to the solution of linear regression with $L_1$ regularization, with $\gamma = \frac{1}{b}$.
+
+    \textbf{Note:} closed form solution for linear regression problem with $L_1$ regularization does not exist. To optimize this, use gradient descent with a random initialization and solve it numerically.
   \end{enumerate}
 \end{solution}
+
+\begin{remark}
+  \begin{itemize}
+    \item Linear regression with $L_2$ regularization is also called \emph{Ridge regression}, and $L_1$ regularization is called \emph{Lasso regression}. These regularizations can be applied to any generalized linear models just as above. Regularization techniques are also called \emph{weight decay} and \emph{shrinkage}. The Gaussian and Laplace priors encourages the parameter values to be closer to their mean (i.e. zero), which results in the shrinkage effect.
+    
+    \item Lasso regression is known to result in sparse parameters.
+  \end{itemize}
+\end{remark}
 \end{document}
