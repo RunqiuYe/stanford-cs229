@@ -41,6 +41,7 @@
 \newcommand{\ind}[1]{\mathbb{I}\{#1\}}
 \DeclareMathOperator*{\argmax}{argmax}
 \DeclareMathOperator*{\argmin}{argmin}
+\newcommand{\thetamap}{\theta_{\mathrm{MAP}}}
 
 
 % info for header block in upper right hand corner
@@ -185,16 +186,50 @@
     \begin{aligned}  
       \theta_{\mathrm{MAP}} &= \argmax_\theta p(\theta \mid x,y) \\
       &= \argmax_\theta p(y \mid \theta,x) p(\theta) \\
-      &= \argmax_\theta p(y \mid \theta,x) \exp(-\frac{\eta^2}{2} \norm{\theta}_2^2),
+      &= \argmax_\theta p(y \mid \theta,x) \exp(-\frac{1}{2\eta^2} \norm{\theta}_2^2),
     \end{aligned}
     \]
     where we have ignored some of the constants. Taking the negative log on both sides, it follows that
     \[
-    \theta_{\mathrm{MAP}} = \argmin_\theta -\log p(y \mid x, \theta) + \frac{\eta^2}{2} \norm{\theta}_2^2,
+    \theta_{\mathrm{MAP}} = \argmin_\theta -\log p(y \mid x, \theta) + \frac{1}{2\eta^2} \norm{\theta}_2^2,
     \]
-    as desired, where $\lambda = \frac{\eta^2}{2}$.
+    as desired, where $\lambda = \frac{1}{2\eta^2}$.
 
     \item Now consider a specific instance, a linear regression model given by $y = \theta^T x + \epsilon$, where $\epsilon \sim \mathcal{N}(0, \sigma^2)$. Like before, assume a Gaussian prior on this model such that $\theta \sim \mathcal{N}(0,\eta^2 I).$ Let $X$ be the design matrix of all training examples where each row is one example input, and $y$ be the column vector of all the example outputs. We want to derive a closed form expression for $\theta_{\mathrm{MAP}}$.
+    
+    For this model, the likelihood of an example $(\xx, \yy)$ is
+    \[
+    p(\yy \mid \xx, \theta) = \frac{1}{\sqrt{2\pi} \sigma} \exp(-\frac{(\yy - \theta^T \xx)^2}{2\sigma^2}).
+    \]
+    Hence,
+    \[
+    \log p(\yy \mid \xx, \theta) = - \frac{(\yy - \theta^T \xx)^2}{2\sigma^2} + C,
+    \]
+    where $C$ is some constant, and $\theta_{\mathrm{MAP}}$ is given by
+    \[
+    \begin{aligned}
+      \theta_{\mathrm{MAP}} &= \argmin_\theta \sum_{i=1}^m \frac{(\yy - \theta^T \xx)^2}{2\sigma^2} + \frac{1}{2\eta^2} \norm{\theta}_2^2 \\
+      &= \argmin_\theta \frac{1}{2\sigma^2} (y - X\theta)^T (y - X\theta) + \frac{1}{2\eta^2} \theta^T \theta.
+    \end{aligned}
+    \]
+    Set the gradient of the function to 0, we have
+    \[
+    0 = -\frac{1}{\sigma^2} X^T(y-X\thetamap) + \frac{1}{\eta^2} \thetamap
+    \]
+    It follows that
+    \[
+    \thetamap = \eta^2 (\eta^2 X^T X + \sigma^2 I)^{-1} X^T y.
+    \]
+    
+    \item Now consider the Laplace distribution, whose density 
+    \[
+    f(z \mid \mu, b) = \frac{1}{2b} \exp(-\frac{\abs{z-\mu}}{b}).
+    \]
+    As before, consider a linear regression model given by $y = \theta^T x + \epsilon$ where $\epsilon \sim \mathcal{N}(0, \sigma^2)$. Auumer a Laplace prior on this model where $\theta \sim \mathcal{L} (0, bI)$. We want to show that $\thetamap$ in this case is equivalent to the solution of linear regression with $L_1$ regularization, whose loss is specified as
+    \[
+    J(\theta) = \norm{X\theta - y}_2^2 + \gamma \norm{\theta}_1.
+    \]
+    
   \end{enumerate}
 \end{solution}
 \end{document}
