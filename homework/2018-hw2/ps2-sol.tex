@@ -39,6 +39,8 @@
 \newcommand{\ww}{w^{(i)}}
 \renewcommand{\ss}{\sigma^{(i)}}
 \newcommand{\ind}[1]{\mathbb{I}\{#1\}}
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\argmin}{argmin}
 
 
 % info for header block in upper right hand corner
@@ -100,7 +102,7 @@
 
   When probabilities outputted by a model match empirical observation, the model is \emph{well-calibrated}. For example, if a set of examples $\xx$ for which $h_\theta(\xx) \approx 0.7$, around $70\%$ of those examples should have positive labels. In a well-calibrated model, this property holds true at every probability value. 
 
-  Suppose training set $\{\xx, \yy\}_{i=1}^m$ with $\xx \in \R^{n+1}$ and $\yy \in \{0,1\}$. Assume we have an intercept term $\xx_0 = 1$ for all $i$. Let $\theta$ be the maximum likelihood parameters learned after training logistic regression model. In order for model to be well-calibrated, given any range of probabilities $(a,b)$ such that $0 \leq a < b \leq 1$, and trianing examples $\xx$ where the model outpus $h_\theta (\xx)$ fall in the range $(a,b)$, the fraction of positives in that set of examples should be equal to the average of the model outputs for those examples. That is,
+  Suppose training set $\{\xx, \yy\}_{i=1}^m$ with $\xx \in \R^{n+1}$ and $\yy \in \{0,1\}$. Assume we have an intercept term $\xx_0 = 1$ for all $i$. Let $\theta$ be the maximum likelihood parameters learned after training logistic regression model. In order for model to be well-calibrated, given any range of probabilities $(a,b)$ such that $0 \leq a < b \leq 1$, and trianing examples $\xx$ where the model outputs $h_\theta (\xx)$ fall in the range $(a,b)$, the fraction of positives in that set of examples should be equal to the average of the model outputs for those examples. That is,
   \[
   \frac{\sum_{i \in I_{a,b}} P(\yy = 1 \mid \xx; \theta)}{\abs{\{i \in I_{a,b}\}}} = \frac{\sum_{i \in I_{a,b}} \ind{\yy = 1}}{\abs{ \{i \in I_{a,b}\} }},
   \]
@@ -132,7 +134,7 @@
 
     \item Discuss what effect of $L_2$ regularization in the logistic regression objective has on model calibration. For $L_2$ regularization in logistic regression, the gradient becomes
     \[
-    \pdv{\ell}{\theta_j} \sum_{i=1}^m (\yy - h_{\theta}(\xx)) \xx_j + 2C \theta_j = 0.
+    \pdv{\ell}{\theta_j} = \sum_{i=1}^m (\yy - h_{\theta}(\xx)) \xx_j - 2C \theta_j = 0.
     \]
     Hence, the equality does not hold unless $\theta_0 = 0$. 
   \end{enumerate}
@@ -144,5 +146,55 @@
 
 \begin{problem}[Problem 3]
   \textbf{Bayesian Interpretation of Regularization}
+
+  In Bayesian statistics, almost every quantity is a random variable. Joint distribution of all the random variables are called \emph{model} (e.g. $p(x,y,\theta)$). Every unknown quantity can be estimated by conditioning the model on all observed quantities. Such conditional distribution $p(\theta \mid x,y)$ is called \emph{posterior distribution}. A consequence of this approach is that we are required to endow a \emph{prior distribution} $p(\theta)$.
+
+  In purest Bayesian interpretation, we are required to keep the entire posterior distribution over the parameters all the way until prediction to come up with the \emph{posterior predictive distribution}, and the final prediction will be the EV of the posterior predictive distribution. However, this is computationally very expensive.
+
+  The compromise is to estimate a point value of the parameters instead of the full distribution, which is the mode of the posterior distribution. Estimating the mode of posterior distribution is also called \emph{maximum a posteriori estimation} (MAP). That is,
+  \[
+  \theta_{\mathrm{MAP}} = \argmax_{\theta} p(\theta \mid x,y).
+  \]
+  Compare this to the \emph{maximum likelihood estimation} (MLE):
+  \[
+  \theta_{\mathrm{MLE}} = \argmax_{\theta} p(y \mid x, \theta).
+  \]
+
+  In this problem, explore connections between MAP estimation and common regularization techniques that are applied with MLE estimation. In particular, we will show how choice of prior distribution over $\theta$ is equivalent to different kinds of regularization.
 \end{problem}
+
+\begin{solution}
+  \begin{enumerate}[(a)]
+    \item Assume that $p(\theta) = p(\theta \mid x)$, we have
+    \[
+    p(\theta \mid x,y) = \frac{p(y \mid \theta, x)p(\theta \mid x)}{p(y \mid x)} = \frac{p(y \mid \theta, x) p(\theta)}{p(y \mid x)}.
+    \]
+    Since $p(y \mid x)$ does not depend on $\theta$, 
+    \[
+    \theta_{\mathrm{MAP}} = \argmax_\theta p(y \mid \theta, x) p(\theta).
+    \]
+    Note that the assumption $p(\theta) = p(\theta \mid x)$ will be valid for models such as linear regression where the input $x$ are not explicitly modeled by $\theta$. Note also that this means $x$ and $\theta$ are marginally independent, but not conditionally independent when $y$ is given.
+
+    \item Now we show that MAP estimation with a zero-mean Gaussian priori over $\theta$, specifically $\theta \sim \mathcal{N}(0, \eta^2 I)$, is equivalent to applying $L_2$ regularization with MLE estimation. Specifically, we need to show
+    \[
+    \theta_{\mathrm{MAP}} = \argmin_{\theta} -\log p(y \mid x, \theta) + \lambda \norm{\theta}_2^2.
+    \]
+
+    Recall the definition of multivariate normal, we have
+    \[
+    \begin{aligned}  
+      \theta_{\mathrm{MAP}} &= \argmax_\theta p(\theta \mid x,y) \\
+      &= \argmax_\theta p(y \mid \theta,x) p(\theta) \\
+      &= \argmax_\theta p(y \mid \theta,x) \exp(-\frac{\eta^2}{2} \norm{\theta}_2^2),
+    \end{aligned}
+    \]
+    where we have ignored some of the constants. Taking the negative log on both sides, it follows that
+    \[
+    \theta_{\mathrm{MAP}} = \argmin_\theta -\log p(y \mid x, \theta) + \frac{\eta^2}{2} \norm{\theta}_2^2,
+    \]
+    as desired, where $\lambda = \frac{\eta^2}{2}$.
+
+    \item Now consider a specific instance, a linear regression model given by $y = \theta^T x + \epsilon$, where $\epsilon \sim \mathcal{N}(0, \sigma^2)$. Like before, assume a Gaussian prior on this model such that $\theta \sim \mathcal{N}(0,\eta^2 I).$ Let $X$ be the design matrix of all training examples where each row is one example input, and $y$ be the column vector of all the example outputs. We want to derive a closed form expression for $\theta_{\mathrm{MAP}}$.
+  \end{enumerate}
+\end{solution}
 \end{document}
