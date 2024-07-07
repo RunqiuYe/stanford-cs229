@@ -236,7 +236,7 @@
       \thetamap = \argmin_\theta \frac{1}{2\sigma^2} \norm{y-X\theta}_2^2 + \frac{1}{b} \norm{\theta}_1.
     \end{aligned}
     \]
-    Hence, this is equivalent to the solution of linear regression with $L_1$ regularization, with $\gamma = \frac{1}{b}$.
+    Hence, this is equivalent to the solution of linear regression with $L_1$ regularization, with $\gamma = \frac{2\sigma^2}{b}$ in the above loss function $J(\theta)$.
 
     \textbf{Note:} closed form solution for linear regression problem with $L_1$ regularization does not exist. To optimize this, use gradient descent with a random initialization and solve it numerically.
   \end{enumerate}
