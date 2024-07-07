@@ -38,7 +38,7 @@
 \renewcommand{\tt}{t^{(i)}}
 \newcommand{\ww}{w^{(i)}}
 \renewcommand{\ss}{\sigma^{(i)}}
-\newcommand{\ind}[1]{\mathbf{1}\{#1\}}
+\newcommand{\ind}[1]{\mathbb{I}\{#1\}}
 
 
 % info for header block in upper right hand corner
@@ -83,13 +83,13 @@
     \item Consider the following modifications
     \begin{enumerate}[i.]
       \item Using a different constant learning rate will not make the algorithm converge on dataset $B$, since scaling $\theta$ to larger norm still always decreases the loss.
-      \item Decreasing the learning rate over time will make the alogrithm converge for dataset $B$, since in this way the change of $\theta$ converge to $0$.
+      \item Decreasing the learning rate over time will make the algorithm converge for dataset $B$, since in this way the change of $\theta$ converge to $0$.
       \item Linear scaling the input features does not help, since it does not change the dataset's linera separability.
       \item Adding a regularization term $\norm{\theta}_2^2$ helps, since now scaling $\theta$ to larger norm penalize the algorithm.
       \item Adding zero-mean Gaussian noise to the training data or labels helps as long as it makes the dataset not linearly separable.
     \end{enumerate}
     
-    \item Support vector machines, which uses hinge loss, are not vulnerable to datasets like $B$. Recall hinge loss $\ell(\hat{y}) = \max(0, 1-y \cdot \hat{y})$. In this case, $\theta$ is normalized. For linearly separable datasets, SVM will minimize the hinge loss to $0$ and the algorithm will stop.
+    \item Support vector machines, which uses hinge loss, are not vulnerable to datasets like $B$. In SVM, geometric margin is considered, instead of functional margin considered here. In other words, $\theta$ is normalized, so for linearly separable datasets like $B$, the algorithm will still converge.
   \end{enumerate}
 \end{solution}
 
@@ -117,7 +117,7 @@
     \[
     \sum_{i=1}^{m} \yy - h_\theta(\xx) = 0.
     \]
-    The desired equality follows immediately.
+    The desired equality follows immediately since $i \in I_{0,1}$ for all $i$.
 
     \item A perfectly calibrated model — that is, the equality holds for any $(a,b) \subset [0,1]$ — does not imply that the model achieves perfect accuracy. Consider $(a,b) = (\frac{1}{2}, 1)$, the above equality implies 
     \[
@@ -130,7 +130,11 @@
     \frac{\sum_{i \in I_{a,b}} \ind{\yy = 1}}{\abs{ \{i \in I_{a,b}\} }} = 1 > \frac{\sum_{i \in I_{a,b}} P(\yy = 1 \mid \xx; \theta)}{\abs{\{i \in I_{a,b}\}}}.
     \]
 
-    \item Discuss what effect of $L_2$ regularization in the logistic regression objective has on model calibration.
+    \item Discuss what effect of $L_2$ regularization in the logistic regression objective has on model calibration. For $L_2$ regularization in logistic regression, the gradient becomes
+    \[
+    \pdv{\ell}{\theta_j} \sum_{i=1}^m (\yy - h_{\theta}(\xx)) \xx_j + 2C \theta_j = 0.
+    \]
+    Hence, the equality does not hold unless $\theta_0 = 0$. 
   \end{enumerate}
 \end{solution}
 
