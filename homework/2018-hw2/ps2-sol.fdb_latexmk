@@ -1,6 +1,6 @@
 # Fdb version 3
-["pdflatex"] 1720366058 "/Users/runqiuye/Desktop/studies/self-study/computer-science/ai-ml/stanford-cs299/homework/2018-hw2/ps2-sol.tex" "ps2-sol.pdf" "ps2-sol" 1720366060
-  "/Users/runqiuye/Desktop/studies/self-study/computer-science/ai-ml/stanford-cs299/homework/2018-hw2/ps2-sol.tex" 1720366057 5011 04f64fb088f83f033c709c022e4b36dc ""
+["pdflatex"] 1720384144 "/Users/runqiuye/Desktop/studies/self-study/computer-science/ai-ml/stanford-cs299/homework/2018-hw2/ps2-sol.tex" "ps2-sol.pdf" "ps2-sol" 1720384147
+  "/Users/runqiuye/Desktop/studies/self-study/computer-science/ai-ml/stanford-cs299/homework/2018-hw2/ps2-sol.tex" 1720384144 7839 8eaa4d97ff9f9c9bc38b84ea30b0aaef ""
   "/usr/local/texlive/2022/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
   "/usr/local/texlive/2022/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1246382020 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -299,9 +299,10 @@
   "/usr/local/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1647878959 4410336 7d30a02e9fa9a16d7d1f8d037ba69641 ""
   "/usr/local/texlive/2022/texmf-var/web2c/pdftex/pdflatex.fmt" 1678448550 2826436 192ceea0118c32aad5ddcb5f5712f0af ""
   "/usr/local/texlive/2022/texmf.cnf" 1647878952 577 209b46be99c9075fd74d4c0369380e8c ""
+  "fz.png" 1720383468 19309 8a2ac6b0c1167f10c9c5371a489153e4 ""
   "hmcpset.cls" 1719371622 10269 718393079863593e13b3a622c4526b71 ""
-  "ps2-sol.aux" 1720366060 32 044b7f8fc9779af7531264e0c5c84b6d "pdflatex"
-  "ps2-sol.tex" 1720366057 5011 04f64fb088f83f033c709c022e4b36dc ""
+  "ps2-sol.aux" 1720384147 284 2d31383d8e069225efaf12d057bf709a "pdflatex"
+  "ps2-sol.tex" 1720384144 7839 8eaa4d97ff9f9c9bc38b84ea30b0aaef ""
   (generated)
   "ps2-sol.aux"
   "ps2-sol.log"
