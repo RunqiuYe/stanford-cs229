@@ -38,6 +38,7 @@
 \renewcommand{\tt}{t^{(i)}}
 \newcommand{\ww}{w^{(i)}}
 \renewcommand{\ss}{\sigma^{(i)}}
+\newcommand{\ind}[1]{\mathbf{1}\{#1\}}
 
 
 % info for header block in upper right hand corner
@@ -50,5 +51,61 @@
 \begin{document}
 
 \problemlist{Problem Set \#2: Supervised Learning II}
+
+\begin{problem}[Problem 1]
+\textbf{Logistic Regression: Training stability}
+\end{problem}
+
+\begin{solution}
+  \begin{enumerate}[(a)]
+    \item The most notable difference in training the logistic regression model on datasets $A$ and $B$ is that the training process on dataset $B$ requires far more iterations to converge.
+    \item 
+  \end{enumerate}
+\end{solution}
+
+\begin{problem}[Problem 2]
+  \textbf{Model Calibration}
+
+  Try to understand the output $h_\theta (x)$ of the hypothesis function of a logistic regression model, in particular why we might treat the output as a probability.
+
+  When probabilities outputted by a model match empirical observation, the model is \emph{well-calibrated}. For example, if a set of examples $\xx$ for which $h_\theta(\xx) \approx 0.7$, around $70\%$ of those examples should have positive labels. In a well-calibrated model, this property holds true at every probability value. 
+
+  Suppose training set $\{\xx, \yy\}_{i=1}^m$ with $\xx \in \R^{n+1}$ and $\yy \in \{0,1\}$. Assume we have an intercept term $\xx_0 = 1$ for all $i$. Let $\theta$ be the maximum likelihood parameters learned after training logistic regression model. In order for model to be well-calibrated, given any range of probabilities $(a,b)$ such that $0 \leq a < b \leq 1$, and trianing examples $\xx$ where the model outpus $h_\theta (\xx)$ fall in the range $(a,b)$, the fraction of positives in that set of examples should be equal to the average of the model outputs for those examples. That is,
+  \[
+  \frac{\sum_{i \in I_{a,b}} P(\yy = 1 \mid \xx; \theta)}{\abs{\{i \in I_{a,b}\}}} = \frac{\sum_{i \in I_{a,b}} \ind{\yy = 1}}{\abs{ \{i \in I_{a,b}\} }},
+  \]
+  where $P(\yy = 1 \mid x; \theta) = h_{\theta} (x) = 1/(1+\exp(-\theta^T x))$, $I_{a,b} = \{i : h_\theta(\xx) \in (a,b) \}$.
+\end{problem}
+
+\begin{solution}
+  \begin{enumerate}[(a)]
+    \item For the described logistic regression model over the range $(a,b) = (0,1)$, we want to show the above equality holds. Recall the gradient of log-likelihood
+    \[
+    \pdv{\ell}{\theta_j} = \sum_{i=1}^m (\yy - h_{\theta}(\xx)) \xx_j.
+    \]
+    For a maximum likelihood estimation, $\pdv{\ell}{\theta} = 0$. Hence $\pdv{\ell}{\theta_0} = 0$. Since $\xx_0 = 1$, we have
+    \[
+    \sum_{i=1}^{m} \yy - h_\theta(\xx) = 0.
+    \]
+    The desired equality follows immediately.
+
+    \item A perfectly calibrated model — that is, the equality holds for any $(a,b) \subset [0,1]$ — does not imply that the model achieves perfect accuracy. Consider $(a,b) = (\frac{1}{2}, 1)$, the above equality implies 
+    \[
+    \frac{\sum_{i \in I_{a,b}} P(\yy = 1 \mid \xx; \theta)}{\abs{\{i \in I_{a,b}\}}} = \frac{\sum_{i \in I_{a,b}} \ind{\yy = 1}}{\abs{ \{i \in I_{a,b}\} }} < 1.
+    \]
+    This shows that the model does not have perfect accuracy.
+
+    For the converse direction, a perfect accuracy does not imply perfectly calibrated. Consider again $(a,b) = (\frac{1}{2}, 1)$, then we have
+    \[
+    \frac{\sum_{i \in I_{a,b}} \ind{\yy = 1}}{\abs{ \{i \in I_{a,b}\} }} = 1 > \frac{\sum_{i \in I_{a,b}} P(\yy = 1 \mid \xx; \theta)}{\abs{\{i \in I_{a,b}\}}}.
+    \]
+
+    \item Discuss what effect of $L_2$ regularization in the logistic regression objective has on model calibration.
+  \end{enumerate}
+\end{solution}
+
+\begin{remark}
+  $(0,1)$ is the only range for which logistic regression is guaranteed to be calibrated. When GLM assumptions hold, all ranges $(a,b) \subset [0,1]$ are well calibrated. In addition, when test set has same distribution and when model has not overfit or underfit, logistic regression are well-calibrated on test data as well. Thus logistic regression is popular when we are interested in level of uncertainty in the model output. 
+\end{remark}
 
 \end{document}
