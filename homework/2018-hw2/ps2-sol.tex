@@ -45,7 +45,7 @@
 \name{Runqiu Ye}
 \class{Stanford CS299}
 \assignment{Problem Set \#2}
-\duedate{06/30/2024}
+\duedate{07/07/2024}
 
 \linespread{1.15}
 \begin{document}
@@ -58,8 +58,38 @@
 
 \begin{solution}
   \begin{enumerate}[(a)]
-    \item The most notable difference in training the logistic regression model on datasets $A$ and $B$ is that the training process on dataset $B$ requires far more iterations to converge.
-    \item 
+    \item The most notable difference in training the logistic regression model on datasets $A$ and $B$ is that the algorithm does not converge on dataset $B$.
+    
+    \item To investigate why the training procedure behaves unexpectedly on dataset $B$, but not on $A$, we print the value of $\theta$ after every $10000$ iterations. We notice that for data set $B$, although the normalized $\frac{\theta}{\norm{\theta}}$ almost stop changing after several tens of thousands of iterations, each componenet of the unnormalized $\theta$ keeps increasing. We also notice that dataset $A$ is not linearly separable while dataset $B$ is linearly separable.
+    
+    From the code, we notice that the algorithm calculates the gradient of loss function as 
+    \[
+    \nabla_{\theta} J(\theta) = -\frac{1}{m} \sum_{i=1}^m \frac{ \yy \xx}{1+ \exp(\yy \theta^T \xx)}.
+    \]
+    From this, we know that the algorithm uses gradient descent to minimize the loss function
+    \[
+    J(\theta) = - \frac{1}{m} \sum_{i=1}^m \log \frac{1}{1+ \exp(-\yy \theta^T \xx)}.
+    \]
+
+    Hence, for a dataset that is linearly separable, that is, $\yy \theta^T \xx > 0$ for all $i$, a $\theta$ with larger norm always leads to a smaller loss, preventing the algorithm from converging. However, on a dataset that is not linearly separable, there exists $i$ such that $\yy \theta^T \xx < 0$. By plotting $f(z) = \log (1+e^{-z})$ in Figure \ref{fz}, we notice that negative margin dominates when scaling $\theta$ to a larger norm. Hence, we cannot always increase $\theta$ to a larger norm while minimizing $J(\theta)$.
+
+    \begin{figure}
+      \centering
+      \includegraphics[width=0.6\linewidth]{fz.png}
+      \caption{Plot of $f(z) = \log (1+e^{-z})$ for $-5 \leq z \leq 5$.}
+      \label{fz}
+    \end{figure}
+    
+    \item Consider the following modifications
+    \begin{enumerate}[i.]
+      \item Using a different constant learning rate will not make the algorithm converge on dataset $B$, since scaling $\theta$ to larger norm still always decreases the loss.
+      \item Decreasing the learning rate over time will make the alogrithm converge for dataset $B$, since in this way the change of $\theta$ converge to $0$.
+      \item Linear scaling the input features does not help, since it does not change the dataset's linera separability.
+      \item Adding a regularization term $\norm{\theta}_2^2$ helps, since now scaling $\theta$ to larger norm penalize the algorithm.
+      \item Adding zero-mean Gaussian noise to the training data or labels helps as long as it makes the dataset not linearly separable.
+    \end{enumerate}
+    
+    \item Support vector machines, which uses hinge loss, are not vulnerable to datasets like $B$. Recall hinge loss $\ell(\hat{y}) = \max(0, 1-y \cdot \hat{y})$. In this case, $\theta$ is normalized. For linearly separable datasets, SVM will minimize the hinge loss to $0$ and the algorithm will stop.
   \end{enumerate}
 \end{solution}
 
@@ -105,7 +135,10 @@
 \end{solution}
 
 \begin{remark}
-  $(0,1)$ is the only range for which logistic regression is guaranteed to be calibrated. When GLM assumptions hold, all ranges $(a,b) \subset [0,1]$ are well calibrated. In addition, when test set has same distribution and when model has not overfit or underfit, logistic regression are well-calibrated on test data as well. Thus logistic regression is popular when we are interested in level of uncertainty in the model output. 
+  The interval $(0,1)$ is the only range for which logistic regression is guaranteed to be calibrated. When GLM assumptions hold, all ranges $(a,b) \subset [0,1]$ are well calibrated. In addition, when test set has same distribution and when model has not overfit or underfit, logistic regression are well-calibrated on test data as well. Thus logistic regression is popular when we are interested in level of uncertainty in the model output. 
 \end{remark}
 
+\begin{problem}[Problem 3]
+  \textbf{Bayesian Interpretation of Regularization}
+\end{problem}
 \end{document}
