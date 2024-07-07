@@ -76,6 +76,7 @@
 %% AMSLaTeX math environments and symbols
 \RequirePackage{amsmath}
 \RequirePackage{amssymb}
+\RequirePackage{mathrsfs}
 
 %% boxed minipage for boxed problem environment
 \RequirePackage{boxedminipage}
@@ -365,3 +366,5 @@
     \frac{\partial^{#1}}{\partial #2^{#1}}
   \fi
 }
+
+\renewcommand{\epsilon}{\varepsilon}
