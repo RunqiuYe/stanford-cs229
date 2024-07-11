@@ -367,4 +367,29 @@
   \fi
 }
 
+
+\newcommand {\yy}[1][ ]{
+  \ifx #1 { }
+    {y^{(i)}}
+  \else
+  {y^{(#1)}}
+  \fi
+}
+
+\newcommand {\xx}[1][ ]{
+  \ifx #1 { }
+    {x^{(i)}}
+  \else
+  {x^{(#1)}}
+  \fi
+}
+
+\newcommand {\thth}[1][ ]{
+  \ifx #1 { }
+    {\theta^{(i)}}
+  \else
+  {\theta^{(#1)}}
+  \fi
+}
+
 \renewcommand{\epsilon}{\varepsilon}

@@ -13,9 +13,12 @@ def initial_state():
     Feel free to use any data type (dicts, lists, tuples, or custom classes) to
     contain the state of the perceptron.
 
+    Returns:
+        Returns array of tuples of coefficient and training example (beta_i, x_i)
     """
 
     # *** START CODE HERE ***
+    return []
     # *** END CODE HERE ***
 
 
@@ -33,6 +36,11 @@ def predict(state, kernel, x_i):
         Returns the prediction (i.e 0 or 1)
     """
     # *** START CODE HERE ***
+    s = 0
+    for k in range(len(state)):
+        beta, example = state[k]
+        s += beta * kernel(example, x_i)
+    return sign(s)
     # *** END CODE HERE ***
 
 
@@ -47,6 +55,12 @@ def update_state(state, kernel, learning_rate, x_i, y_i):
         y_i: A 0 or 1 indicating the label for a single instance
     """
     # *** START CODE HERE ***
+    s = 0
+    for k in range(len(state)):
+        beta, example = state[k]
+        s += beta * kernel(example, x_i)
+    beta = learning_rate * (y_i - sign(s))
+    state.append((beta, x_i))
     # *** END CODE HERE ***
 
 
