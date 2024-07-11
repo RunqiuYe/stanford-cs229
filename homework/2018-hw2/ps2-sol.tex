@@ -33,8 +33,6 @@
 % include this if you want to import graphics files with /includegraphics
 \usepackage{graphicx}
 
-\newcommand{\yy}{y^{(i)}}
-\newcommand{\xx}{x^{(i)}}
 \renewcommand{\tt}{t^{(i)}}
 \newcommand{\ww}{w^{(i)}}
 \renewcommand{\ss}{\sigma^{(i)}}
@@ -42,6 +40,7 @@
 \DeclareMathOperator*{\argmax}{argmax}
 \DeclareMathOperator*{\argmin}{argmin}
 \newcommand{\thetamap}{\theta_{\mathrm{MAP}}}
+\renewcommand{\diag}{\mathrm{diag}}
 
 
 % info for header block in upper right hand corner
@@ -249,4 +248,122 @@
     \item Lasso regression is known to result in sparse parameters.
   \end{itemize}
 \end{remark}
+
+\begin{problem}[Problem 4]
+  \textbf{Constructing kernels}
+
+  Choosing kernel $K(x,z) = \phi(x)^T \phi(z)$. Mercer's theorem tells us $K$ is a Mercer kernel iff for any finite set $\{\xx\}_{i=1}^m$, the square matrix $K \in \R^{m \cross m}$ whose entries are $K_{ij} = K(\xx, x^{(j)})$ is symmetric and positive semidefinite.
+
+  Let $K_1$, $K_2$ be kernels over $\R^n \cross \R^n$, let $a \in \R^+$ be a positive real number, let $f: \R^n \to \R$ be a real-valued function, let $\phi: \R^n \to \R^d$ be a function mapping from $\R^n$ to $\R^d$, let $K_3$ be a kernel over $\R^d \cross \R^d$, and let $p$ a polynomial with \emph{positive} coefficients.
+
+  For each $K$ below, prove or give counter examle to show whether it is necessarily a kernel.
+\end{problem}
+
+\begin{solution}
+  \begin{enumerate}[(a)]
+    \item $K(x,z) = K_1(x,z) + K_2(x,z)$ is a kernel. For any finite set $\{\xx\}_{i=1}^m$, the matrix $K_1$ and $K_2$ are both symmetric and PSD. Hence, for $K = K_1 + K_2$ is also symmetric and PSD.
+    
+    \item $K(x,z) = K_1(x,z) - K_2(x,z)$ is not necessarily a kernel. Consider matrix
+    \[
+    K_1 = \diag(1,1,\dots,1), \quad K_2 = \diag(2,2,\dots,2).
+    \]
+    Then
+    \[
+    K = \diag(-1,-1,\dots,-1)
+    \]
+    is not PSD.
+    
+    \item $K(x,z) = aK_1(x,z)$ is a kernel.
+    
+    \item $K(x,z) = -aK_1(x,z)$ is not a kernel.
+    
+    \item $K(x,z) = K_1(x,z)K_2(x,z)$ is a kernel. For any finite set $\{\xx\}_{i=1}^m$, the matrix $K$ will be an elementwise product of $K_1$ and $K_2$. Hence $K$ is symmetric. Now we prove $K$ is PSD. We have
+    \[
+    \begin{aligned}
+      z^T K z &= \sum_i \sum_j z_i K_{ij} z_j \\
+      &= \sum_i \sum_j z_i K_{1_{ij}} K_{2_{ij}} z_j \\
+      &= \sum_i \sum_j z_i \sum_k \phi_k^1(\xx) \phi_k^1(x^{(j)}) \sum_l \phi_l^2(\xx) \phi_l^2(x^{(j)}) z_j \\
+      &= \sum_k \sum_l \qty(z_i \phi_k^1(\xx) \phi_l^2(\xx))^2 \\
+      &\geq 0,
+    \end{aligned}
+    \]
+    as desired.
+    
+    \item $K(x,z) = f(x)f(z)$ is a kernel. For any finite set $\{\xx\}_{i=1}^m$, the matrix $K$ is cleraly symmetric. Now, we have
+    \[
+    \begin{aligned}
+      z^T K z &= \sum_i \sum_j z_i K_{ij} z_j \\
+      &= \sum_i \sum_j z_i f(\xx) f(x^{(j)}) z_j \\
+      &= \qty(\sum_i z_i f(\xx))^2 \\
+      & \geq 0.
+    \end{aligned}
+    \]
+    Hence, $K$ is also PSD.
+
+    \item $K(x,z) = K_3(\phi(x),\phi(z))$ is a kernel. Suppose the feature map corresponds to $K_3$ is $\psi$, then
+    \[
+    K(x,z) = (\psi \circ \phi(x))^T (\psi \circ \phi(z)).
+    \]
+    Hence, $K$ is a kernel corresponds to feature map $\psi \circ \phi$.
+
+    \item $K(x,z) = p(K_1(x,z))$ is a kernel. Let $p(t) = \sum_{k} a_k t^k$. Then, $K(x,z) = \sum_k a_k K_1(x,z)^k$. By part (e), $K_1(x,z)^k$ is a kernel for each $k$. Since $a_k > 0$, $K(x,z) = \sum_k a_k K_1(x,z)^k$ is a kernel.
+  \end{enumerate}
+\end{solution}
+
+\begin{problem}[Problem 5]
+  \textbf{Kernelizing the Perceptron}
+
+  Binary classification problem with $y \in \{0,1\}$. The perceptron uses hypothese of the form $h_\theta(x) = g(\theta^T x)$, where $g(z) = \sgn{z} = 1$ if $z \geq 0$, $0$ otherwise. Consider stochastic gradient descent-like implementation of perceptron algorithm, where each update to $\theta$ is made using one training example. However, unlike stochastic gradient descent, the perceptron algorithm will only make one pass through the entire training set. Update rule is
+  \[
+  \theta^{(i+1)} := \theta^{(i)} + \alpha \qty(y^{(i+1)} - h_{\theta^{i}}(x^{(i+1)})) x^{(i+1)},
+  \]
+  where $\theta^{(i)}$ is the value of parameters after the algorithm has seen the first $i$ training examples. Prior to seeing any training examples, $\theta^(0)$ is initialized to $0$.
+\end{problem}
+
+\begin{solution}
+  \begin{enumerate}[(a)]
+    \item Let $K$ be a Mercer kenel corresponding to some very high-dimensional feature mapping $\phi$. Suppose $\phi$ is so high-dimensional that it is infeasible to ever represent $\phi(x)$ explicitly. Descirbe how to apply "kernel trick" to the perceptron to make it work in the high-dimensional feature space $\phi$, but without ever explicitly computering $\phi(x)$.
+    
+    No need to worry about the intercept term. If you like, think of $\phi$ as having the property that $\phi_0(x) = 1$ so that this is taken care of. 
+
+    \begin{enumerate}[i.]
+      \item To represent the high-dimensional parameter vector $\theta$ implicitly, we will represent it as a linear combination of $\phi(\xx)$, where $\xx$ is the training examples. That is,
+      \[
+      \thth = \sum_k \beta_k^{(i)} \phi(\xx[k]).
+      \]
+      In particular, the initial value $\theta^{(0)}$ is represented by setting $\beta_k = 0$ for all $i$.
+
+      \item To efficiently make a prediction on a new input $x^{(i+1)}$, we compute
+      \[
+      \begin{aligned}
+        h_{\thth} (x^{(i+1)}) &= g \qty((\thth)^T \phi(x^{(i+1)})) \\
+        &= g \qty( (\sum_k \beta_k^{(i)} \phi(x^{(k)}))^T \phi(x^{(i+1)})) \\
+        &= g \qty( \sum_k \beta_k^{(i)} K(x^{(k)}, x^{(i+1)})).
+      \end{aligned}
+      \]
+
+      \item For a new training example $(\xx[i+1], \yy[i+1])$, consider the original update rule
+      \[
+      \thth[i+1] := \thth + \alpha \qty(\yy[i+1] - h_{\thth}(\xx[i+1])) \xx[i+1].
+      \]
+      For our representation, we have
+      \[
+      \sum_k \beta_k^{(i+1)} \phi(\xx[k]) := \sum_k \beta_k^{(i)} \phi(\xx[k]) + \alpha \qty(\yy[i+1] - h_{\thth}(\xx[i+1])) \phi(\xx[i+1]).
+      \]
+      Hence, the modified update rule is
+      \[
+      \beta_{i+1}^{(i+1)} := \beta_{i+1}^{(i)} + \alpha \qty(\yy[i+1] - g \qty(\sum_k \beta_k^{(i)} K(\xx[k], \xx[i+1])))
+      \]
+      for $\beta_{i+1}$, and
+      \[
+      \beta_k^{(i+1)} := \beta_k^{(i)}
+      \]
+      for $\beta_k$ with $k \neq i+1$.
+    \end{enumerate}
+
+    \item \textbf{Coding problem.}
+    \item The dot kernel performs extremely poorly, since there is no feature mapping and it is equivalent to logistic regression, while the dataset is not linearly separable.
+  \end{enumerate}
+\end{solution}
+
 \end{document}
