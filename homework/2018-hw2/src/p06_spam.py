@@ -21,6 +21,7 @@ def get_words(message):
     """
 
     # *** START CODE HERE ***
+    return message.lower().split(" ")
     # *** END CODE HERE ***
 
 
@@ -41,6 +42,22 @@ def create_dictionary(messages):
     """
 
     # *** START CODE HERE ***
+    counter = dict()
+    word_dictionary = dict()
+    num_words = 0
+
+    for message in messages:
+        added = set()
+        for word in get_words(message):
+            if word not in added:
+                counter[word] = counter.get(word, 0) + 1
+                if counter[word] == 5:
+                    word_dictionary[word] = num_words
+                    num_words += 1
+            added.add(word)
+    
+    return word_dictionary
+
     # *** END CODE HERE ***
 
 
@@ -62,7 +79,24 @@ def transform_text(messages, word_dictionary):
         A numpy array marking the words present in each message.
     """
     # *** START CODE HERE ***
+    m, n = len(messages), len(word_dictionary)
+    res = np.zeros((m, n))
+
+    for i in range(m):
+        message = messages[i]
+        for word in get_words(message):
+            if word in word_dictionary:
+                res[i][word_dictionary[word]] += 1
+    
+    return res
+
     # *** END CODE HERE ***
+
+class Naive_bayes_model:
+    def __init__(self, dim):
+        self.phi = 0
+        self.phi0 = np.zeros((dim, 1))
+        self.phi1 = np.zeros((dim, 1))
 
 
 def fit_naive_bayes_model(matrix, labels):
@@ -82,6 +116,16 @@ def fit_naive_bayes_model(matrix, labels):
     """
 
     # *** START CODE HERE ***
+    m, n = matrix.shape
+    model = Naive_bayes_model(n)
+    labels = np.reshape(labels, (m, 1))
+    length = np.sum(matrix, axis = 1)
+    length = np.reshape(length, (m, 1))
+
+    model.phi = np.mean(labels == 1)
+    model.phi1 = (np.sum(matrix * (labels == 1), axis=0) + 1) / np.sum(length * (labels == 1) + n)
+    model.phi1 = (np.sum(matrix * (labels == 0), axis=0) + 1) / np.sum(length * (labels == 0) + n)
+    return model
     # *** END CODE HERE ***
 
 

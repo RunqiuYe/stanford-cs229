@@ -366,4 +366,48 @@
   \end{enumerate}
 \end{solution}
 
+\begin{problem}[Problem 6]
+  \textbf{Spam classification}
+
+  Use Bayes algorithm and an SVM to build a spam classifier to detect SMS spam messages. 
+\end{problem}
+
+\begin{solution}
+  \begin{enumerate}[(a)]
+    \item \textbf{Coding problem.} Implement code for processing the spam messages into numpy arrays.
+    
+    \item \textbf{Coding problem.} Implement a naive Bayes classifier for spam classification with multinomial event model and Laplace smoothing.
+    
+    For multinomial event model, the model assume the probability that word $k$ appears in some location is $\phi_{k \mid y = 1}$ given $y = 1$ and $\phi_{k \mid y = 0}$ given $y = 0$. That is 
+    \[
+    \begin{aligned}
+      \phi_{k \mid y = 1} = p(x_j = k \mid y = 1) \quad \phi_{k \mid y = 0} = p(x_j = k \mid y = 0),
+    \end{aligned}
+    \]
+    for $k$ that index into the dictionary size $\abs{V}$ and $j$ that index into the lenght of the message. Also, the model assume the probability of a spam email $\phi_y = p_y$. Hence, the log-likelihood for Naive Bayes algorithm
+    \[
+    \begin{aligned}
+      \ell(\phi_y, \phi_{k \mid y = 1}, \phi_{k \mid y = 0}) &= \log \prod_{i=1}^m \qty(\prod_{j=1}^{d_i} p(x_j^{(i)} \mid y)) p(\yy) \\
+      &= \sum_{i=1}^m \sum_{j=1}^{d_i} \qty (\log p(x_j^{(i)} \mid y)) + \log p(\yy).
+    \end{aligned}
+    \]
+    and the maximum likelihood estimation with Laplace smoothing
+    \[
+    \begin{aligned}
+      \phi_y &= \frac{\sum_{i=1}^m \ind{\yy = 1} }{m}, \\
+      \phi_{k \mid y = 0} &= \frac{\sum_{i=1}^m \sum_{j=1}^{d_i} \ind{x_j^{(i)} = k \land \yy = 1} + 1}{\sum_{i=1}^m \ind {\yy = 1} d_i + \abs{V}}, \\
+      \phi_{k \mid y = 0} &= \frac{\sum_{i=1}^m \sum_{j=1}^{d_i} \ind{x_j^{(i)} = k \land \yy = 0} + 1}{\sum_{i=1}^m \ind {\yy = 0} d_i + \abs{V}}. \\
+    \end{aligned}
+    \]
+    Notice that $\sum_{j=1}^{d_i} \ind{x_j^{(i)} = k \land \yy = 1}$ is just the count of word $k$ in dictionary for message $\xx$, so we only need to count the number of each words in each message.
+
+    \item Some tokens may be particularly indicative of an SMS being in a particular class. Try to get an informal sense of how indicative token $k$ is for the SPAM class by looking at 
+    \[
+    \log \frac{p(x_j = k \mid y = 1)}{p(x_j = k \mid y = 0)} = \log \frac{P(\text{token } k \mid \text{email is SPAM})}{P(\text{token } k \mid \text{email is NOTSPAM})}.
+    \]
+
+    \textbf{Coding problem.}
+  \end{enumerate}
+\end{solution}
+
 \end{document}
