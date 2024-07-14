@@ -421,12 +421,15 @@
     \]
     by taking the difference.
 
-    \item Some tokens may be particularly indicative of an SMS being in a particular class. Try to get an informal sense of how indicative token $k$ is for the SPAM class by looking at 
+    \item \textbf{Coding problem.} Some tokens may be particularly indicative of an SMS being in a particular class. Try to get an informal sense of how indicative token $k$ is for the SPAM class by looking at 
     \[
     \log \frac{p(x_j = k \mid y = 1)}{p(x_j = k \mid y = 0)} = \log \frac{P(\text{token } k \mid \text{email is SPAM})}{P(\text{token } k \mid \text{email is NOTSPAM})}.
     \]
 
-    \textbf{Coding problem.}
+    \item \textbf{Coding problem.} Select the appropriate kernel radius for SVM parameterized by an RBF kernel. That is,
+    \[
+    K(x,z) = \exp(- \gamma \norm{x-z}^2).
+    \]
   \end{enumerate}
 \end{solution}
 
