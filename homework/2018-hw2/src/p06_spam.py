@@ -124,7 +124,7 @@ def fit_naive_bayes_model(matrix, labels):
 
     model.phi = np.mean(labels == 1)
     model.phi1 = (np.sum(matrix * (labels == 1), axis=0) + 1) / np.sum(length * (labels == 1) + n)
-    model.phi1 = (np.sum(matrix * (labels == 0), axis=0) + 1) / np.sum(length * (labels == 0) + n)
+    model.phi0 = (np.sum(matrix * (labels == 0), axis=0) + 1) / np.sum(length * (labels == 0) + n)
     return model
     # *** END CODE HERE ***
 
@@ -142,6 +142,10 @@ def predict_from_naive_bayes_model(model, matrix):
     Returns: A numpy array containg the predictions from the model
     """
     # *** START CODE HERE ***
+    p1 = np.dot(matrix, model.phi1) + np.log(model.phi)
+    p0 = np.dot(matrix, model.phi0) + np.log(1 - model.phi)
+    return p1 - p0 >= 0
+
     # *** END CODE HERE ***
 
 
@@ -158,6 +162,12 @@ def get_top_five_naive_bayes_words(model, dictionary):
     Returns: The top five most indicative words in sorted order with the most indicative first
     """
     # *** START CODE HERE ***
+    reverse_dict = dict()
+    for key in dictionary:
+        reverse_dict[dictionary[key]] = key
+    val = np.log(model.phi1) - np.log(model.phi0)
+    top_index = np.argsort(-val)[:5]
+    return [reverse_dict[i] for i in top_index]
     # *** END CODE HERE ***
 
 
@@ -178,6 +188,15 @@ def compute_best_svm_radius(train_matrix, train_labels, val_matrix, val_labels, 
         The best radius which maximizes SVM accuracy.
     """
     # *** START CODE HERE ***
+    best_rad = radius_to_consider[0]
+    best_accuracy = 0
+    for rad in radius_to_consider:
+        pred = svm.train_and_predict_svm(train_matrix, train_labels, val_matrix, rad)
+        accuracy = np.sum(pred == val_labels)
+        if accuracy > best_accuracy:
+            best_accuracy = accuracy
+            best_rad = rad
+    return rad
     # *** END CODE HERE ***
 
 

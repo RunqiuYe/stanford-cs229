@@ -384,7 +384,7 @@
       \phi_{k \mid y = 1} = p(x_j = k \mid y = 1) \quad \phi_{k \mid y = 0} = p(x_j = k \mid y = 0),
     \end{aligned}
     \]
-    for $k$ that index into the dictionary size $\abs{V}$ and $j$ that index into the lenght of the message. Also, the model assume the probability of a spam email $\phi_y = p_y$. Hence, the log-likelihood for Naive Bayes algorithm
+    for $k$ that index into the dictionary size $\abs{V}$ and $j$ that index into the lenght of the message. Also, the model assume the probability of a spam email $\phi_y = p(y)$. Hence, the log-likelihood for Naive Bayes algorithm
     \[
     \begin{aligned}
       \ell(\phi_y, \phi_{k \mid y = 1}, \phi_{k \mid y = 0}) &= \log \prod_{i=1}^m \qty(\prod_{j=1}^{d_i} p(x_j^{(i)} \mid y)) p(\yy) \\
@@ -400,6 +400,26 @@
     \end{aligned}
     \]
     Notice that $\sum_{j=1}^{d_i} \ind{x_j^{(i)} = k \land \yy = 1}$ is just the count of word $k$ in dictionary for message $\xx$, so we only need to count the number of each words in each message.
+
+    To predict from the Naive Bayes model, we need to compare
+    \[
+    p(y = 1 \mid x) = \frac{p(x \mid y = 1)p(y = 1)}{p(x)}, \qquad p(y = 0 \mid x) = \frac{p(x \mid y = 0)p(y = 0)}{p(x)}.
+    \]
+    When calculating $p(x \mid y) = \prod_j p(x_j \mid y)$, underflow may happen since every term is smaller than one. We resolve this issue by using logarithm
+    \[
+    \begin{aligned}
+      \log p(x \mid y)p(y) &= \log \prod_j p(x_j \mid y) p(y) \\
+      &= \sum_j \log p(x_j \mid y) + \log p(y).
+    \end{aligned}
+    \]
+    and compare
+    \[
+    \begin{aligned}
+      \log p(y = 1 \mid x) &= \sum_j \log p(x_j \mid y = 1)+ \log p(y=1) - \log p(x), \\
+      \log p(y = 0 \mid x) &= \sum_j \log p(x_j \mid y = 0) + \log p(y=0) - \log p(x).
+    \end{aligned}
+    \]
+    by taking the difference.
 
     \item Some tokens may be particularly indicative of an SMS being in a particular class. Try to get an informal sense of how indicative token $k$ is for the SPAM class by looking at 
     \[
