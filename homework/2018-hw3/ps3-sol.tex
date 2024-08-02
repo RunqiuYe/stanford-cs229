@@ -222,10 +222,21 @@
     \argmin_\theta \DKL{\hat P}{P_\theta} = \argmax_\theta \sum_{i=1}^m \log P_\theta (\xx).
     \]
 
+    \begin{proof}
+      Notice that $\hat P$ is the uniform distribution over the training set, thus $\hat P(\xx) = \frac{1}{m}$ for $i = 1, \dots, m$. It follows that
+      \[
+      \DKL{\hat P}{P_\theta} = \sum_x \hat P(x) \log \frac{\hat P(x)}{P_\theta(x)} = - \log m - \frac{1}{m} \sum_{i=1}^m \log P_\theta(\xx).
+      \]
+      Hence,
+      \[
+      \argmin_\theta \DKL{\hat P}{P_\theta} = \argmax_\theta \sum_{i=1}^m \log P_\theta (\xx),
+      \]
+      as desired.
+    \end{proof}
   \end{enumerate}
 
   \begin{remark}
-    \textbf{Remark:} Consider the relationship between parts (b-c) and multi-variate Bernoulli Naive bayes parameter estimation. In NB model we assumed $P_\theta$ is the following form: $P_\theta(x,y) = p(y) \prod_{i=1}^n p(x_i \mid y)$. By the chain rule for KL divergence, we therefore have  
+    \textbf{Remark:} Consider the relationship between parts (b-c) and multi-variate Bernoulli Naive bayes parameter estimation. In Naive Bayes model we assumed $P_\theta$ is the following form: $P_\theta(x,y) = p(y) \prod_{i=1}^n p(x_i \mid y)$. By the chain rule for KL divergence, we therefore have  
     \[
     \DKL{\hat P}{P_\theta} = \DKL{\hat P(y)}{p(y)} + \sum_{i=1}^n \DKL{\hat P(x_i \mid y)}{p(x_i \mid y)}.
     \]
