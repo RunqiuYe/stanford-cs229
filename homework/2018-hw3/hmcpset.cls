@@ -392,4 +392,12 @@
   \fi
 }
 
+\newcommand {\oo}[1][ ]{
+  \ifx #1 { }
+    {o^{(i)}}
+  \else
+  {o^{(#1)}}
+  \fi
+}
+
 \renewcommand{\epsilon}{\varepsilon}
