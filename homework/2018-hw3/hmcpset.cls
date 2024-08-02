@@ -370,33 +370,41 @@
 
 \newcommand {\yy}[1][ ]{
   \ifx #1 { }
-    {y^{(i)}}
+    y^{(i)}
   \else
-  {y^{(#1)}}
+  y^{(#1)}
   \fi
 }
 
 \newcommand {\xx}[1][ ]{
   \ifx #1 { }
-    {x^{(i)}}
+    x^{(i)}
   \else
-  {x^{(#1)}}
+  x^{(#1)}
   \fi
 }
 
 \newcommand {\thth}[1][ ]{
   \ifx #1 { }
-    {\theta^{(i)}}
+    \theta^{(i)}
   \else
-  {\theta^{(#1)}}
+  \theta^{(#1)}
   \fi
 }
 
 \newcommand {\oo}[1][ ]{
   \ifx #1 { }
-    {o^{(i)}}
+    o^{(i)}
   \else
-  {o^{(#1)}}
+  o^{(#1)}
+  \fi
+}
+
+\newcommand {\hh}[1][ ]{
+  \ifx #1 { }
+    h^{(i)}
+  \else
+  h^{(#1)}
   \fi
 }
 
