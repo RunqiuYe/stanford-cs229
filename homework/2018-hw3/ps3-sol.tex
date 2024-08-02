@@ -41,6 +41,7 @@
 \DeclareMathOperator*{\argmin}{argmin}
 \newcommand{\thetamap}{\theta_{\mathrm{MAP}}}
 \renewcommand{\diag}{\mathrm{diag}}
+\newcommand{\DKL}[2]{D_{\mathrm{KL}}(#1 \parallel #2)}
 
 
 % info for header block in upper right hand corner
@@ -127,8 +128,108 @@
     \end{bmatrix}.
   \]
   This set of weights will capture all the conditions and allow the nerual network to classify this dataset with 100\% accuracy.
-
+  
+  \item Let the activation function for $h_1$, $h_2$, $h_3$, and $o$ is the linear function $f(x) = x$, and the activation function for $o$ be the same step function as before. Is it possible to have a set of weights that allow the neural network to classify this dataset with 100\% accuracy? If so, provide a set of weights by completing \verb|optimal_linear_weights| wihin \verb|src/p01_nn.py| and explain your reasoning for those weights. If not, please explain the reasoning.
 \end{enumerate}
 \end{solution}
 
+\begin{problem}[Problem 2]
+  \textbf{KL divergence and maximum likelihood}
+
+  Kullback-Leibler (KL) divergence is a measure of how much one probability distribution is different from a second one. The \emph{KL divergence} between two discrete-valued distribution $P(X)$, $Q(X)$ over the outcome space $\mathcal{X}$ is defined as follows:
+  \[
+    \DKL{P}{Q} = \sum_{x \in \mathcal{X}} P(x) \log \frac{P(x)}{Q(x)}.
+  \]
+  Assuem $P(x) > 0$ for all $x$. (One other standard thing to do is adopt the convention that $0 \log 0 = 0$.) Sometimes, we also write the KL divergence more explicityly as $\DKL{P}{Q} = \DKL{P(X)}{Q(X)}$.
+
+  \emph{Background on Information Theory}
+
+  The \emph{entropy} of a probability distribution $P(X)$, defined as 
+  \[
+  H(P) = - \sum_{x \in \mathcal{X}} P(x) \log P(x).
+  \]
+  measures how dispersed a probability distribution is. Notably, $\mathcal{N}(\mu, \sigma^2)$ has the highest entropy among all possible continuous distribution that has mean $\mu$ and variance $\sigma^2$. The entropy $H(P)$ is the best possible long term average bits per message (optimal) that can be achieved under probability distribution $P(X)$.
+
+  The \emph{cross entropy} is defined as
+  \[
+  H(P, Q) = - \sum_{x \in \mathcal{X}} P(x) \log Q(x).
+  \]
+  The cross entropy $H(P, Q)$ is the long term average bits per message (suboptimal) that results under a distribution $P(X)$, by reusing an encoding scheme designed to be optimal for a scenario with probability distribution $Q(X)$.
+
+  Notice that 
+  \[
+  \DKL{P}{Q} = \sum_{x \in \mathcal{X}} P(x) \log P(x) - \sum_{x \in \mathcal{X}} P(x) \log Q(x) = H(P, Q) - H(P).
+  \]
+  If $H(P,Q) = 0$, then it necessarily means $P=Q$. In ML, it is common task to find distribution $Q$ that is close to another distribution $P$. To achieve this, we optimize $\DKL{P}{Q}$. Later we will see that Maximum Likelihood Estimation turns out to be equivalent minimizing KL divergence between the training data and the model.
+\end{problem}
+
+\begin{solution}
+  \begin{enumerate}[(a)]
+    \item \textbf{Nonnegativity.} Prove that 
+    \[
+    \DKL{P}{Q} \geq 0 
+    \]
+    and $\DKL{P}{Q} = 0$ if an only if $P = Q$.
+    
+    \textbf{Hint:} Use Jensen's inequality.
+    
+    \begin{proof}
+      By definition,
+      \[
+        \DKL{P}{Q} = \sum_{x \in \mathcal{X}} P(x) \log \frac{P(x)}{Q(x)} = - \sum_{x \in \mathcal{X}} P(x) \log \frac{Q(x)}{P(x)}.
+      \] 
+      Since $-\log x$ is strictly convex, by Jensen's inequality, we have
+      \[
+      \begin{aligned}
+        \DKL{P}{Q} = - \sum_{x \in \mathcal{X}} P(x) \log \frac{Q(x)}{P(x)}
+        \geq -\log \sum_{x \in \mathcal{X}} P(x) \frac{Q(x)}{P(x)} = 0.
+      \end{aligned}
+      \]
+      When the equality holds, 
+      \[
+      \log \frac{Q(x)}{P(x)} = 0
+      \]
+      with probability 1. That is, $Q = P$ with probability 1. This completes the proof.
+    \end{proof}
+    
+    \item \textbf{Chain rule for KL divergence.} The KL divergence between 2 conditional distributions $P(X \mid Y)$, $Q(X \mid Y)$ is defined as follows:
+    \[
+    \DKL{P(X \mid Y)}{Q(X \mid Y)} = \sum_y P(y) \qty(\sum_x P(x \mid y) \log \frac{P(x \mid y)}{Q(x \mid y)}).
+    \]
+    This can be thought of as the expected KL divergence between the corresponding conditional distributions on $x$. That is, between $P(X \mid Y = y)$ and $Q(X \mid Y = y)$, where the expectation is taken over the random y.
+
+    Prove the following chain rule for KL divergence:
+    \[
+      \DKL{P(X, Y)}{Q(X, Y)} = \DKL{P(X)}{Q(X)} + \DKL{P(Y \mid X)}{Q(Y \mid X)}.
+    \]
+    \begin{proof}
+      \[
+      \begin{aligned}
+        \text{LHS} &= \sum_x \sum_y P(x,y) \log \frac{P(x,y)}{Q(x,y)} \\
+        &= \sum_x \sum_y P(y \mid x) P(x) \qty[\log \frac{P(y \mid x)}{Q(y \mid x)} + \log \frac{P(x)}{Q(x)}] \\
+        &= \sum_x \sum_y P(y \mid x) P(x) \log \frac{P(y \mid x)}{Q(y \mid x)} + \sum_x P(x) \log \frac{P(x)}{Q(x)} \sum_y P(y \mid x) \\
+        &= \sum_x \sum_y P(y \mid x) P(x) \log \frac{P(y \mid x)}{Q(y \mid x)} + \sum_x P(x) \log \frac{P(x)}{Q(x)} \\
+        &= \DKL{P(X)}{Q(X)} + \DKL{P(Y \mid X)}{Q(Y \mid X)} \\
+        &= \text{RHS}.
+      \end{aligned}
+      \]
+    \end{proof}
+
+    \item \textbf{KL and maximum likelihood.} Consider density estimation problem and suppose we are given training set $\{\xx\}_{i=1}^m$. Let the empirical distribution be $\hat P(x) = \frac{1}{m} \sum_{i=1}^{m} \ind{\xx = x}$. ($\hat P$ is just the uniform distribution over the training set; i.e., sampling from the empirical distribution is the same as picking a random example from the training set.)
+    
+    Suppose we have a family of distributions $P_\theta$ parametriezd by $\theta$. Prove that finding the maximum likelihood estimates for the parameter $\theta$ is equivalent to finding $P_\theta$ with minimal KL divergence from $\hat P$. That is, prove that
+    \[
+    \argmin_\theta \DKL{\hat P}{P_\theta} = \argmax_\theta \sum_{i=1}^m \log P_\theta (\xx).
+    \]
+
+  \end{enumerate}
+
+  \begin{remark}
+    \textbf{Remark:} Consider the relationship between parts (b-c) and multi-variate Bernoulli Naive bayes parameter estimation. In NB model we assumed $P_\theta$ is the following form: $P_\theta(x,y) = p(y) \prod_{i=1}^n p(x_i \mid y)$. By the chain rule for KL divergence, we therefore have  
+    \[
+    \DKL{\hat P}{P_\theta} = \DKL{\hat P(y)}{p(y)} + \sum_{i=1}^n \DKL{\hat P(x_i \mid y)}{p(x_i \mid y)}.
+    \]
+    This shows that finding the maximum likelihood/minimum KL divergence estimates of the parameters decomposes into $2n+1$ independent optimization problems: One for the class priors $p(y)$, and one for each conditional distributions $p(x_i \mid y)$ for each feature $x_i$ given each of the two possible labels for $y$. Specifically, finding the maximum likelihood estimates for each of these problems individually results in also maximizing the likelihood of the joint distribution. This similarly applies to bayesian networks.
+  \end{remark}
+\end{solution}
 \end{document}
