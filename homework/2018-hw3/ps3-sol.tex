@@ -286,18 +286,59 @@
 
   \item \textbf{Fisher information.} \emph{Fisher information} is defined as the covariance matrix of the score function,
   \[
-  \mathcal{I}(\theta) = \Cov_{y \sim p(y; \theta)} \qty[\nabla_{\theta'} \log p(y; \theta') ]_{\theta' = \theta}.
+  \mathcal{I}(\theta) = \cov_{y \sim p(y; \theta)} \qty[\nabla_{\theta'} \log p(y; \theta') ]_{\theta' = \theta}.
   \]
   Intuitively, the Fisher information represents the amount of information that a random variable $Y$ carries about a parameter $\theta$ of interest. Show that the Fisher information can be equivalently given by
   \[
-  \mathcal{I}(\theta) = \E_{y \sim p(y; \theta)} \qty[\nabla_{\theta'} \log p(y; \theta') \nabla_{\theta'} \log p(y; \theta')^T ]_{\theta' = \theta}.
+  \mathcal{I}(\theta) = \E_{y \sim p(y; \theta)} \qty[ \qty[\nabla_{\theta'} \log p(y; \theta') \nabla_{\theta'} \log p(y; \theta')^T ]_{\theta' = \theta}].
   \]
 
   Note that the fisher information is a funciton of the parameter. The parameter is both a) the parameter value at which the score function is evaluated, and b) the parameter of the distribution with respect to which the expectation and variance is calculated.
 
   \begin{proof}
-    
+    Since $\E_{y \sim p(y; \theta)}[[\nabla_{\theta'} \log p(y; \theta)]_{\theta' = \theta}] = 0$, we have
+    \[
+      \cov_{y \sim p(y; \theta)} \qty[\nabla_{\theta'} \log p(y; \theta') ]_{\theta' = \theta} = \E_{y \sim p(y; \theta)} \qty[ \qty[\nabla_{\theta'} \log p(y; \theta') \nabla_{\theta'} \log p(y; \theta')^T ]_{\theta' = \theta}]
+    \]
+    by the definition of covariance. This completes the proof.
   \end{proof}
+
+  \item \textbf{Fisher information (alternate form).} It turns out that Fisher information can not only be defined as the covariance of the score functino, but in most situations it can also be represented as the expected negative Hessian of the log-likelihood. Show that
+  \[
+  \E_{y \sim p(y; \theta)} \qty[\qty[ - \nabla^2_{\theta'} \log p(y; \theta')]_{\theta' = \theta}] = \mathcal{I}(\theta).
+  \]
+  \begin{proof}
+    From (b), we know that 
+    \[
+    \begin{aligned}
+      \mathcal{I}_{ij}(\theta) &= \E \qty[\pderivative{\theta_i} \log p(y; \theta') \pderivative{\theta_j} \log p(y; \theta')] \\
+      &= \E \qty[\frac{1}{p(y; \theta')^2} \pderivative{\theta_i}p(y; \theta') \pderivative{\theta_j} p(y; \theta')].
+    \end{aligned}
+    \]
+    Also, for the left hand side of the expression we need to prove, we have
+    \[
+    \begin{aligned}
+      \text{LHS} &= \E \qty[-\pderivative{\theta_i}\pderivative{\theta_j} \nabla^2_{\theta'} p(y; \theta')] \\
+      &= \E \qty[\pderivative{\theta_i} \frac{1}{p(y; \theta')} \pderivative{\theta_i} p(y; \theta')] \\
+      &= \E \qty[ -\frac{1}{p(y; \theta')}  \pderivative{\theta_i}p(y; \theta') \pderivative{\theta_j} p(y; \theta') + \frac{1}{p(y; \theta')} \pderivative{\theta_i} \pderivative{\theta_j}p(y; \theta')]
+    \end{aligned}
+    \]
+    For the second term, we have
+    \[
+    \begin{aligned}
+      \E \qty[\frac{1}{p(y; \theta')} \pderivative{\theta_i} \pderivative{\theta_j}p(y; \theta')] &= \int \pderivative{\theta_i} \pderivative{\theta_j} p(y; \theta') dy \\
+      &= \pderivative{\theta_i} \pderivative{\theta_j} \int p(y; \theta') dy \\
+      &= 0.
+    \end{aligned}
+    \]
+    Hence, 
+    \[
+      \E_{y \sim p(y; \theta)} \qty[\qty[ - \nabla^2_{\theta'} \log p(y; \theta')]_{\theta' = \theta}] = \E \qty[ -\frac{1}{p(y; \theta')}  \pderivative{\theta_i}p(y; \theta') \pderivative{\theta_j} p(y; \theta')] = \mathcal{I}(\theta).
+    \]
+    This completes the proof.
+  \end{proof}
+
+  \item \textbf{Approximatin $D_{\mathrm{KL}}$ with Fisher information.} 
 \end{enumerate}
 \end{solution}
 \end{document}

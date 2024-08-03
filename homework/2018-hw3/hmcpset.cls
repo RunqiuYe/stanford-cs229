@@ -234,7 +234,7 @@
 \DeclareMathOperator{\bias}{bias}
 \DeclareMathOperator{\binomial}{binomial}
 \DeclareMathOperator{\corr}{corr}
-\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\cov}{cov}
 \DeclareMathOperator{\gammaD}{gamma}
 \DeclareMathOperator{\mse}{mse}
 \DeclareMathOperator{\multinomial}{multinomial}
