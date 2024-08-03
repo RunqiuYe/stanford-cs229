@@ -388,10 +388,41 @@
   \]
   This gives
   \[
-  d = \sqrt{\frac{2c}{\nabla_{\theta} p(y;\theta) ^T (I^{-1})^T \nabla_{\theta} p(y;\theta)}} p(y; \theta) I^{-1} \nabla_{\theta} p(y;\theta).
+  d = \sqrt{\frac{2c}{\nabla_{\theta} p(y;\theta) ^T (\mathcal{I}^{-1})^T \nabla_{\theta} p(y;\theta)}} \mathcal{I}^{-1} \nabla_{\theta} p(y;\theta).
   \]
   
-  \item \textbf{Relation to Newton's Method.} Show that the direction of update of Newton's method, and the direction of natural gradient, are exactly the same for GLMs. Refer to results in problem set 1 question 4. For natural gradient, it is sufficient to use $\tilde{d}$, the unscaled natural gradient
+  \item \textbf{Relation to Newton's Method.} Show that the direction of update of Newton's method, and the direction of natural gradient, are exactly the same for GLMs. Refer to results in problem set 1 question 4. For natural gradient, it is sufficient to use $\tilde{d}$, the unscaled natural gradient.
+  
+  \begin{proof}
+    Recall that for GLMs, we have
+    \[
+    p(y; \eta) = b(y) \exp(\eta^T T(y) - a(\eta)).
+    \]
+    It follows that
+    \[
+    \begin{aligned}
+      \log p(y; \eta) &= \log b(y) + \eta^T T(y) - a(\eta), \\
+      \nabla_\eta \log p(y; \eta) &= T(y) - \nabla_\eta a(\eta), \\
+      \nabla_\eta^2 \log p(y; \eta) &= - \nabla_\eta^2 a(\eta).
+    \end{aligned}
+    \]
+    When using Newton's method to update, we have
+    \[
+    \begin{aligned}
+      \eta &:= \eta - \qty(\nabla_\eta^2 \log p(y; \eta))^{-1} \nabla_\eta \log p(y; \eta) \\
+      &= \eta + \frac{1}{p(y; \eta)} \qty(\nabla_\eta^2 a(\eta))^{-1}\nabla_\eta p(y; \eta).
+    \end{aligned}
+    \]
+    Compare this the natural gradient
+    \[
+    d = \frac{1}{\lambda p(y;\eta)} \mathcal{I}^{-1} \nabla_\eta p(y; \eta).
+    \]
+    Recall that Fisher information matrix is the negative expected value of Hessian, and notice that the Hessian here is independent of $y$. Hence,
+    \[
+    \mathcal{I} = \E_{y \sim p(y; \theta)} \qty[-\nabla^2_\eta \log p(y; \eta)] = \E_{y \sim p(y; \theta)} \qty[\nabla_\eta^2 a(\eta)] = \nabla_\eta^2 a(\eta).
+    \]
+    From this, we can clearly see that the direction of update of Newton's method and the direction of natural gradient are exactly the same for GLMs. This completes the proof.
+  \end{proof}
 \end{enumerate}
 \end{solution}
 \end{document}
