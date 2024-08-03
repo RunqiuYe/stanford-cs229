@@ -259,9 +259,9 @@
   \]
   A nice property of KL divergence is that it is invariant to parametrization. This means, KL divergence evaluates to the same value no matter how we parametrize the distribution $P$ and $Q$. For example, if $P$ and $Q$ are in exponential family, the KL divergence between them is the same whether we are using natural parameters, natural parameters, or canonical parameters, or any arbitrary parametrization.
 
-  Now consider the problem of fitting model parameters using gradient descent. While KL divergence is invariant to parametrization, the gradient w.r.t the model parameters gradient is \emph{invariant to parametrization}. We need to use \emph{naturla gradient}. This will make the optimization process invariant to the parametrization.
+  Now consider the problem of fitting model parameters using gradient descent. While KL divergence is invariant to parametrization, the gradient w.r.t the model parameters gradient is \emph{invariant to parametrization}. We need to use \emph{natural gradient}. This will make the optimization process invariant to the parametrization.
 
-  We will construct and derive the naturla gradient update rule. Along the way, we will introduce \emph{score function} and \emph{Fisher Information}. Finally, we will see how this new natural gradient based optimization is actually equivalent to Newton's method for Generalized Linear Models.
+  We will construct and derive the natural gradient update rule. Along the way, we will introduce \emph{score function} and \emph{Fisher Information}. Finally, we will see how this new natural gradient based optimization is actually equivalent to Newton's method for Generalized Linear Models.
 
   Let the distribution of a random variable $Y$ parametrized by $\theta \in \R^n$ be $p(y; \theta)$.
 \end{problem}
@@ -337,8 +337,61 @@
     \]
     This completes the proof.
   \end{proof}
+  \begin{remark}
+    \textbf{Remark.} This shows that the expected curvature of the log-likelihood function is also equal to the Fisher information matrix. If the curvature of the log-likelihood is steep, this generally means you need fewer number of data samples to estimate that parameter well, and vice versa. The fisher information matrix associated with a statistical model parameterized by $\theta$ is extremely important in determining how a model behaves as a function of the number of traning set examples.
+  \end{remark}
 
-  \item \textbf{Approximatin $D_{\mathrm{KL}}$ with Fisher information.} 
+  \item \textbf{Approximatin $D_{\mathrm{KL}}$ with Fisher information.} We are interested in the set of all distributions that are at a small fixed $D_{\mathrm{KL}}$ distance away from the current distribution. To calculate KL divergence between $p(y; \theta)$ and $p(y; \theta + d)$, we approximate with Fisher information at $\theta$. Show that
+  \[
+  \DKL{p_\theta}{p_{\theta + d}} \approx \frac{1}{2} d^T \mathcal{I}(\theta) d.
+  \]
+  \begin{proof}
+    Towards Taylor expansion, we have
+    \[
+    \begin{aligned}
+      & \DKL{p_\theta}{p_\theta} = 0 \\
+      & \nabla_{\theta'} \DKL{p_\theta}{p_{\theta'}} = \nabla_{\theta'} \E[\log p_\theta] - \E[\log p_{\theta'}] = 0 \\ 
+      &\nabla_{\theta'}^2 \DKL{p_\theta}{p_{\theta'}} = \nabla_{\theta'}^2 \E[\log p_\theta] - \E[\log p_{\theta'}] = \mathcal{I}(\theta).
+    \end{aligned}
+    \]
+    Hence,
+    \[
+    \DKL{p_\theta}{p_{\tilde{\theta}}} \approx \frac{1}{2} d^T \mathcal{I}(\theta) d.
+    \]
+  \end{proof}
+
+  \item \textbf{Natural gradient.} Want to maximize the log-likelihood by moving only by a fixed $D_{\mathrm{KL}}$ distance from the current position. Now set up the constrained optimization problem that will yield the natural gradient update $d$. Let the log-likelihood objective be $\ell(\theta) = \log p(y; \theta)$. Let the $D_{\mathrm{KL}}$ distance we want to move by be some small positive constant $c$. The natural gradient update $d^*$ is
+  \[
+  d^* = \argmax_d \ell(\theta + d) \text{ subject to } \DKL{p_\theta}{p_{\theta+d}} = c.
+  \]
+  In order to solve this, use Taylor expansion and Lagrangian multipliers.
+
+  For the optimization problem, consider the Lagrangian
+  \[
+  \begin{aligned}
+    L(d, \lambda) &= \ell(\theta + d) - \lambda \qty(\DKL{p_\theta}{p_{\theta+d}} - c) \\
+    &= \log p(y; \theta + d) - \lambda \qty(\DKL{p_\theta}{p_{\theta+d}} - c) \\
+    &= \log p(y; \theta) + d^T \frac{\nabla_{\theta} p(y;\theta)}{p(y; \theta)} - \lambda \qty(\frac{1}{2} d^T \mathcal{I}(\theta) d - c).
+  \end{aligned}
+  \]
+  Set 
+  \[
+  \begin{cases}
+    \nabla_d L(d, \lambda) = 0, \\
+    \nabla_\lambda L(d, \lambda) = 0. 
+  \end{cases}
+  \implies
+  \begin{cases}
+    \frac{\nabla_{\theta} p(y;\theta)}{p(y; \theta)} = \lambda \mathcal{I}(\theta) d, \\
+    \frac{1}{2} d^T \mathcal{I}(\theta) d = c.
+  \end{cases}
+  \]
+  This gives
+  \[
+  d = \sqrt{\frac{2c}{\nabla_{\theta} p(y;\theta) ^T (I^{-1})^T \nabla_{\theta} p(y;\theta)}} p(y; \theta) I^{-1} \nabla_{\theta} p(y;\theta).
+  \]
+  
+  \item \textbf{Relation to Newton's Method.} Show that the direction of update of Newton's method, and the direction of natural gradient, are exactly the same for GLMs. Refer to results in problem set 1 question 4. For natural gradient, it is sufficient to use $\tilde{d}$, the unscaled natural gradient
 \end{enumerate}
 \end{solution}
 \end{document}
