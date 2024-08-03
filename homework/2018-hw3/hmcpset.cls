@@ -384,6 +384,14 @@
   \fi
 }
 
+\newcommand {\txx}[1][ ]{
+  \ifx #1 { }
+    \tilde{x}^{(i)}
+  \else
+  \tilde{x}^{(#1)}
+  \fi
+}
+
 \newcommand {\thth}[1][ ]{
   \ifx #1 { }
     \theta^{(i)}
@@ -397,6 +405,22 @@
     o^{(i)}
   \else
   o^{(#1)}
+  \fi
+}
+
+\newcommand {\zz}[1][ ]{
+  \ifx #1 { }
+    z^{(i)}
+  \else
+  z^{(#1)}
+  \fi
+}
+
+\newcommand {\tzz}[1][ ]{
+  \ifx #1 { }
+    \tilde{z}^{(i)}
+  \else
+  \tilde{z}^{(#1)}
   \fi
 }
 
