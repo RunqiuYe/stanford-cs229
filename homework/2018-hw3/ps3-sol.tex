@@ -42,7 +42,9 @@
 \newcommand{\thetamap}{\theta_{\mathrm{MAP}}}
 \renewcommand{\diag}{\mathrm{diag}}
 \newcommand{\DKL}[2]{D_{\mathrm{KL}}(#1 \parallel #2)}
-
+\newcommand{\lunsup}{\ell_{\mathrm{unsup}}}
+\newcommand{\lsup}{\ell_{\mathrm{sup}}}
+\newcommand{\lsemi}{\ell_{\mathrm{semi-sup}}}
 
 % info for header block in upper right hand corner
 \name{Runqiu Ye}
@@ -425,4 +427,29 @@
   \end{proof}
 \end{enumerate}
 \end{solution}
+
+\begin{problem}[Problem 4]
+  \textbf{Semi-supervised EM}
+
+  Expectation maximization (EM) is a classical algorithm for unsupervised learning. In this problem we explore one ways in which EM can be adapted to semi-supervised setting, where we have some labelled examples along with unlabelled examples.
+
+  In unsupervised learning, we have $\{\xx\}_{i=1}^m$ unlabelled examples and we wish to learn $p(x, z; \theta)$, but $\zz$ are not observed. EM allow us to maximize the intractable $p(x; \theta)$ indirectly by iteratively performing the E-step and M-step, each time maximizing a tractable lower bound. The objective
+  \[
+  \begin{aligned}
+    \ell_{\mathrm{unsup}}(\theta) = \sum_{i=1}^m \log p(\xx; \theta) = \sum_{i=1}^m \log \sum_{\zz} p(\xx, \zz; \theta).
+  \end{aligned}
+  \]
+  Now, extend EM to semi-supervised setting. Suppose \emph{additional} $\tilde{m}$ labelled examples $\{(\txx, \tzz)\}_{i=1}^{\tilde{m}}$ where $x$ and $z$ are both observed. Want to simultaneously maximize the marginal likelihood of the parameters using the unlabelled examples, and full likelihood of the parameters using the labelled examples, by optimizing their weighted sum with some hyperparameter $\alpha$. More concretely, the semi-supervised objective $\lsemi$ can be written as 
+  \[
+  \begin{aligned}
+    \lsup(\theta) &= \sum_{i=1}^{\tilde{m}} \log p(\txx, \tzz; \theta), \\
+    \lsemi(\theta) &= \lunsup + \alpha \lsup.
+  \end{aligned}
+  \]
+\end{problem}
+
+\begin{solution}
+  First, we derive the EM steps for semi-supervised learning.  
+\end{solution}
+
 \end{document}
