@@ -240,7 +240,7 @@
 \DeclareMathOperator{\multinomial}{multinomial}
 \DeclareMathOperator{\Poisson}{Poisson}
 \DeclareMathOperator{\Var}{Var}
-\newcommand{\E}{\mathbb{E}}
+\DeclareMathOperator*{\E}{\mathbb{E}}
 \newcommand{\Prob}{\mathbb{P}}
 
 % Algebra

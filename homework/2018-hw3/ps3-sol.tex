@@ -129,11 +129,27 @@
       -0.5 \\ 1 \\ 1 \\ 1
     \end{bmatrix}.
   \]
-  Under this set of weights, if all inequalities are satisifed, then $h_1 = h_2 = h_3 = 0$ and $w^{[2]}h = -0.5$. Otherwise, $h_1 + h_2 + h_3 \geq 1$ and $w^{[2]}h \geq -0.5$. Hence, This set of weights will capture all the conditions and allow the nerual network to classify this dataset with 100\% accuracy. 
+  Under this set of weights, if all inequalities are satisifed, then $h_1 = h_2 = h_3 = 0$ and $w^{[2]}h = -0.5$. Otherwise, $h_1 + h_2 + h_3 \geq 1$ and $w^{[2]}h \geq -0.5$. Hence, this set of weights will capture all the conditions and allow the nerual network to classify this dataset with 100\% accuracy. 
   
-  \item Let the activation function for $h_1$, $h_2$, $h_3$, and $o$ is the linear function $f(x) = x$, and the activation function for $o$ be the same step function as before. Is it possible to have a set of weights that allow the neural network to classify this dataset with 100\% accuracy? If so, provide a set of weights by completing \verb|optimal_linear_weights| wihin \verb|src/p01_nn.py| and explain your reasoning for those weights. If not, please explain the reasoning.
+  \item Let the activation function for $h_1$, $h_2$, $h_3$, be the linear function $f(x) = x$, and the activation function for $o$ be the same step function as before. Is it possible to have a set of weights that allow the neural network to classify this dataset with 100\% accuracy? If so, provide a set of weights by completing \verb|optimal_linear_weights| wihin \verb|src/p01_nn.py| and explain your reasoning for those weights. If not, please explain the reasoning.
   
-
+  There does not exist a set of weights that allow the neural network to classify this dataset with 100\% accuracy. As the activation function for $h_1$, $h_2$, $h_3$ is the linear function, we have
+  \[
+    \begin{aligned}
+      h_1 &= f(w_{1}^{[1]} x) = w_{0,1}^{[1]} + w_{1,1}^{[1]} x_1 + w_{2,1}^{[1]} x_2 \\
+      h_2 &= f(w_{2}^{[1]} x) = w_{0,2}^{[1]} + w_{1,2}^{[1]} x_1 + w_{2,3}^{[1]} x_2 \\ 
+      h_3 &= f(w_{3}^{[1]} x) = w_{0,3}^{[1]} + w_{1,3}^{[1]} x_1 + w_{2,3}^{[1]} x_2 \\
+      % o &= f(w^{[2]} h) = f(w_{0}^{[2]} + w_{1}^{[2]} h_1 + w_{2}^{[2]} h_2 + w_{3}^{[2]} h_3).
+    \end{aligned}
+  \]
+  Now, 
+  \[
+    \begin{aligned}
+      w^{[2]} h &= w_{0}^{[2]} + w_{1}^{[2]} h_1 + w_{2}^{[2]} h_2 + w_{3}^{[2]} h_3 \\
+      &= (w_{0,1}^{[1]} + w_{0,2}^{[1]} + w_{0,3}^{[1]}) + (w_{1,1}^{[1]} + w_{1,2}^{[1]} + w_{1,3}^{[1]}) x_1 + (w_{2,1}^{[1]} + w_{2,2}^{[1]} + w_{2,3}^{[1]}) x_2.
+    \end{aligned}
+  \]
+  That is, the neural network degenerates into a linear model. However, the dataset is clearly not linearly separable. Thus, there does not exist a set of weights that allow the neural network to classify this dataset with 100\% accuracy if the activation function for $h_1$, $h_2$, $h_3$ are the linear function $f(x) = x$.
   
 \end{enumerate}
 \end{solution}
