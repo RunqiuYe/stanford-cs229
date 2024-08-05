@@ -531,55 +531,58 @@
       &= \frac{\frac{1}{\abs{\Sigma_j}^{1/2}} \exp(-\frac{1}{2} (\xx - \mu_j)^T \Sigma_j^{-1} (\xx - \mu_j)) \phi_j}{\sum_l \frac{1}{\abs{\Sigma_l}^{1/2}} \exp(-\frac{1}{2} (\xx - \mu_l)^T \Sigma_l^{-1} (\xx - \mu_l)) \phi_l}.
     \end{aligned}
     \]
-  \end{enumerate}
 
-  \item \textbf{Semi-supervised M-step.} The model parameters $\mu$, $\Sigma$, $\phi$ need to be re-estimated in the M-step. For this specific model, we have the optimization problem
-  \[
-  \argmax_{\mu, \Sigma, \phi} \lsemi = \argmax_{\mu, \Sigma, \phi} \lunsup + \alpha \lsup, 
-  \]
-  where
-  \[
-  \begin{aligned}
-    \lunsup &= \sum_{i=1}^m \sum_{\zz} \ww_j \log \frac{\exp(-\frac{1}{2} (\xx - \mu_j)^T \Sigma_j^{-1} (\xx - \mu_j)) \phi_j}{(2\pi)^{d/2} \abs{\Sigma_j}^{1/2} \ww_j}, \\
-    \lsup &= \sum_{i=1}^{\tilde{m}} \log \frac{1}{(2\pi)^{d/2} \abs{\Sigma_{\tzz}}^{1/2}} \exp(-\frac{1}{2} (\txx - \mu_{\tzz})^T \Sigma_{\tzz}^{-1} (\txx - \mu_{tzz})) \phi_{\tzz}.
-  \end{aligned}
-  \]
-  To get a closed form expression, we use Lagrangian multipliers and construct Lagrangian
-  \[
-  L(\mu, \Sigma, \phi, \lambda) = \lunsup + \alpha \lsup + \lambda (\Sigma_j \phi_j - 1).
-  \]
-  For matrix derivatvies, we have
-  \[
-  \begin{aligned}
-    &\nabla_A \abs{A} = \frac{1}{\abs{A}} A^{-T}, \\
-    &\nabla_A x^T A^{-1} x = - A^{-1} x x^T A^{-1}.
-  \end{aligned}
-  \]
-  Notice that the covariance matrices $\Sigma_l$ are symmetric, so $\Sigma_l^{-T} = \Sigma^{-1}$. It follows that
-  \[
-  \begin{aligned}
-    \nabla_{\mu_l} \lsemi &= \sum_{i=1}^{m} \ww_l \Sigma_l^{-1} (\xx - \mu_l) + \alpha \sum_{i=1}^{\tilde{m}} \ind{\tzz = l} \ww_l \Sigma_l^{-1} (\txx - \mu_l), \\
-    \nabla_{\phi_l} \lsemi &=  \sum_{i=1}^m \frac{\ww_l}{\phi_l} + \alpha \sum_{i=1}^{\tilde{m}} \ind{\tzz = l} \frac{1}{\phi_l} + \lambda, \\
-    \nabla_{\Sigma_l} \lsemi &= \sum_{i=1}^m -\frac{\ww_l}{2}\Sigma_l^{-1} + \frac{\ww_l}{2} \Sigma_l^{-1} (\xx - \mu_l)(\xx - \mu_l)^T \Sigma_l^{-1} \\
-    & \qquad + \alpha \sum_{i=1}^{\tilde{m}} - \frac{\ind{\tzz = l} }{2}\Sigma_l^{-1} + \frac{\ind{\tzz = l } }{2} \Sigma_l^{-1} (\xx - \mu_l)(\xx - \mu_l)^T \Sigma_l^{-1}.
-  \end{aligned}
-  \]
-  Setting the gradients to zero, we get
-  \[
-  \begin{aligned}
-    \mu_l &= \frac{\sum_{i=1}^m \ww_l \xx + \alpha \sum_{i=1}^{\tilde{m}} \ind{\tzz = l} \ww_l \txx}{\sum_{i=1}^m \ww_l + \alpha \sum_{i=1}^{\tilde{m}} \ind{\tzz = l} \ww_l} \\
-    \phi_l &= - \frac{1}{\lambda} \qty(\summ \ww_l + \alpha \sumtm \ind{\tzz = l}) \\
-    \Sigma_l &= \frac{\summ \ww_l (\xx - \mu_l)(\xx - \mu_l)^T + \alpha \sumtm \ind{\tzz = l} (\xx - \mu_l)(\xx - \mu_l)^T}{\summ \ww_l + \alpha \sumtm \ind{\tzz = l}}.
-  \end{aligned}
-  \]
-  As $\sum_j \phi_j = 1$, we have,
-  \[
-  \lambda = - \summ \sum_j \ww_j - \alpha \sumtm \sum_j\ind{\tzz = j} = - m - \alpha \tilde{m}.
-  \]
-  Hence,
-  \[
-  \phi_l = - \frac{\summ \ww_l + \alpha \sumtm \ind{\tzz = l}}{m + \alpha \tilde{m}}.
-  \]
+    \item \textbf{Semi-supervised M-step.} The model parameters $\mu$, $\Sigma$, $\phi$ need to be re-estimated in the M-step. For this specific model, we have the optimization problem
+    \[
+    \argmax_{\mu, \Sigma, \phi} \lsemi = \argmax_{\mu, \Sigma, \phi} \lunsup + \alpha \lsup, 
+    \]
+    where
+    \[
+    \begin{aligned}
+      \lunsup &= \sum_{i=1}^m \sum_{\zz} \ww_j \log \frac{\exp(-\frac{1}{2} (\xx - \mu_j)^T \Sigma_j^{-1} (\xx - \mu_j)) \phi_j}{(2\pi)^{d/2} \abs{\Sigma_j}^{1/2} \ww_j}, \\
+      \lsup &= \sum_{i=1}^{\tilde{m}} \log \frac{1}{(2\pi)^{d/2} \abs{\Sigma_{\tzz}}^{1/2}} \exp(-\frac{1}{2} (\txx - \mu_{\tzz})^T \Sigma_{\tzz}^{-1} (\txx - \mu_{tzz})) \phi_{\tzz}.
+    \end{aligned}
+    \]
+    To get a closed form expression, we use Lagrangian multipliers and construct Lagrangian
+    \[
+    L(\mu, \Sigma, \phi, \lambda) = \lunsup + \alpha \lsup + \lambda (\Sigma_j \phi_j - 1).
+    \]
+    For matrix derivatvies, we have
+    \[
+    \begin{aligned}
+      &\nabla_A \abs{A} = \frac{1}{\abs{A}} A^{-T}, \\
+      &\nabla_A x^T A^{-1} x = - A^{-1} x x^T A^{-1}.
+    \end{aligned}
+    \]
+    Notice that the covariance matrices $\Sigma_l$ are symmetric, so $\Sigma_l^{-T} = \Sigma^{-1}$. It follows that
+    \[
+    \begin{aligned}
+      \nabla_{\mu_l} \lsemi &= \sum_{i=1}^{m} \ww_l \Sigma_l^{-1} (\xx - \mu_l) + \alpha \sum_{i=1}^{\tilde{m}} \ind{\tzz = l} \ww_l \Sigma_l^{-1} (\txx - \mu_l), \\
+      \nabla_{\phi_l} \lsemi &=  \sum_{i=1}^m \frac{\ww_l}{\phi_l} + \alpha \sum_{i=1}^{\tilde{m}} \ind{\tzz = l} \frac{1}{\phi_l} + \lambda, \\
+      \nabla_{\Sigma_l} \lsemi &= \sum_{i=1}^m -\frac{\ww_l}{2}\Sigma_l^{-1} + \frac{\ww_l}{2} \Sigma_l^{-1} (\xx - \mu_l)(\xx - \mu_l)^T \Sigma_l^{-1} \\
+      & \qquad + \alpha \sum_{i=1}^{\tilde{m}} - \frac{\ind{\tzz = l} }{2}\Sigma_l^{-1} + \frac{\ind{\tzz = l } }{2} \Sigma_l^{-1} (\xx - \mu_l)(\xx - \mu_l)^T \Sigma_l^{-1}.
+    \end{aligned}
+    \]
+    Setting the gradients to zero, we get
+    \[
+    \begin{aligned}
+      \mu_l &= \frac{\sum_{i=1}^m \ww_l \xx + \alpha \sum_{i=1}^{\tilde{m}} \ind{\tzz = l} \ww_l \txx}{\sum_{i=1}^m \ww_l + \alpha \sum_{i=1}^{\tilde{m}} \ind{\tzz = l} \ww_l}, \\
+      \phi_l &= - \frac{1}{\lambda} \qty(\summ \ww_l + \alpha \sumtm \ind{\tzz = l}), \\
+      \Sigma_l &= \frac{\summ \ww_l (\xx - \mu_l)(\xx - \mu_l)^T + \alpha \sumtm \ind{\tzz = l} (\xx - \mu_l)(\xx - \mu_l)^T}{\summ \ww_l + \alpha \sumtm \ind{\tzz = l}}.
+    \end{aligned}
+    \]
+    As $\sum_j \phi_j = 1$, we have,
+    \[
+    \lambda = - \summ \sum_j \ww_j - \alpha \sumtm \sum_j\ind{\tzz = j} = - m - \alpha \tilde{m}.
+    \]
+    Hence,
+    \[
+    \phi_l = - \frac{\summ \ww_l + \alpha \sumtm \ind{\tzz = l}}{m + \alpha \tilde{m}}.
+    \]
+    These give the closed form update rules for the model parameters based on the semi-supervised objective.
+
+    \item \textbf{Coding problem. Classical (Unsupervised) EM Implementation.}
+  \end{enumerate}
 \end{solution}
 
 \end{document}
