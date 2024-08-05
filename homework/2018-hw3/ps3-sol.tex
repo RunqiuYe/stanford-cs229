@@ -571,17 +571,25 @@
       \Sigma_l &= \frac{\summ \ww_l (\xx - \mu_l)(\xx - \mu_l)^T + \alpha \sumtm \ind{\tzz = l} (\xx - \mu_l)(\xx - \mu_l)^T}{\summ \ww_l + \alpha \sumtm \ind{\tzz = l}}.
     \end{aligned}
     \]
-    As $\sum_j \phi_j = 1$, we have,
+    As $\sum_j \phi_j = 1$, we have
     \[
     \lambda = - \summ \sum_j \ww_j - \alpha \sumtm \sum_j\ind{\tzz = j} = - m - \alpha \tilde{m}.
     \]
     Hence,
     \[
-    \phi_l = - \frac{\summ \ww_l + \alpha \sumtm \ind{\tzz = l}}{m + \alpha \tilde{m}}.
+    \phi_l = \frac{\summ \ww_l + \alpha \sumtm \ind{\tzz = l}}{m + \alpha \tilde{m}}.
     \]
     These give the closed form update rules for the model parameters based on the semi-supervised objective.
 
-    \item \textbf{Coding problem. Classical (Unsupervised) EM Implementation.}
+    \item \textbf{Coding problem. Classical (Unsupervised) EM Implementation.} After updating the model parameters, we can calculate the log-likelihood
+    \[
+    \begin{aligned}
+      \lsemi &= \summ \log \sum_{\zz} p(\xx, \zz) + \alpha \sumtm \log p(\txx, \tzz) \\
+      &= \summ \log \sum_{\zz} p(\xx \mid \zz) p(\zz) + \alpha \sumtm \log p(\txx, \tzz) \\
+      &= \summ \log \sum_{\zz} \frac{\phi_{\zz}}{(2\pi)^{d/2} \abs{\Sigma_{\zz}}^{1/2}} \exp(-\frac{1}{2}(\xx - \mu_{\zz})^T \Sigma_{\zz} (\xx - \mu_{\zz})) \\
+      & \qquad + \sumtm \log \frac{1}{(2\pi)^{d/2} \abs{\Sigma_{\zz}}^{1/2}} \exp(-\frac{1}{2}(\xx - \mu_{\zz})^T \Sigma_{\zz} (\xx - \mu_{\zz}))
+    \end{aligned}
+    \]
   \end{enumerate}
 \end{solution}
 
