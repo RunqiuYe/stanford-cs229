@@ -37,8 +37,8 @@ def main(is_semi_supervised, trial_num):
     for j in range(K):
         group = groups[j]
         array = x[group]
-        mu[j] = np.mean(array)
-        sigma[j] = np.dot((array - mu[j]).T, array - mu[j])
+        mu[j] = np.mean(array, axis=0)
+        sigma[j] = np.dot((array - mu[j]).T, array - mu[j]) / array.shape[0]
 
     # (2) Initialize phi to place equal probability on each Gaussian
     # phi should be a numpy array of shape (K,)
@@ -93,13 +93,14 @@ def run_em(x, w, phi, mu, sigma):
     ll = prev_ll = None
     m, n = x.shape
     _, k = w.shape
+
     while it < max_iter and (prev_ll is None or np.abs(ll - prev_ll) >= eps):
         # *** START CODE HERE
         # (1) E-step: Update your estimates in w
-        w = np.zeros((m, k))
+        
         for j in range(k):
             inv = np.linalg.inv(sigma[j])
-            p_cond = np.exp(-0.5 * np.dot(x - mu[j], np.dot(inv, (x - mu[j]).T)).diagonal()) / np.linalg.det(sigma[j]) ** 0.5
+            p_cond = np.exp(-0.5 * np.dot((x - mu[j]), np.dot(inv, (x-mu[j]).T)).diagonal()) / (np.linalg.det(sigma[j]) ** 0.5)
             w[:, j] = p_cond
         w = phi * w
         px = np.sum(w, axis=1)
@@ -110,8 +111,9 @@ def run_em(x, w, phi, mu, sigma):
         phi = np.sum(w, axis=0) / m
         for j in range(k):
             col = np.reshape(w[:, j], (-1, 1))
-            mu[j] = np.sum(w[:, j] * x, axis=0) / np.sum(w[:, j])
-            sigma[j] = np.dot(x, w[:, j] * x) / np.sum(w[:, j])
+            mu[j] = np.dot(x.T, col) / np.sum(col)
+            mu[j] = np.reshape(mu[j], (n,))
+            sigma[j] = np.dot(x.T, col * x) / np.sum(col)
         
         # (3) Compute the log-likelihood of the data to check for convergence.
         # By log-likelihood, we mean `ll = sum_x[log(sum_z[p(x|z) * p(z)])]`.
@@ -119,16 +121,18 @@ def run_em(x, w, phi, mu, sigma):
         pxz = np.zeros((m, k))
         for j in range(k):
             inv = np.linalg.inv(sigma[j])
-            p_cond = np.exp(-0.5 * np.dot(x - mu[j], np.dot(inv, (x - mu[j]).T)).diagonal()) / np.linalg.det(sigma[j]) ** 0.5
+            p_cond = np.exp(-0.5 * np.dot((x - mu[j]), np.dot(inv, (x-mu[j]).T)).diagonal()) / (np.linalg.det(sigma[j]) ** 0.5)
             p_cond = p_cond / (2 * np.pi) ** (n / 2)
             pxz[:, j] = p_cond
         pxz = phi * pxz
         px = np.sum(pxz, axis = 1)
         prev_ll = ll
         ll = np.sum(np.log(px))
+        it += 1
 
         # Hint: For debugging, recall part (a). We showed that ll should be monotonically increasing.
-        assert(ll >= prev_ll)
+        print(f"iter: {it}, ll: {ll}, prev_ll: {prev_ll}")
+        assert(prev_ll == None or ll >= prev_ll)
         # *** END CODE HERE ***
 
     return w
