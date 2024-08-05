@@ -569,8 +569,16 @@
   \begin{aligned}
     \mu_l &= \frac{\sum_{i=1}^m \ww_l \xx + \alpha \sum_{i=1}^{\tilde{m}} \ind{\tzz = l} \ww_l \txx}{\sum_{i=1}^m \ww_l + \alpha \sum_{i=1}^{\tilde{m}} \ind{\tzz = l} \ww_l} \\
     \phi_l &= - \frac{1}{\lambda} \qty(\summ \ww_l + \alpha \sumtm \ind{\tzz = l}) \\
-    \Sigma_l &= 
+    \Sigma_l &= \frac{\summ \ww_l (\xx - \mu_l)(\xx - \mu_l)^T + \alpha \sumtm \ind{\tzz = l} (\xx - \mu_l)(\xx - \mu_l)^T}{\summ \ww_l + \alpha \sumtm \ind{\tzz = l}}.
   \end{aligned}
+  \]
+  As $\sum_j \phi_j = 1$, we have,
+  \[
+  \lambda = - \summ \sum_j \ww_j - \alpha \sumtm \sum_j\ind{\tzz = j} = - m - \alpha \tilde{m}.
+  \]
+  Hence,
+  \[
+  \phi_l = - \frac{\summ \ww_l + \alpha \sumtm \ind{\tzz = l}}{m + \alpha \tilde{m}}.
   \]
 \end{solution}
 
