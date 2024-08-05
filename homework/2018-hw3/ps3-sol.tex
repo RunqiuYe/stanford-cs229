@@ -45,6 +45,10 @@
 \newcommand{\lunsup}{\ell_{\mathrm{unsup}}}
 \newcommand{\lsup}{\ell_{\mathrm{sup}}}
 \newcommand{\lsemi}{\ell_{\mathrm{semi-sup}}}
+\newcommand{\tht}{\theta^{(t)}}
+\newcommand{\thtt}{\theta^{(t+1)}}
+\newcommand{\summ}{\sum_{i=1}^m}
+\newcommand{\sumtm}{\sum_{i=1}^{\tilde m}}
 
 % info for header block in upper right hand corner
 \name{Runqiu Ye}
@@ -465,7 +469,109 @@
 \end{problem}
 
 \begin{solution}
-  First, we derive the EM steps for semi-supervised learning.  
+  First, we derive the EM steps for semi-supervised learning.
+  \begin{itemize}
+    \item \textbf{E-step (semi-supervised)}
+    
+    For $i = 1, 2, \dots, m$, set
+    \[
+    Q_i^{(t)} (\zz) = p(\zz \mid \xx; \theta^{(t)}).
+    \]
+
+    \item \textbf{M-step (semi-supervised)}
+    \[
+    \theta^{(t+1)} = \argmax_{\theta} \qty[ \sum_{i=1}^m \qty(\sum_{\zz} Q_i(\zz) \log \frac{p(\xx, \zz; \theta)}{Q_i(\zz)} )+ \alpha \qty(\sum_{i=1}^{\tilde{m}} \log p(\txx, \tzz; \theta))].
+    \]
+  \end{itemize}
+
+  \begin{enumerate}[(a)]
+    \item \textbf{Convergence.} First show that this algorithm converges. It suffices to show that the objective function $\lsemi(\theta)$ with each iteration of E-step and M-step. That is, we need to show that $\lsemi(\theta^{(t+1)}) \geq \lsemi(\theta^{(t)})$  
+    
+    \begin{proof}
+      For $\tht$ and the $Q_i^{(t)}$ chosen, it is guaranteed that
+      \[
+      \begin{aligned}
+        \lsemi(\tht) &= \sum_{i=1}^m \log \sum_{\zz} p(\xx, \zz;\tht) + \alpha \sum_{i=1}^{\tilde{m}} \log p(\txx, \tzz; \tht) \\
+        &= \sum_{i=1}^m \sum_{\zz} Q_i^{(t)}(\zz) \log \frac{p(\xx, \zz;\tht)}{Q_i^{(t)}(\zz)} + \alpha \sum_{i=1}^{\tilde{m}} \log p(\txx, \tzz; \tht).
+      \end{aligned}
+      \]
+      Since $Q_i^{(t)}$ is a probability measure, for $\thtt$, we also have
+      \[
+      \begin{aligned}
+        \lsemi(\thtt) &= \sum_{i=1}^m \log \sum_{\zz} p(\xx, \zz;\thtt) + \alpha \sum_{i=1}^{\tilde{m}} \log p(\txx, \tzz; \thtt) \\
+        &\geq \sum_{i=1}^m \sum_{\zz} Q_i^{(t)}(\zz) \log \frac{p(\xx, \zz;\thtt)}{Q_i^{(t)}(\zz)} + \alpha \sum_{i=1}^{\tilde{m}} \log p(\txx, \tzz; \thtt)
+      \end{aligned}
+      \]
+      by Jensen's inequality.
+      
+      As $\thtt$ maximizes the expression in M-step, we have
+      \[
+      \begin{aligned}
+        \lsemi(\thtt) 
+        &\geq \sum_{i=1}^m \sum_{\zz} Q_i^{(t)}(\zz) \log \frac{p(\xx, \zz;\thtt)}{Q_i^{(t)}(\zz)} + \alpha \sum_{i=1}^{\tilde{m}} \log p(\txx, \tzz; \thtt) \\
+        &\geq \sum_{i=1}^m \sum_{\zz} Q_i^{(t)}(\zz) \log \frac{p(\xx, \zz;\tht)}{Q_i^{(t)}(\zz)} + \alpha \sum_{i=1}^{\tilde{m}} \log p(\txx, \tzz; \tht) \\
+        &= \lsemi(\tht).
+      \end{aligned}
+      \]
+      This completes the proof.
+    \end{proof}
+  \end{enumerate}
+
+  \noindent \textbf{Semi-supervised GMM}
+
+  \noindent Now we revisit the Gaussian Mixture Model (GMM) to apply our semi-supervised EM algorithm. Consider a schenario where data is generated from $k$ Gaussian distributions with unknown means $\mu_j \in \R^d$ and covariances $\Sigma_j \in \mathbb{S}_+^d$ where $j = 1, \dots, k$. We have $m$ data points $\xx \in \R^d$ and each has a corresponding latent $\zz \in \{1, \dots, k\}$ indicating which distribution $\xx$ belongs to. Specifically, $\zz \sim \text{Multinomial}(\phi)$ and $\xx \mid \zz \sim \mathcal{N}(\mu_{\zz}, \Sigma_{\zz})$ i.i.d. We also have additional $\tilde{m}$ points $\txx \in \R^d$ and an associated \emph{observed} variable $\tzz \in \{1, \dots, k\}$. As before, we assume $\txx \mid \tzz \sim \mathcal{N}(\mu_{\tzz}, \Sigma_{\tzz})$ i.i.d.
+
+  \begin{enumerate}[(a)]
+    \setcounter{enumi}{1}
+    \item \textbf{Semi-supervised E-step.} In E-step, $\zz$ need to be re-estimated. For this specific model, we have
+    \[
+    \begin{aligned}
+      \ww_j &= p(\zz = j \mid \xx) \\
+      &= \frac{p(\xx \mid \zz = j) p(\zz = j)}{\sum_l p(\xx \mid \zz = l)p(\zz = l)} \\
+      &= \frac{\frac{1}{\abs{\Sigma_j}^{1/2}} \exp(-\frac{1}{2} (\xx - \mu_j)^T \Sigma_j^{-1} (\xx - \mu_j)) \phi_j}{\sum_l \frac{1}{\abs{\Sigma_l}^{1/2}} \exp(-\frac{1}{2} (\xx - \mu_l)^T \Sigma_l^{-1} (\xx - \mu_l)) \phi_l}.
+    \end{aligned}
+    \]
+  \end{enumerate}
+
+  \item \textbf{Semi-supervised M-step.} The model parameters $\mu$, $\Sigma$, $\phi$ need to be re-estimated in the M-step. For this specific model, we have the optimization problem
+  \[
+  \argmax_{\mu, \Sigma, \phi} \lsemi = \argmax_{\mu, \Sigma, \phi} \lunsup + \alpha \lsup, 
+  \]
+  where
+  \[
+  \begin{aligned}
+    \lunsup &= \sum_{i=1}^m \sum_{\zz} \ww_j \log \frac{\exp(-\frac{1}{2} (\xx - \mu_j)^T \Sigma_j^{-1} (\xx - \mu_j)) \phi_j}{(2\pi)^{d/2} \abs{\Sigma_j}^{1/2} \ww_j}, \\
+    \lsup &= \sum_{i=1}^{\tilde{m}} \log \frac{1}{(2\pi)^{d/2} \abs{\Sigma_{\tzz}}^{1/2}} \exp(-\frac{1}{2} (\txx - \mu_{\tzz})^T \Sigma_{\tzz}^{-1} (\txx - \mu_{tzz})) \phi_{\tzz}.
+  \end{aligned}
+  \]
+  To get a closed form expression, we use Lagrangian multipliers and construct Lagrangian
+  \[
+  L(\mu, \Sigma, \phi, \lambda) = \lunsup + \alpha \lsup + \lambda (\Sigma_j \phi_j - 1).
+  \]
+  For matrix derivatvies, we have
+  \[
+  \begin{aligned}
+    &\nabla_A \abs{A} = \frac{1}{\abs{A}} A^{-T}, \\
+    &\nabla_A x^T A^{-1} x = - A^{-1} x x^T A^{-1}.
+  \end{aligned}
+  \]
+  Notice that the covariance matrices $\Sigma_l$ are symmetric, so $\Sigma_l^{-T} = \Sigma^{-1}$. It follows that
+  \[
+  \begin{aligned}
+    \nabla_{\mu_l} \lsemi &= \sum_{i=1}^{m} \ww_l \Sigma_l^{-1} (\xx - \mu_l) + \alpha \sum_{i=1}^{\tilde{m}} \ind{\tzz = l} \ww_l \Sigma_l^{-1} (\txx - \mu_l), \\
+    \nabla_{\phi_l} \lsemi &=  \sum_{i=1}^m \frac{\ww_l}{\phi_l} + \alpha \sum_{i=1}^{\tilde{m}} \ind{\tzz = l} \frac{1}{\phi_l} + \lambda, \\
+    \nabla_{\Sigma_l} \lsemi &= \sum_{i=1}^m -\frac{\ww_l}{2}\Sigma_l^{-1} + \frac{\ww_l}{2} \Sigma_l^{-1} (\xx - \mu_l)(\xx - \mu_l)^T \Sigma_l^{-1} \\
+    & \qquad + \alpha \sum_{i=1}^{\tilde{m}} - \frac{\ind{\tzz = l} }{2}\Sigma_l^{-1} + \frac{\ind{\tzz = l } }{2} \Sigma_l^{-1} (\xx - \mu_l)(\xx - \mu_l)^T \Sigma_l^{-1}.
+  \end{aligned}
+  \]
+  Setting the gradients to zero, we get
+  \[
+  \begin{aligned}
+    \mu_l &= \frac{\sum_{i=1}^m \ww_l \xx + \alpha \sum_{i=1}^{\tilde{m}} \ind{\tzz = l} \ww_l \txx}{\sum_{i=1}^m \ww_l + \alpha \sum_{i=1}^{\tilde{m}} \ind{\tzz = l} \ww_l} \\
+    \phi_l &= - \frac{1}{\lambda} \qty(\summ \ww_l + \alpha \sumtm \ind{\tzz = l}) \\
+    \Sigma_l &= 
+  \end{aligned}
+  \]
 \end{solution}
 
 \end{document}
