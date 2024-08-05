@@ -28,10 +28,28 @@ def main(is_semi_supervised, trial_num):
     # *** START CODE HERE ***
     # (1) Initialize mu and sigma by splitting the m data points uniformly at random
     # into K groups, then calculating the sample mean and covariance for each group
+    m, n = x.shape
+    mu = [np.zeros(n) for _ in range(K)]
+    sigma = [np.zeros((n, n)) for _ in range(K)]
+    indices = np.arange(m)
+    np.random.shuffle(indices)
+    groups = np.array_split(indices, K)
+    for j in range(K):
+        group = groups[j]
+        array = x[group]
+        mu[j] = np.mean(array)
+        sigma[j] = np.dot((array - mu[j]).T, array - mu[j])
+
     # (2) Initialize phi to place equal probability on each Gaussian
     # phi should be a numpy array of shape (K,)
+    phi = np.ones(K)
+    phi = phi * (1 / K)
+    
     # (3) Initialize the w values to place equal probability on each Gaussian
     # w should be a numpy array of shape (m, K)
+    w = np.ones((m, K))
+    w = w * (1 / K)
+
     # *** END CODE HERE ***
 
     if is_semi_supervised:
@@ -73,15 +91,44 @@ def run_em(x, w, phi, mu, sigma):
     # See below for explanation of the convergence criterion
     it = 0
     ll = prev_ll = None
+    m, n = x.shape
+    _, k = w.shape
     while it < max_iter and (prev_ll is None or np.abs(ll - prev_ll) >= eps):
-        pass  # Just a placeholder for the starter code
         # *** START CODE HERE
         # (1) E-step: Update your estimates in w
+        w = np.zeros((m, k))
+        for j in range(k):
+            inv = np.linalg.inv(sigma[j])
+            p_cond = np.exp(-0.5 * np.dot(x - mu[j], np.dot(inv, (x - mu[j]).T)).diagonal()) / np.linalg.det(sigma[j]) ** 0.5
+            w[:, j] = p_cond
+        w = phi * w
+        px = np.sum(w, axis=1)
+        px = np.reshape(px, (-1, 1))
+        w = w / px
+
         # (2) M-step: Update the model parameters phi, mu, and sigma
+        phi = np.sum(w, axis=0) / m
+        for j in range(k):
+            col = np.reshape(w[:, j], (-1, 1))
+            mu[j] = np.sum(w[:, j] * x, axis=0) / np.sum(w[:, j])
+            sigma[j] = np.dot(x, w[:, j] * x) / np.sum(w[:, j])
+        
         # (3) Compute the log-likelihood of the data to check for convergence.
         # By log-likelihood, we mean `ll = sum_x[log(sum_z[p(x|z) * p(z)])]`.
         # We define convergence by the first iteration where abs(ll - prev_ll) < eps.
+        pxz = np.zeros((m, k))
+        for j in range(k):
+            inv = np.linalg.inv(sigma[j])
+            p_cond = np.exp(-0.5 * np.dot(x - mu[j], np.dot(inv, (x - mu[j]).T)).diagonal()) / np.linalg.det(sigma[j]) ** 0.5
+            p_cond = p_cond / (2 * np.pi) ** (n / 2)
+            pxz[:, j] = p_cond
+        pxz = phi * pxz
+        px = np.sum(pxz, axis = 1)
+        prev_ll = ll
+        ll = np.sum(np.log(px))
+
         # Hint: For debugging, recall part (a). We showed that ll should be monotonically increasing.
+        assert(ll >= prev_ll)
         # *** END CODE HERE ***
 
     return w
