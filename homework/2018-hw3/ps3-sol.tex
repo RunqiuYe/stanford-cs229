@@ -560,7 +560,7 @@
       \nabla_{\mu_l} \lsemi &= \sum_{i=1}^{m} \ww_l \Sigma_l^{-1} (\xx - \mu_l) + \alpha \sum_{i=1}^{\tilde{m}} \ind{\tzz = l} \ww_l \Sigma_l^{-1} (\txx - \mu_l), \\
       \nabla_{\phi_l} \lsemi &=  \sum_{i=1}^m \frac{\ww_l}{\phi_l} + \alpha \sum_{i=1}^{\tilde{m}} \ind{\tzz = l} \frac{1}{\phi_l} + \lambda, \\
       \nabla_{\Sigma_l} \lsemi &= \sum_{i=1}^m -\frac{\ww_l}{2}\Sigma_l^{-1} + \frac{\ww_l}{2} \Sigma_l^{-1} (\xx - \mu_l)(\xx - \mu_l)^T \Sigma_l^{-1} \\
-      & \qquad + \alpha \sum_{i=1}^{\tilde{m}} - \frac{\ind{\tzz = l} }{2}\Sigma_l^{-1} + \frac{\ind{\tzz = l } }{2} \Sigma_l^{-1} (\xx - \mu_l)(\xx - \mu_l)^T \Sigma_l^{-1}.
+      & \qquad + \alpha \sum_{i=1}^{\tilde{m}} - \frac{\ind{\tzz = l} }{2}\Sigma_l^{-1} + \frac{\ind{\tzz = l } }{2} \Sigma_l^{-1} (\txx - \mu_l)(\txx - \mu_l)^T \Sigma_l^{-1}.
     \end{aligned}
     \]
     Setting the gradients to zero, we get
