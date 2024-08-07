@@ -607,9 +607,13 @@
 
 \begin{solution}
   \begin{enumerate}[(a)]
-    \item \textbf{Coding problem. K-means compression Implementation.}
+    \item \textbf{Coding problem. K-means compression Implementation.} See \verb|data/p05_kmeans|.
     
-    \item 
+    \item \textbf{Compression factor.} If we represent the image with these reduced (16) colors, we only need to store the 24-bit RGB value for the 16 centroids and the index of centroids for every pixel. We can use a 16-bit integer for the latter, and that would be
+    \[
+    16 \times 3 + 512 \times 512 \times 2 = 524336 \text{ bytes}
+    \]
+    in total. The compression factor is about $0.66 \approx \frac{2}{3}$, since we only need 2 bytes instead of 3 for each pixel.
   \end{enumerate}
 \end{solution}
 

@@ -1,6 +1,6 @@
 # Fdb version 3
-["pdflatex"] 1723044987 "/Users/runqiuye/Desktop/studies/computer-science/ai-ml/stanford-cs299/homework/2018-hw3/ps3-sol.tex" "ps3-sol.pdf" "ps3-sol" 1723044990
-  "/Users/runqiuye/Desktop/studies/computer-science/ai-ml/stanford-cs299/homework/2018-hw3/ps3-sol.tex" 1723044986 33848 bf831ccd66ff4454bc7a0c4dec3b45bb ""
+["pdflatex"] 1723045535 "/Users/runqiuye/Desktop/studies/computer-science/ai-ml/stanford-cs299/homework/2018-hw3/ps3-sol.tex" "ps3-sol.pdf" "ps3-sol" 1723045538
+  "/Users/runqiuye/Desktop/studies/computer-science/ai-ml/stanford-cs299/homework/2018-hw3/ps3-sol.tex" 1723045535 34341 b658585889e62fda1e94dbdabedd6c66 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/tfm/jknappen/ec/tcrm1200.tfm" 1136768653 1536 74b7293ec3713bb7fdca8dd1bd1f469c ""
@@ -308,8 +308,8 @@
   "/usr/local/texlive/2022/texmf-var/web2c/pdftex/pdflatex.fmt" 1678448550 2826436 192ceea0118c32aad5ddcb5f5712f0af ""
   "/usr/local/texlive/2022/texmf.cnf" 1647878952 577 209b46be99c9075fd74d4c0369380e8c ""
   "hmcpset.cls" 1722810791 11022 81a0f87a03247fafa695edcffa3a4953 ""
-  "ps3-sol.aux" 1723044990 33 f5162ef287409618820a40adc8e2d2a1 "pdflatex"
-  "ps3-sol.tex" 1723044986 33848 bf831ccd66ff4454bc7a0c4dec3b45bb ""
+  "ps3-sol.aux" 1723045537 33 f5162ef287409618820a40adc8e2d2a1 "pdflatex"
+  "ps3-sol.tex" 1723045535 34341 b658585889e62fda1e94dbdabedd6c66 ""
   (generated)
   "ps3-sol.aux"
   "ps3-sol.log"
