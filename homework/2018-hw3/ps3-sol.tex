@@ -557,7 +557,7 @@
     Notice that the covariance matrices $\Sigma_l$ are symmetric, so $\Sigma_l^{-T} = \Sigma^{-1}$. It follows that
     \[
     \begin{aligned}
-      \nabla_{\mu_l} \lsemi &= \sum_{i=1}^{m} \ww_l \Sigma_l^{-1} (\xx - \mu_l) + \alpha \sum_{i=1}^{\tilde{m}} \ind{\tzz = l} \ww_l \Sigma_l^{-1} (\txx - \mu_l), \\
+      \nabla_{\mu_l} \lsemi &= \sum_{i=1}^{m} \ww_l \Sigma_l^{-1} (\xx - \mu_l) + \alpha \sum_{i=1}^{\tilde{m}} \ind{\tzz = l} \Sigma_l^{-1} (\txx - \mu_l), \\
       \nabla_{\phi_l} \lsemi &=  \sum_{i=1}^m \frac{\ww_l}{\phi_l} + \alpha \sum_{i=1}^{\tilde{m}} \ind{\tzz = l} \frac{1}{\phi_l} + \lambda, \\
       \nabla_{\Sigma_l} \lsemi &= \sum_{i=1}^m -\frac{\ww_l}{2}\Sigma_l^{-1} + \frac{\ww_l}{2} \Sigma_l^{-1} (\xx - \mu_l)(\xx - \mu_l)^T \Sigma_l^{-1} \\
       & \qquad + \alpha \sum_{i=1}^{\tilde{m}} - \frac{\ind{\tzz = l} }{2}\Sigma_l^{-1} + \frac{\ind{\tzz = l } }{2} \Sigma_l^{-1} (\txx - \mu_l)(\txx - \mu_l)^T \Sigma_l^{-1}.
@@ -566,7 +566,7 @@
     Setting the gradients to zero, we get
     \[
     \begin{aligned}
-      \mu_l &= \frac{\sum_{i=1}^m \ww_l \xx + \alpha \sum_{i=1}^{\tilde{m}} \ind{\tzz = l} \ww_l \txx}{\sum_{i=1}^m \ww_l + \alpha \sum_{i=1}^{\tilde{m}} \ind{\tzz = l} \ww_l}, \\
+      \mu_l &= \frac{\sum_{i=1}^m \ww_l \xx + \alpha \sum_{i=1}^{\tilde{m}} \ind{\tzz = l} \txx}{\sum_{i=1}^m \ww_l + \alpha \sum_{i=1}^{\tilde{m}} \ind{\tzz = l}}, \\
       \phi_l &= - \frac{1}{\lambda} \qty(\summ \ww_l + \alpha \sumtm \ind{\tzz = l}), \\
       \Sigma_l &= \frac{\summ \ww_l (\xx - \mu_l)(\xx - \mu_l)^T + \alpha \sumtm \ind{\tzz = l} (\xx - \mu_l)(\xx - \mu_l)^T}{\summ \ww_l + \alpha \sumtm \ind{\tzz = l}}.
     \end{aligned}
@@ -587,9 +587,11 @@
       \lsemi &= \summ \log \sum_{\zz} p(\xx, \zz) + \alpha \sumtm \log p(\txx, \tzz) \\
       &= \summ \log \sum_{\zz} p(\xx \mid \zz) p(\zz) + \alpha \sumtm \log p(\txx, \tzz) \\
       &= \summ \log \sum_{\zz} \frac{\phi_{\zz}}{(2\pi)^{d/2} \abs{\Sigma_{\zz}}^{1/2}} \exp(-\frac{1}{2}(\xx - \mu_{\zz})^T \Sigma_{\zz} (\xx - \mu_{\zz})) \\
-      & \qquad + \sumtm \log \frac{1}{(2\pi)^{d/2} \abs{\Sigma_{\zz}}^{1/2}} \exp(-\frac{1}{2}(\xx - \mu_{\zz})^T \Sigma_{\zz} (\xx - \mu_{\zz}))
+      & \qquad + \alpha \sumtm \log \frac{1}{(2\pi)^{d/2} \abs{\Sigma_{\tzz}}^{1/2}} \exp(-\frac{1}{2}(\txx - \mu_{\tzz})^T \Sigma_{\tzz} (\txx - \mu_{\tzz}))
     \end{aligned}
     \]
+
+    \item \textbf{Coding problem. Semi-supervised EM Implementation.} Now consider both labelled and unlabelled examples (a total of $m + \tilde{m}$) . with 5 labelled examples per cluster.
   \end{enumerate}
 \end{solution}
 

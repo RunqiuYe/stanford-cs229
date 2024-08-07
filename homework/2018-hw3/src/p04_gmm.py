@@ -97,20 +97,18 @@ def run_em(x, w, phi, mu, sigma):
     while it < max_iter and (prev_ll is None or np.abs(ll - prev_ll) >= eps):
         # *** START CODE HERE
         # (1) E-step: Update your estimates in w
-        
         for j in range(k):
             inv = np.linalg.inv(sigma[j])
             p_cond = np.exp(-0.5 * np.dot((x - mu[j]), np.dot(inv, (x-mu[j]).T)).diagonal()) / (np.linalg.det(sigma[j]) ** 0.5)
-            w[:, j] = p_cond
-        w = phi * w
+            w[:, j] = p_cond * phi[j]
         px = np.sum(w, axis=1)
-        px = np.reshape(px, (-1, 1))
+        px = np.reshape(px, (m, 1))
         w = w / px
 
         # (2) M-step: Update the model parameters phi, mu, and sigma
         phi = np.sum(w, axis=0) / m
         for j in range(k):
-            col = np.reshape(w[:, j], (-1, 1))
+            col = np.reshape(w[:, j], (m, 1))
             mu[j] = np.dot(x.T, col) / np.sum(col)
             mu[j] = np.reshape(mu[j], (n,))
             sigma[j] = np.dot(x.T, col * x) / np.sum(col)
@@ -123,8 +121,7 @@ def run_em(x, w, phi, mu, sigma):
             inv = np.linalg.inv(sigma[j])
             p_cond = np.exp(-0.5 * np.dot((x - mu[j]), np.dot(inv, (x-mu[j]).T)).diagonal()) / (np.linalg.det(sigma[j]) ** 0.5)
             p_cond = p_cond / (2 * np.pi) ** (n / 2)
-            pxz[:, j] = p_cond
-        pxz = phi * pxz
+            pxz[:, j] = p_cond * phi[j]
         px = np.sum(pxz, axis=1)
         
         prev_ll = ll
@@ -132,8 +129,8 @@ def run_em(x, w, phi, mu, sigma):
         it += 1
 
         # Hint: For debugging, recall part (a). We showed that ll should be monotonically increasing.
-        print(f"iter: {it}, ll: {ll}, prev_ll: {prev_ll}")
-        # having trouble passing the assertion...
+        # print(f"iter: {it}, ll: {ll}, prev_ll: {prev_ll}")
+        # # having trouble passing the assertion...
         # assert(prev_ll == None or ll >= prev_ll)
         # *** END CODE HERE ***
 
@@ -168,14 +165,56 @@ def run_semi_supervised_em(x, x_tilde, z, w, phi, mu, sigma):
     # See below for explanation of the convergence criterion
     it = 0
     ll = prev_ll = None
+    m, n = x.shape
+    m_tilde, _ = x_tilde.shape
+    _, k = w.shape
     while it < max_iter and (prev_ll is None or np.abs(ll - prev_ll) >= eps):
         pass  # Just a placeholder for the starter code
         # *** START CODE HERE ***
         # (1) E-step: Update your estimates in w
+        for j in range(k):
+            inv = np.linalg.inv(sigma[j])
+            p_cond = np.exp(-0.5 * np.dot((x - mu[j]), np.dot(inv, (x-mu[j]).T)).diagonal()) / (np.linalg.det(sigma[j]) ** 0.5)
+            w[:, j] = p_cond * phi[j]
+        px = np.sum(w, axis=1)
+        px = np.reshape(px, (m, 1))
+        w = w / px
+
         # (2) M-step: Update the model parameters phi, mu, and sigma
+        for j in range(k):
+            col = np.reshape(w[:, j], (m, 1))
+            phi[j] = np.sum(col) + alpha * np.sum(z == j)
+            phi[j] /= m + alpha * m_tilde
+            mu[j] = np.dot(x.T, col) + alpha * np.dot(x_tilde.T, z == j) 
+            mu[j] /= np.sum(col) + alpha * np.sum(z == j)
+            mu[j] = np.reshape(mu[j], (n,))
+            sigma[j] = np.dot(x.T, col * x) + alpha * np.dot(x_tilde.T, (z == j) * x_tilde)
+            sigma[j] /= np.sum(col) + alpha * np.sum(z == j)
+        
         # (3) Compute the log-likelihood of the data to check for convergence.
+        pxz = np.zeros((m, k))
+        pxz_tilde = np.zeros((m_tilde, k))
+        for j in range(k):
+            inv = np.linalg.inv(sigma[j])
+            p_cond = np.exp(-0.5 * np.dot((x - mu[j]), np.dot(inv, (x - mu[j]).T)).diagonal()) / (np.linalg.det(sigma[j]) ** 0.5)
+            p_cond = p_cond / (2 * np.pi) ** (n / 2)
+            p_cond_tilde = np.exp(-0.5 * np.dot((x_tilde - mu[j]), np.dot(inv, (x_tilde - mu[j]).T)).diagonal()) / (np.linalg.det(sigma[j]) ** 0.5)
+            p_cond_tilde = p_cond_tilde / (2 * np.pi) ** (n / 2)
+            pxz[:, j] = p_cond * phi[j]
+            pxz_tilde[:, j] = p_cond_tilde * np.reshape(z == j, (m_tilde,))
+
+        px = np.sum(pxz, axis=1)
+        px_tilde = np.sum(pxz_tilde, axis=1)
+        
+        prev_ll = ll
+        ll = np.sum(np.log(px)) + alpha * np.sum(np.log(px_tilde))
+        it += 1
+
         # Hint: Make sure to include alpha in your calculation of ll.
         # Hint: For debugging, recall part (a). We showed that ll should be monotonically increasing.
+        # print(f"iter: {it}, ll: {ll}, prev_ll: {prev_ll}")
+        # having trouble passing the assertion...
+        # assert(prev_ll == None or ll >= prev_ll)
         # *** END CODE HERE ***
 
     return w
@@ -250,5 +289,5 @@ if __name__ == '__main__':
         # Once you've implemented the semi-supervised version,
         # uncomment the following line.
         # You do not need to add any other lines in this code block.
-        # main(with_supervision=True, trial_num=t)
+        main(is_semi_supervised=True, trial_num=t)
         # *** END CODE HERE ***
