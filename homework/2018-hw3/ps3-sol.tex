@@ -597,4 +597,20 @@
   \end{enumerate}
 \end{solution}
 
+\begin{problem}[Problem 5]
+  \textbf{K-means for compression}
+
+  Use k-means algorithm to lossy image compression, by reducing the number of colors used in an image.
+
+  A 512x512 image 24-bit colors takes about $512 \times 512 \times 3 = 786432 \text{ bytes }$. To compress, we use k-means to reduce the image to $k = 16$ colors. More specifically, each pixel in the image is considered a point in the 3-dimensional $(r,g,b)$ space. To compress, we will cluster these points in colo-space into 16 clusters and replace each pixel with the closest cluster centroid.
+\end{problem}
+
+\begin{solution}
+  \begin{enumerate}[(a)]
+    \item \textbf{Coding problem. K-means compression Implementation.}
+    
+    \item 
+  \end{enumerate}
+\end{solution}
+
 \end{document}
