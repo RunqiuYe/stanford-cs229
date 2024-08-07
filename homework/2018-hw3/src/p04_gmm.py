@@ -133,6 +133,7 @@ def run_em(x, w, phi, mu, sigma):
         # # having trouble passing the assertion...
         # assert(prev_ll == None or ll >= prev_ll)
         # *** END CODE HERE ***
+    print(f"iterations used to converge: {it}")
 
     return w
 
@@ -216,6 +217,7 @@ def run_semi_supervised_em(x, x_tilde, z, w, phi, mu, sigma):
         # having trouble passing the assertion...
         # assert(prev_ll == None or ll >= prev_ll)
         # *** END CODE HERE ***
+    print(f"iterations used to converge: {it}")
 
     return w
 
