@@ -41,6 +41,7 @@ def backward_softmax(x, grad_outputs):
     """
     
     # *** START CODE HERE ***
+    return forward_softmax(x) - (grad_outputs != 0).astype(int)
     # *** END CODE HERE ***
 
 def forward_relu(x):
@@ -71,6 +72,7 @@ def backward_relu(x, grad_outputs):
     """
 
     # *** START CODE HERE ***
+    return (x > 0).astype(int)
     # *** END CODE HERE ***
 
 def get_initial_params():
@@ -234,6 +236,7 @@ def backward_cross_entropy_loss(probabilities, labels):
     """
 
     # *** START CODE HERE ***
+    return - labels / probabilities
     # *** END CODE HERE ***
 
 def forward_linear(weights, bias, data):
@@ -407,7 +410,7 @@ def nn_train(
     return params, cost_dev, accuracy_dev
 
 def nn_test(data, labels, params):
-    output, cost = forward_pr(data, labels, params)
+    output, cost = forward_prop(data, labels, params)
     accuracy = compute_accuracy(output, labels)
     return accuracy
 
