@@ -49,6 +49,7 @@
 \newcommand{\thtt}{\theta^{(t+1)}}
 \newcommand{\summ}{\sum_{i=1}^m}
 \newcommand{\sumtm}{\sum_{i=1}^{\tilde m}}
+\newcommand{\sumsa}{\sum_{(s,a)}}
 
 % info for header block in upper right hand corner
 \name{Runqiu Ye}
@@ -102,37 +103,46 @@ We also use mini-batch gradient descent with a batch size of 16. Normally we wou
 
   A policy is defined as $\pi_i (s, a) = p(a \mid s, \pi_i)$ We are given observational dataset of $(s, a, R(s, a))$ tuples. Let $p(s)$ be the density for the distribution of the state $s$ values wihin the dataset. Let $\pi_0 (s, a) = p(a \mid s)$ within our observational data. $\pi_0$ corresponds to the baseline policy in observational data. Also given target policy $\pi_1 (s,a)$ which gives the conditional probability $p(a \mid s)$ in our optimal policy. Our goal is to computer expected value of $R(s,a)$ in the same population as our observatinoal data, but with a policy of $\pi_1$ instead of $\pi_0$. In other words, we are trying to compute
   \[
-  \E_{\substack{s \sim p(s) \\ a \sim \pi_1(s,a)}} R(s, a) = \sum_{(s,a)} R(s,a) p(s,a) = \sum_{(s,a)} R(s,a) p(s) p(a \mid s) = \sum_{(s,a)} R(s,a) p(s) \pi_1 (s,a).
+  \E_{\substack{s \sim p(s) \\ a \sim \pi_1(s,a)}} [R(s, a)] = \sum_{(s,a)} R(s,a) p(s,a) = \sum_{(s,a)} R(s,a) p(s) p(a \mid s) = \sum_{(s,a)} R(s,a) p(s) \pi_1 (s,a).
   \]
 
-  \textbf{Notation and Simplifying Assumptions: } \\
-  We will assume that each action has a non-zero probability in the observed policy $\pi_0 (s, a)$. In other words, for all actions $a$ and states $s$, $\pi_0 (s,a) > 0$.
+  \textbf{Simplifying Assumptions: } We will assume that each action has a non-zero probability in the observed policy $\pi_0 (s, a)$. In other words, for all actions $a$ and states $s$, $\pi_0 (s,a) > 0$.
 
-  \textbf{Regression:} The simplest possible estimator is to directly use our learned MDP parameters to estimate our goal. This is called regression estimator. While training our MDP, we laernan estimator $\hat R(s,a)$ that estiamtes $R(s,a)$. We can now directly estimate
+  \textbf{Regression:} The simplest possible estimator is to directly use our learned MDP parameters to estimate our goal. This is called regression estimator. While training our MDP, we laern an estimator $\hat R(s,a)$ that estiamtes $R(s,a)$. We can now directly estimate
   \[
-  \E_{\substack{s \sim p(s) \\ a \sim \pi_1(s,a)}} R(s, a)
+  \E_{\substack{s \sim p(s) \\ a \sim \pi_1(s,a)}} [R(s, a)]
   \]
   with 
   \[
-    \E_{\substack{s \sim p(s) \\ a \sim \pi_1(s,a)}} \hat R(s, a).
+    \E_{\substack{s \sim p(s) \\ a \sim \pi_1(s,a)}} [\hat R(s, a)].
   \]
   If $\hat R(s,a) = R(s,a)$, then this estimator is trivially correct. We will now consider alternative approaches and explore why you might use one estimator over another.
 \end{problem}
 
 \begin{solution}
   \begin{enumerate}[(a)]
-    \item \textbf{Important Sampling:} Let $\hat \pi_0$ be an estimate of the true $\pi_0$. The importance sampling estimator uses that $\hat \pi_0$ and has the form 
+    \item \textbf{Important Sampling:} Let $\hat \pi_0$ be an estimate of the true $\pi_0$. The \emph{importance sampling estimator} uses that $\hat \pi_0$ and has the form 
     \[
-    \E_{\substack{s \sim p(s) \\ a \sim \pi_0 (s,a)}} \frac{\pi_1(s,a)}{\hat \pi_0 (s,a)} R(s,a).
+    \E_{\substack{s \sim p(s) \\ a \sim \pi_0 (s,a)}} \qty[\frac{\pi_1(s,a)}{\hat \pi_0 (s,a)} R(s,a)].
     \]
     We now show that if $\hat \pi_0 = \pi_0$, then the importance sampling estimator is equal to 
     \[
-    \E_{\substack{s \sim p(s) \\ a \sim \pi_1(s,a)}} R(s,a).
+    \E_{\substack{s \sim p(s) \\ a \sim \pi_1(s,a)}} [R(s,a)].
     \]
     
     \begin{proof}
-      
+      If $\hat \pi_0 = \pi_0$, then
+      \[
+      \begin{aligned}
+        \E_{\substack{s \sim p(s) \\ a \sim \pi_0 (s,a)}} \qty[\frac{\pi_1(s,a)}{\hat \pi_0 (s,a)} R(s,a)] &= 
+        \sum_{(s,a)} \frac{\pi_1(s,a)}{\hat \pi_0 (s,a)} R(s,a) p(s) \pi_0 (s,a) \\
+        &= \sum_{(s,a)} \pi_1(s,a) R(s,a) p(s) \\
+        &= \E_{\substack{s \sim p(s) \\ a \sim \pi_1(s,a)}} [R(s,a)],
+      \end{aligned}
+      \]
+      as desired.
     \end{proof}
+    Note that this estimator only requires us to model $\pi_0$ as we have the $R(s,a)$ values in the observational data.
   \end{enumerate}
 \end{solution}
 
