@@ -262,4 +262,20 @@ We also use mini-batch gradient descent with a batch size of 16. Normally we wou
   \end{enumerate}
 \end{solution}
 
+\begin{problem}[Problem 3]
+  \textbf{PCA}
+
+  In calss, we showed that PCA finds the "variance maximizing" directions onto which to project the data. In this problem, we find another interpretation of PCA.
+
+  Suppose set of points $\{ \xx\}_{i=1}^m$. Let us assume that we have as usual preprocessed the data to have zero mean and unit variance in each coordinate. For a given unit-length vector $u$, let $f_u(x)$ be the projection of point x onto the direction given by $u$. That is, if $\mathcal{V} = \{ \alpha u: \alpha \in \R \}$, then
+  \[
+  f_{u}(x) = \argmin_{v \in \mathcal{V}} \norm{x - v}^2.
+  \]
+  Show that the unit-length vector $i$ that minimizes the mean squared error between the projected points and original points corresponds to the first principle component of the data. That is, show that
+  \[
+  \argmin_{u: \norm{u} = 1} \sum_{i=1}^m \norm{\xx - f_u(\xx)}^2_2
+  \]
+  gives the first principle component.
+\end{problem}
+
 \end{document}
