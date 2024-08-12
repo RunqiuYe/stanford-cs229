@@ -394,6 +394,10 @@ We also use mini-batch gradient descent with a batch size of 16. Normally we wou
       (\xx)^T
     ).
     \]
+
+    \item \textbf{Cocktail Party Problem}
+    
+    Implement the Bel and Sejnowski ICA algorithm, but assuming a Laplace source, as derived in (b), in \verb|p04_ica.py|. We can \emph{anneal} the learning rate $\alpha$ (slowly decrease it over time) to speed up laerning. In addition, we can also choose a random permutation of the training data, and running stochastic gradient ascent visiting the training data in that order (each of the specified learning rates was then used for one full pass through the data).
   \end{enumerate}
 \end{solution}
 
