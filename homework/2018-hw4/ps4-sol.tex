@@ -143,6 +143,36 @@ We also use mini-batch gradient descent with a batch size of 16. Normally we wou
       as desired.
     \end{proof}
     Note that this estimator only requires us to model $\pi_0$ as we have the $R(s,a)$ values in the observational data.
+
+    \item \textbf{Weighted Importance Sampling.} A variant of the importance sampling estimator is the \emph{weighted importance sampling estimator}. The weighted importance sampling estimator has the from
+    \[
+    \frac{\E_{\substack{s \sim p(s) \\ a \sim \pi_0 (s,a)}}\qty[\frac{\pi_1(s,a)}{\hat \pi_0 (s,a)} R(s,a)] }{ \E_{\substack{s \sim p(s) \\ a \sim \pi_0 (s,a)}}\qty[\frac{\pi_1(s,a)}{\hat \pi_0 (s,a)}] }.
+    \]
+    We now show that if $\hat \pi_0 = \pi_0$, then the weighted importance sampling estimator is equal to 
+    \[
+    \E_{\substack{s \sim p(s) \\ a \sim \pi_1(s,a)}} \qty[R(s,a)].
+    \]
+
+    \begin{proof}
+      We already showed that if $\hat \pi_0 = \pi_0$, then 
+      \[
+      \E_{\substack{s \sim p(s) \\ a \sim \pi_0 (s,a)}}\qty[\frac{\pi_1(s,a)}{\hat \pi_0 (s,a)} R(s,a)]  =  \E_{\substack{s \sim p(s) \\ a \sim \pi_1(s,a)}} [R(s,a)].
+      \]
+      For the denominator, if $\hat \pi_0 = \pi_0$, we have
+      \[
+      \begin{aligned}
+        \E_{\substack{s \sim p(s) \\ a \sim \pi_0 (s,a)}}\qty[\frac{\pi_1(s,a)}{\hat \pi_0 (s,a)}] &= \sumsa \frac{\pi_1(s,a)}{\hat \pi_0 (s,a)} p(s) \pi_0(s,a) \\
+        &= \sumsa \pi_1(s,a) p(s) \\
+        &= \sumsa p(s,a \mid \pi_1) \\
+        &= 1.
+      \end{aligned}
+      \]
+      Hence,
+      \[
+        \frac{\E_{\substack{s \sim p(s) \\ a \sim \pi_0 (s,a)}}\qty[\frac{\pi_1(s,a)}{\hat \pi_0 (s,a)} R(s,a)] }{ \E_{\substack{s \sim p(s) \\ a \sim \pi_0 (s,a)}}\qty[\frac{\pi_1(s,a)}{\hat \pi_0 (s,a)}] } = \E_{\substack{s \sim p(s) \\ a \sim \pi_1(s,a)}} \qty[R(s,a)]
+      \]
+      when $\hat \pi_0 = \pi_0$, as desired.
+    \end{proof}
   \end{enumerate}
 \end{solution}
 
