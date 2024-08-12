@@ -367,7 +367,32 @@ We also use mini-batch gradient descent with a batch size of 16. Normally we wou
 
     To derive the update rule, we again consider the gradient of the log-likelihood 
     \[
-    \nabla_W \ell(W)
+    \nabla_W \ell(W) = \sum_{i=1}^n (W^{T})^{-1} + \begin{bmatrix}
+      \frac{g''}{g'} (w_1^T \xx) \\
+      \vdots \\
+      \frac{g''}{g'} (w_d^T \xx)
+    \end{bmatrix}
+    (\xx)^T,
+    \]
+    where $g$ is the CDF for the distribution of the source. Here, $g$ is the CDF for standard Laplace distribution. For the stochastic gradient ascent update, we calculate
+    \[
+    g'(s) = f(s) = \frac{1}{2} e^{-\abs{s}}, \quad 
+    g''(s) = f'(s) = - \frac{1}{2} \sgn(s) e^{- \abs{s}}.
+    \]
+    It follows that
+    \[
+    \frac{g''}{g'}(s) = - \sgn(s).
+    \]
+    Hence, the update rule is
+    \[
+    W := W + \alpha \qty( (W^T)^{-1} + 
+      \begin{bmatrix}
+        \sgn(w_1^T \xx) \\
+        \vdots \\
+        \sgn(w_d^T \xx)
+      \end{bmatrix}
+      (\xx)^T
+    ).
     \]
   \end{enumerate}
 \end{solution}
