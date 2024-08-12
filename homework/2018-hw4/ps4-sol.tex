@@ -108,7 +108,7 @@ We also use mini-batch gradient descent with a batch size of 16. Normally we wou
 
   \textbf{Simplifying Assumptions: } We will assume that each action has a non-zero probability in the observed policy $\pi_0 (s, a)$. In other words, for all actions $a$ and states $s$, $\pi_0 (s,a) > 0$.
 
-  \textbf{Regression:} The simplest possible estimator is to directly use our learned MDP parameters to estimate our goal. This is called regression estimator. While training our MDP, we laern an estimator $\hat R(s,a)$ that estiamtes $R(s,a)$. We can now directly estimate
+  \textbf{Regression:} The simplest possible estimator is to directly use our learned MDP parameters to estimate our goal. This is called regression estimator. While training our MDP, we laern an estimator $\hat R(s,a)$ that estimates $R(s,a)$. We can now directly estimate
   \[
   \E_{\substack{s \sim p(s) \\ a \sim \pi_1(s,a)}} [R(s, a)]
   \]
@@ -196,6 +196,59 @@ We also use mini-batch gradient descent with a batch size of 16. Normally we wou
       \]
       causing a bias.
     \end{proof}
+
+    \item \textbf{Doulby Robust.} One final commonly used estimator is the doubly robust estimator. The doubly robust estimator has the form 
+      \[
+      \E_{\substack{s \sim p(s) \\ a \sim \pi_0(s,a)}} \qty[ \E_{a \sim \pi_1(s,a)} \qty[\hat R(s,a)] + \frac{\pi_1(s,a)}{\hat \pi_0 (s,a)} (R(s,a) - \hat R(s,a)) ].
+      \]
+      One advantage of the doubly robust estimator is that it works if either $\hat \pi_0 = \pi_0$ or $\hat R(s,a) = R(s,a)$.
+      \begin{enumerate}[(i)]
+        \item First we show that the doubly robust estimator is equal to $\E_{\substack{s \sim p(s) \\ a \sim \pi_1(s,a)}} [R(s,a)]$ when $\hat \pi_0 = \pi_0$.
+        
+        \begin{proof}
+          First of all, we have
+          \[
+          \E_{a \sim \pi_1(s,a)} [\hat R(s,a)] = \sum_{a} \pi_1(s,a) \hat R(s,a).
+          \]
+          Note that this expression is independent of $a$. Hence,
+          \[
+          \E_{\substack{s \sim p(s) \\ a \sim \pi_0(s,a)}} \qty[\E_{a \sim \pi_1(s,a)} \qty[\hat R(s,a)]] = \sum_s \sum_a \pi_1(s,a) \hat R(s,a) p(s) = \sumsa \pi_1(s,a) \hat R(s,a) p(s).
+          \]
+          For the second term, when $\hat \pi_0 = \pi_0$, we have
+          \[
+          \begin{aligned}
+            \E_{\substack{s \sim p(s) \\ a \sim \pi_0(s,a)}} \frac{\pi_1(s,a)}{\hat \pi_0 (s,a)} (R(s,a) - \hat R(s,a)) 
+            &= \sumsa \frac{\pi_1(s,a)}{\hat \pi_0(s,a)} (R(s,a) - \hat R(s,a)) p(s) \pi_0(s,a) \\
+            &= \sumsa \pi_1(s,a) R(s,a) p(s) - \pi_1(s,a) \hat R(s,a) p(s) \\
+            &= \E_{\substack{s \sim p(s) \\ a \sim \pi_1(s,a)}} [R(s,a)] - \sumsa \pi_(s,a) \hat R(s,a) p(s).
+          \end{aligned}
+          \]
+          Therefore, the doubly robust estimator 
+          \[
+          \E_{\substack{s \sim p(s) \\ a \sim \pi_0(s,a)}} \qty[ \E_{a \sim \pi_1(s,a)} \qty[\hat R(s,a)] + \frac{\pi_1(s,a)}{\hat \pi_0 (s,a)} (R(s,a) - \hat R(s,a)) ] = \E_{\substack{s \sim p(s) \\ a \sim \pi_1(s,a)}} [R(s,a)].
+          \]
+          when $\hat \pi_0 = \pi_0$.
+        \end{proof}
+
+        \item Now we show the the doubly robust estimator is equal to $\E_{\substack{s \sim p(s) \\ a \sim \pi_1(s,a)}} [R(s,a)]$ when $\hat R(s,a) = R(s,a)$.
+        
+        \begin{proof}
+          As in the previous proof, we have
+          \[
+          \E_{a \sim \pi_1(s,a)} [\hat R(s,a)] = \sum_{a} \pi_1(s,a) \hat R(s,a).
+          \]
+          When $\hat R(s,a) = R(s,a)$, 
+          \[
+          \E_{\substack{s \sim p(s) \\ a \sim \pi_0(s,a)}} \qty[\E_{a \sim \pi_1(s,a)} \qty[\hat R(s,a)]] = \sum_s \sum_a \pi_1(s,a) R(s,a) p(s) = \E_{\substack{s \sim p(s) \\ a \sim \pi_1(s,a)}} [R(s,a)].
+          \]
+          The second term clearly vanishes when $\hat R(s,a) = R(s,a)$. Hence, the doubly robust estimator
+          \[
+          \E_{\substack{s \sim p(s) \\ a \sim \pi_0(s,a)}} \qty[ \E_{a \sim \pi_1(s,a)} \qty[\hat R(s,a)] + \frac{\pi_1(s,a)}{\hat \pi_0 (s,a)} (R(s,a) - \hat R(s,a)) ] = \E_{\substack{s \sim p(s) \\ a \sim \pi_1(s,a)}} [R(s,a)].
+          \]
+          when $\hat R(s,a) = R(s,a)$.
+        \end{proof}
+      \end{enumerate}
+
   \end{enumerate}
 \end{solution}
 
