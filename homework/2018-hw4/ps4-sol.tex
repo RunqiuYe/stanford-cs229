@@ -265,7 +265,7 @@ We also use mini-batch gradient descent with a batch size of 16. Normally we wou
 \begin{problem}[Problem 3]
   \textbf{PCA}
 
-  In calss, we showed that PCA finds the "variance maximizing" directions onto which to project the data. In this problem, we find another interpretation of PCA.
+  In class, we showed that PCA finds the "variance maximizing" directions onto which to project the data. In this problem, we find another interpretation of PCA.
 
   Suppose set of points $\{ \xx\}_{i=1}^m$. Let us assume that we have as usual preprocessed the data to have zero mean and unit variance in each coordinate. For a given unit-length vector $u$, let $f_u(x)$ be the projection of point x onto the direction given by $u$. That is, if $\mathcal{V} = \{ \alpha u: \alpha \in \R \}$, then
   \[
@@ -277,5 +277,31 @@ We also use mini-batch gradient descent with a batch size of 16. Normally we wou
   \]
   gives the first principle component.
 \end{problem}
+
+\begin{solution}
+  \begin{proof}
+    Let $u$ be a vector with unit length. When $\norm{x-v}^2$ attains its minimium value, we have $v = (x^T u) u$. Therefore
+    \[
+    f_u(x) = \argmin_{v in \mathcal{V}} \norm{x - v}^2 = (x^T u) u.
+    \]
+    For each $x$, we have
+    \[
+    \begin{aligned}
+      \norm{x - f_u(x)}_2^2 = \norm{x - (x^T u) u}_2^2 = x^T x - u^T x x^T u
+    \end{aligned}
+    \]
+    It follows that
+    \[
+    \summ \norm{\xx - f_u(\xx)}_2^2 = \summ (\xx)^T \xx - u^T \xx (\xx)^T u.
+    \]
+    Hence,
+    \[
+    \argmin_{\norm{u} = 1} \summ \norm{\xx - f_u(\xx)}_2^2 = \argmax_{\norm{u} = 1} u^T \qty(\summ \xx (\xx)^T) u.
+    \]
+    This is exactly the same equation as in "variance maximizing", so this gives the first principal component.
+  \end{proof}
+\end{solution}
+
+
 
 \end{document}
