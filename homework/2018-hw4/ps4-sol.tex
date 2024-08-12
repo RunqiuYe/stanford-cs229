@@ -108,7 +108,7 @@ We also use mini-batch gradient descent with a batch size of 16. Normally we wou
 
   \textbf{Simplifying Assumptions: } We will assume that each action has a non-zero probability in the observed policy $\pi_0 (s, a)$. In other words, for all actions $a$ and states $s$, $\pi_0 (s,a) > 0$.
 
-  \textbf{Regression:} The simplest possible estimator is to directly use our learned MDP parameters to estimate our goal. This is called regression estimator. While training our MDP, we laern an estimator $\hat R(s,a)$ that estimates $R(s,a)$. We can now directly estimate
+  \textbf{Regression:} The simplest possible estimator is to directly use our learned MDP parameters to estimate our goal. This is called regression estimator. While training our MDP, we learn an estimator $\hat R(s,a)$ that estimates $R(s,a)$. We can now directly estimate
   \[
   \E_{\substack{s \sim p(s) \\ a \sim \pi_1(s,a)}} [R(s, a)]
   \]
@@ -202,7 +202,7 @@ We also use mini-batch gradient descent with a batch size of 16. Normally we wou
       \E_{\substack{s \sim p(s) \\ a \sim \pi_0(s,a)}} \qty[ \E_{a \sim \pi_1(s,a)} \qty[\hat R(s,a)] + \frac{\pi_1(s,a)}{\hat \pi_0 (s,a)} (R(s,a) - \hat R(s,a)) ].
       \]
       One advantage of the doubly robust estimator is that it works if either $\hat \pi_0 = \pi_0$ or $\hat R(s,a) = R(s,a)$.
-      \begin{enumerate}[(i)]
+      \begin{enumerate}[i.]
         \item First we show that the doubly robust estimator is equal to $\E_{\substack{s \sim p(s) \\ a \sim \pi_1(s,a)}} [R(s,a)]$ when $\hat \pi_0 = \pi_0$.
         
         \begin{proof}
@@ -248,7 +248,17 @@ We also use mini-batch gradient descent with a batch size of 16. Normally we wou
           when $\hat R(s,a) = R(s,a)$.
         \end{proof}
       \end{enumerate}
+    
+    \item In some situations, we can choose between the importance sampling estimator and the regression estimator. Which one is better ni the following situatios? In all of these situations, the states $s$ consist of patients, actions $a$ represent the drug to give to certain patients and $R(s,a)$ represent the lifespan of the patient after receiving the drug.
+    \begin{enumerate}[i.]
+      \item Drugs are randomly assigned to patients, but the interaction between the drug, patient, and lifespan is very complicated.
+      
+      In this case, importance sampling estimator is better, since it is easier to model an estimation $\hat \pi_0$ of $\pi_0$.
 
+      \item Drugs are assigned to patients in a very complicated manner, but the interaction between the drug, patient and lifespan is very simple.
+      
+      In this case, the regression estimator is better, since it is easier to learn an estimator $\hat R(s,a)$ that estimates $R(s,a)$.
+    \end{enumerate}
   \end{enumerate}
 \end{solution}
 
