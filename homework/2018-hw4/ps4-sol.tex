@@ -94,6 +94,7 @@ We also use mini-batch gradient descent with a batch size of 16. Normally we wou
 \end{enumerate}
 \end{solution}
 
+\newpage
 \begin{problem}[Problem 2]
   \textbf{Off Policy Evaluatino And Causal Inference}
 
@@ -398,6 +399,32 @@ We also use mini-batch gradient descent with a batch size of 16. Normally we wou
     \item \textbf{Cocktail Party Problem}
     
     Implement the Bel and Sejnowski ICA algorithm, but assuming a Laplace source, as derived in (b), in \verb|p04_ica.py|. We can \emph{anneal} the learning rate $\alpha$ (slowly decrease it over time) to speed up laerning. In addition, we can also choose a random permutation of the training data, and running stochastic gradient ascent visiting the training data in that order (each of the specified learning rates was then used for one full pass through the data).
+  \end{enumerate}
+\end{solution}
+
+\newpage
+\begin{problem}[Problem 5]
+  \textbf{Markov Decision Processes}
+
+  Consider an MDP with finite state and action spaces, and discount factor $\gamma < 1$. Let $B$ be the Bellman update operator with $V$ a vector of values for each state. That is, if $V' = B(V)$, then
+  \[
+  V'(s) = R(s) + \gamma \max_{a \in A} \sum_{s' \in S} P_{sa}(s') V(s').
+  \]
+\end{problem}
+\begin{solution}
+  \begin{enumerate}[(a)]
+    Prove that for any two finite-valued vectors $V_1$, $V_2$, it holds true that
+    \[
+    \norm{B(V_1) - B(V_2)}_{\infty} \leq \gamma \norm{V_1 - V_2}_{\infty},
+    \]
+    where 
+    \[
+    \norm{V}_{\infty} = \max_{s \in S} \abs{V(s)}.
+    \]
+    This shows that the Bellman update operator is a $\gamma$-contraction in the max-norm.
+    \begin{proof}
+      
+    \end{proof}
   \end{enumerate}
 \end{solution}
 
