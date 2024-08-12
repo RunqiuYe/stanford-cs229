@@ -93,4 +93,47 @@ We also use mini-batch gradient descent with a batch size of 16. Normally we wou
 \end{enumerate}
 \end{solution}
 
+\begin{problem}[Problem 2]
+  \textbf{Off Policy Evaluatino And Causal Inference}
+
+  Need methods for evaluating policies without actually implementing them. This task is off-policy evaluation or causal inference.
+
+  For this problem, consider MDPs with a single timestep. Consider universe of states $S$, actions $A$, a reward function $R(s, a)$ where $s$ is a state and $a$ is an action. We often only have a subset of $a$ in our dataset. For eaxmple, each state $s$ could represent a patient, each action $a$ could represent which drug we prescribe to that patient and $R(s, a)$ be their lifespan after prescribing that drug.
+
+  A policy is defined as $\pi_i (s, a) = p(a \mid s, \pi_i)$ We are given observational dataset of $(s, a, R(s, a))$ tuples. Let $p(s)$ be the density for the distribution of the state $s$ values wihin the dataset. Let $\pi_0 (s, a) = p(a \mid s)$ within our observational data. $\pi_0$ corresponds to the baseline policy in observational data. Also given target policy $\pi_1 (s,a)$ which gives the conditional probability $p(a \mid s)$ in our optimal policy. Our goal is to computer expected value of $R(s,a)$ in the same population as our observatinoal data, but with a policy of $\pi_1$ instead of $\pi_0$. In other words, we are trying to compute
+  \[
+  \E_{\substack{s \sim p(s) \\ a \sim \pi_1(s,a)}} R(s, a) = \sum_{(s,a)} R(s,a) p(s,a) = \sum_{(s,a)} R(s,a) p(s) p(a \mid s) = \sum_{(s,a)} R(s,a) p(s) \pi_1 (s,a).
+  \]
+
+  \textbf{Notation and Simplifying Assumptions: } \\
+  We will assume that each action has a non-zero probability in the observed policy $\pi_0 (s, a)$. In other words, for all actions $a$ and states $s$, $\pi_0 (s,a) > 0$.
+
+  \textbf{Regression:} The simplest possible estimator is to directly use our learned MDP parameters to estimate our goal. This is called regression estimator. While training our MDP, we laernan estimator $\hat R(s,a)$ that estiamtes $R(s,a)$. We can now directly estimate
+  \[
+  \E_{\substack{s \sim p(s) \\ a \sim \pi_1(s,a)}} R(s, a)
+  \]
+  with 
+  \[
+    \E_{\substack{s \sim p(s) \\ a \sim \pi_1(s,a)}} \hat R(s, a).
+  \]
+  If $\hat R(s,a) = R(s,a)$, then this estimator is trivially correct. We will now consider alternative approaches and explore why you might use one estimator over another.
+\end{problem}
+
+\begin{solution}
+  \begin{enumerate}[(a)]
+    \item \textbf{Important Sampling:} Let $\hat \pi_0$ be an estimate of the true $\pi_0$. The importance sampling estimator uses that $\hat \pi_0$ and has the form 
+    \[
+    \E_{\substack{s \sim p(s) \\ a \sim \pi_0 (s,a)}} \frac{\pi_1(s,a)}{\hat \pi_0 (s,a)} R(s,a).
+    \]
+    We now show that if $\hat \pi_0 = \pi_0$, then the importance sampling estimator is equal to 
+    \[
+    \E_{\substack{s \sim p(s) \\ a \sim \pi_1(s,a)}} R(s,a).
+    \]
+    
+    \begin{proof}
+      
+    \end{proof}
+  \end{enumerate}
+\end{solution}
+
 \end{document}

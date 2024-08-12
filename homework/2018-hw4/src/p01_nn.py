@@ -268,6 +268,10 @@ def backward_linear(weights, bias, data, output_grad):
     """
 
     # *** START CODE HERE ***
+    grad_weights = np.outer(output_grad, data.T)
+    grad_bias = output_grad
+    grad_data = np.dot(weights, output_grad)
+    return grad_weights, grad_bias, grad_data
     # *** END CODE HERE ***
 
 def forward_prop(data, labels, params):
