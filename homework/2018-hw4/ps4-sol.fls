@@ -1,8 +1,8 @@
-PWD /Users/runqiuye/Desktop/studies/computer-science/ai-ml/stanford-cs299/homework/2018-hw4
+PWD /Users/runqiuye/Desktop/studies/computer-science/ai-ml/stanford-cs229/homework/2018-hw4
 INPUT /usr/local/texlive/2022/texmf.cnf
 INPUT /usr/local/texlive/2022/texmf-dist/web2c/texmf.cnf
 INPUT /usr/local/texlive/2022/texmf-var/web2c/pdftex/pdflatex.fmt
-INPUT /Users/runqiuye/Desktop/studies/computer-science/ai-ml/stanford-cs299/homework/2018-hw4/ps4-sol.tex
+INPUT /Users/runqiuye/Desktop/studies/computer-science/ai-ml/stanford-cs229/homework/2018-hw4/ps4-sol.tex
 OUTPUT ps4-sol.log
 INPUT ./hmcpset.cls
 INPUT ./hmcpset.cls

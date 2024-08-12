@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.3.10)  12 AUG 2024 09:44
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.3.10)  12 AUG 2024 10:13
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**/Users/runqiuye/Desktop/studies/computer-science/ai-ml/stanford-cs299/homework/2018-hw4/ps4-sol.tex
-(/Users/runqiuye/Desktop/studies/computer-science/ai-ml/stanford-cs299/homework/2018-hw4/ps4-sol.tex
+**/Users/runqiuye/Desktop/studies/computer-science/ai-ml/stanford-cs229/homework/2018-hw4/ps4-sol.tex
+(/Users/runqiuye/Desktop/studies/computer-science/ai-ml/stanford-cs229/homework/2018-hw4/ps4-sol.tex
 LaTeX2e <2021-11-15> patch level 1
 L3 programming layer <2022-02-24> (./hmcpset.cls
 Document Class: hmcpset 2005/03/10 v0.04 HMC Math Dept problem set class
@@ -978,15 +978,15 @@ Package microtype Info: Loading generic protrusion settings for font family
 
 {/usr/local/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2] [3] [4] [5] [6] (./ps4-sol.aux) ) 
 Here is how much of TeX's memory you used:
- 40093 strings out of 478268
- 965907 string characters out of 5846347
+ 40095 strings out of 478268
+ 965917 string characters out of 5846347
  1382379 words of memory out of 5000000
  57491 multiletter control sequences out of 15000+600000
- 479020 words of font info for 93 fonts, out of 8000000 for 9000
+ 479069 words of font info for 94 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  99i,12n,103p,3327b,609s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmss17.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msam7.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on ps4-sol.pdf (6 pages, 155826 bytes).
+Output written on ps4-sol.pdf (6 pages, 156865 bytes).
 PDF statistics:
  96 PDF objects out of 1000 (max. 8388607)
  59 compressed objects within 1 object stream
