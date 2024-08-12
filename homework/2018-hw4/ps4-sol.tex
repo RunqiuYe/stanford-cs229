@@ -173,6 +173,29 @@ We also use mini-batch gradient descent with a batch size of 16. Normally we wou
       \]
       when $\hat \pi_0 = \pi_0$, as desired.
     \end{proof}
+
+    \item One issue with the weighted importance sampling estimator is that it can be biased in many finite smaple situations. In finite samples, we replace the expected value with a sum over the seen values in our observational dataset. Please show that the weighted importance sampling estimator is biased in these situations.
+    
+    \textbf{Hint:} Consider the case where there is only a single data element in the observational dataset.
+
+    \begin{proof}
+      When there is only a single data element $(s^*, a^*, R(s^*,a^*))$ in the observational dataset, we have
+      \[
+      \begin{aligned}
+        & \E_{\substack{s \sim p(s) \\ a \sim \pi_0 (s,a)}}\qty[\frac{\pi_1(s,a)}{\hat \pi_0 (s,a)} R(s,a)] = \frac{\pi_1(s,a)}{\hat \pi_0 (s,a)} R(s^*,a^*), \\
+        & \E_{\substack{s \sim p(s) \\ a \sim \pi_0 (s,a)}} \qty[\frac{\pi_1(s,a)}{\hat \pi_0 (s,a)}] = \frac{\pi_1(s,a)}{\hat \pi_0 (s,a)}.
+      \end{aligned}
+      \]
+      The weighted importance estimator then gives
+      \[
+        \frac{\E_{\substack{s \sim p(s) \\ a \sim \pi_0 (s,a)}}\qty[\frac{\pi_1(s,a)}{\hat \pi_0 (s,a)} R(s,a)] }{ \E_{\substack{s \sim p(s) \\ a \sim \pi_0 (s,a)}}\qty[\frac{\pi_1(s,a)}{\hat \pi_0 (s,a)}] } = R(s^*,a^*) = \E_{\substack{s \sim p(s) \\ a \sim \pi_0 (s,a)}} [R(s,a)].
+      \]
+      If $\pi_1 \neq \pi_0$, then 
+      \[
+        \E_{\substack{s \sim p(s) \\ a \sim \pi_0 (s,a)}} [R(s,a)] \neq \E_{\substack{s \sim p(s) \\ a \sim \pi_1 (s,a)}} [R(s,a)],
+      \]
+      causing a bias.
+    \end{proof}
   \end{enumerate}
 \end{solution}
 
