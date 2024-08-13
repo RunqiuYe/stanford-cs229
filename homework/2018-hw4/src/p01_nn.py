@@ -187,11 +187,11 @@ def backward_convolution(conv_W, conv_b, data, output_grad):
                 width_end = min(output_width, i)
                 height_start = max(0, j - conv_height + 1)
                 height_end = min(output_height, j)
-                grad_data[input_channel, i, j] = np.sum(
-                    np.multiply(
-                        output_grad[:, width_start:(width_end+1), height_start:(height_end+1)], flipped_weights[:, input_channel, :(i-width_start+1), :(i-height_start+1)]
-                    )
-                )
+
+                # *** TO-DO: shape issue *** #
+                temp_output_grad = output_grad[:, width_start:(width_end+1), height_start:(height_end+1)]
+                temp_weights = flipped_weights[:, input_channel, (i-width_end):(i-width_start+1), (j-height_end):(j-height_start+1)]
+                grad_data[input_channel, i, j] = np.sum(np.multiply(temp_output_grad, temp_weights))
 
     return grad_conv_W, grad_conv_b, grad_data
     # *** END CODE HERE ***
@@ -380,6 +380,36 @@ def backward_prop(data, labels, params):
     """
 
     # *** START CODE HERE ***
+    grad_dict = dict()
+
+    W1 = params['W1']
+    b1 = params['b1']
+    W2 = params['W2']
+    b2 = params['b2']
+
+    first_convolution = forward_convolution(W1, b1, data)
+    first_max_pool = forward_max_pool(first_convolution, MAX_POOL_SIZE, MAX_POOL_SIZE)
+    first_after_relu = forward_relu(first_max_pool)
+
+    flattened = np.reshape(first_after_relu, (-1))
+    
+    logits = forward_linear(W2, b2, flattened)
+
+    y = forward_softmax(logits)
+
+    cross_entropy_grad = backward_cross_entropy_loss(y, labels)
+    softmax_grad = backward_softmax(logits, cross_entropy_grad)
+    W2_grad, b2_grad, linear_grad = backward_linear(W2, b2, flattened, softmax_grad)
+    relu_grad = backward_relu(first_max_pool, np.reshape(linear_grad, first_max_pool.shape))
+    max_pool_grad = backward_max_pool(first_convolution, MAX_POOL_SIZE, MAX_POOL_SIZE, relu_grad)
+    W1_grad, b1_grad, convolution_grad = backward_convolution(W1, b1, data, max_pool_grad)
+
+    grad_dict['W1'] = W1_grad
+    grad_dict['b1'] = b1_grad
+    grad_dict['W2'] = W2_grad
+    grad_dict['b2'] = b2_grad
+
+    return grad_dict
     # *** END CODE HERE ***
 
 def forward_prop_batch(batch_data, batch_labels, params, forward_prop_func):
