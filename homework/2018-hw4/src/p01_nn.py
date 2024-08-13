@@ -72,7 +72,7 @@ def backward_relu(x, grad_outputs):
     """
 
     # *** START CODE HERE ***
-    return (x > 0).astype(int)
+    return np.multiply(grad_outputs, (x > 0).astype(int))
     # *** END CODE HERE ***
 
 def get_initial_params():
@@ -184,9 +184,9 @@ def backward_convolution(conv_W, conv_b, data, output_grad):
         for i in range(input_width):
             for j in range(input_height):
                 width_start = max(0, i - conv_width + 1)
-                width_end = min(output_width, i)
+                width_end = min(output_width - 1, i)
                 height_start = max(0, j - conv_height + 1)
-                height_end = min(output_height, j)
+                height_end = min(output_height - 1, j)
 
                 # *** TO-DO: shape issue *** #
                 temp_output_grad = output_grad[:, width_start:(width_end+1), height_start:(height_end+1)]
@@ -317,7 +317,7 @@ def backward_linear(weights, bias, data, output_grad):
     """
 
     # *** START CODE HERE ***
-    grad_weights = np.outer(output_grad, data.T)
+    grad_weights = np.outer(output_grad, data.T).T
     grad_bias = output_grad
     grad_data = np.dot(weights, output_grad)
     return grad_weights, grad_bias, grad_data
@@ -395,7 +395,7 @@ def backward_prop(data, labels, params):
     
     logits = forward_linear(W2, b2, flattened)
 
-    y = forward_softmax(logits)
+    y = forward_softmax(logits) # probabilities
 
     cross_entropy_grad = backward_cross_entropy_loss(y, labels)
     softmax_grad = backward_softmax(logits, cross_entropy_grad)
