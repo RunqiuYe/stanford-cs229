@@ -462,14 +462,35 @@ We also use mini-batch gradient descent with a batch size of 16. Normally we wou
       \]
       As $\gamma < 1$, $\norm{V_1 - V_2}_{\infty} = 0$. This means that $B$ has at most one fixed point.
     \end{proof}
-
-    \textbf{Remark:} The result shows that value iteraction converges geometrically to the optimal value function $V^*$. That is, after $k$ iterations, the distance between $V$ and $V^*$ is at most $\gamma^k$.
   \end{enumerate}
 \end{solution}
 
+\begin{remark}
+  \textbf{Remark:} The result shows that value iteraction converges geometrically to the optimal value function $V^*$. That is, after $k$ iterations, the distance between $V$ and $V^*$ is at most $\gamma^k$.
+\end{remark}
+
 \newpage
 \begin{problem}[Problem 6]
-  
+  \textbf{Reinforcement Learning: The inverted pendulum}
+
+  Consider the inverted pendulum problem. The objective is to develop a controller to balance the pole with these constraints, by appropriately having the cart accelerate left and right.
+
+  The state of the cart and pole at any time is completely characterized by 4 parameters: $x$, $\dot x$, $\theta$, $\dot \theta$. We approximate the state space by a discretization that maps a state vector $(x, \dot x, \theta, \dot \theta)$ into a numebr from $0$ to \verb|NUM_STATES - 1|. 
+
+  At each time step, the controller must choose one of two actions - push the cart right, or push the cart left. (There is no do-nothing action.) These are represented as actions 0 and 1 in the code.
+
+  Assume reward function $R(s)$ is a current state only. When the pole angle goes beyond a certain limit or when the cart goes too far out, a negative reward is given and the system is reinitialized randomly. At all other time, the reward is zero. The program must learn to balance the pole using only the state transitions and rewards observed.
+
+  We will estimate a model (i.e. transition probabilities and rewards) for the underlying MDP, solve Bellman's equations for this estimated MDP to obtain a value functino, and act greedily with respect to this value function. Breifly, we will maintain current model of the MDP and a current estimate of the value function. Initially, each state has estimated reward zero, and the estimated transition probabilities are uniform.
+
+  Assume that the whole leraning procedure has converged once several consecutive attempts (defined by the parameters \verb|NO_LAERNING_THRESHOLD|) to solve solve Bellman's equation all converge in the first iteraction. Intuitively, this indicates that the estimated model has stopped changing significantly.
 \end{problem}
+\begin{solution}
+  \begin{enumerate}[(a)]
+    \item How many trials did it take before the algorithm convergeed?
+    \item Plot a learning curve showing the number of time-steps for which the pole was balanced on each trial.
+    \item Rerun the code with \verb|np.random.seed| set to 1, 2, and 3. What do you observe? What does this imply about the algorithm?
+  \end{enumerate}
+\end{solution}
 
 \end{document}
