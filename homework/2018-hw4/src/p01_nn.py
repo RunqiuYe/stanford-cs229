@@ -183,11 +183,13 @@ def backward_convolution(conv_W, conv_b, data, output_grad):
     for input_channel in range(input_channels):
         for i in range(input_width):
             for j in range(input_height):
-                temp_width = max(0, i - conv_width + 1)
-                temp_height = max(0, j - conv_height + 1)
+                width_start = max(0, i - conv_width + 1)
+                width_end = min(output_width, i)
+                height_start = max(0, j - conv_height + 1)
+                height_end = min(output_height, j)
                 grad_data[input_channel, i, j] = np.sum(
                     np.multiply(
-                        output_grad[:, temp_width:(i+1), temp_height:(j+1)], flipped_weights[:, input_channel, :(i-temp_width+1), :(i-temp_height+1)]
+                        output_grad[:, width_start:(width_end+1), height_start:(height_end+1)], flipped_weights[:, input_channel, :(i-width_start+1), :(i-height_start+1)]
                     )
                 )
 
@@ -234,6 +236,18 @@ def backward_max_pool(data, pool_width, pool_height, output_grad):
     """
     
     # *** START CODE HERE ***
+    input_channels, input_width, input_height = data.shape
+    grad_data = np.zeros(data.shape)
+    
+    for input_channel in range(input_channels):
+        for x in range(0, input_width, pool_width):
+            for y in range(0, input_height, pool_height):
+                temp = data[input_channel, x:(x+pool_width), y:(y+pool_height)]
+                grad_data[input_channel, x:(x+pool_width), y:(y+pool_height)][input_channel, np.unravel_index(np.argmax(temp), temp.shape)] = (
+                    output_grad[input_channel, x // pool_width, y // pool_height]
+                )
+    
+    return grad_data
     # *** END CODE HERE ***
 
 def forward_cross_entropy_loss(probabilities, labels):
