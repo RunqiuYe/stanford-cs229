@@ -157,6 +157,41 @@ def backward_convolution(conv_W, conv_b, data, output_grad):
     """
 
     # *** START CODE HERE ***
+    conv_channels, _, conv_width, conv_height = conv_W.shape
+    input_channels, input_width, input_height = data.shape
+    _, output_width, output_height = output_grad.shape
+    
+    grad_conv_W = np.zeros(conv_W.shape)
+    grad_conv_b = np.zeros(conv_b.shape)
+    grad_data = np.zeros(data.shape)
+
+    for output_channel in range(conv_channels):
+        for input_channel in range(input_channels):
+            for i in range(conv_width):
+                for j in range(conv_height):
+                    grad_conv_W[output_channel, input_channel, i, j] = np.sum(
+                        np.multiply(
+                            output_grad[output_channel, :, :], data[input_channel, i:(i+output_width), j:(j+output_height)]
+                        )
+                    )
+    
+    for output_channel in range(conv_channels):
+        grad_conv_b[output_channel] = np.sum(output_grad[output_channel, :, :])
+
+    flipped_weights = conv_W[:, :, ::-1, ::-1]
+
+    for input_channel in range(input_channels):
+        for i in range(input_width):
+            for j in range(input_height):
+                temp_width = max(0, i - conv_width + 1)
+                temp_height = max(0, j - conv_height + 1)
+                grad_data[input_channel, i, j] = np.sum(
+                    np.multiply(
+                        output_grad[:, temp_width:(i+1), temp_height:(j+1)], flipped_weights[:, input_channel, :(i-temp_width+1), :(i-temp_height+1)]
+                    )
+                )
+
+    return grad_conv_W, grad_conv_b, grad_data
     # *** END CODE HERE ***
 
 def forward_max_pool(data, pool_width, pool_height):
