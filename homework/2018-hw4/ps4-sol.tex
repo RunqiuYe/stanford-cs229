@@ -445,7 +445,31 @@ We also use mini-batch gradient descent with a batch size of 16. Normally we wou
       \]
       as desried.
     \end{proof}
+
+    \item We say $V$ is a \emph{fixed point} of $B$ if $B(V) = V$. Prove that $B$ has at most one-fixed point. That is, there is at most one solution to the Bellman equations. 
+    \begin{proof}
+      Suppose $V_1$ and $V_2$ are both fixed points of $B$, we want to show $\norm{V_1 - V_2}_\infty = 0$. Since $B$ is a $gamma$-contraction, we have
+      \[
+      \norm{B(V_1) - B(V_2)}_{\infty} \leq \gamma \norm{V_1 - V_2}_{\infty}.
+      \]
+      Since $V_1$ and $V_2$ are both fixed points of $B$, this means
+      \[
+      \norm{V_1 - V_2}_{\infty} \leq \gamma \norm{V_1 - V_2}_{\infty}.
+      \]
+      That is,
+      \[
+      (1 - \gamma) \norm{V_1 - V_2}_{\infty} \leq 0.
+      \]
+      As $\gamma < 1$, $\norm{V_1 - V_2}_{\infty} = 0$. This means that $B$ has at most one fixed point.
+    \end{proof}
+
+    \textbf{Remark:} The result shows that value iteraction converges geometrically to the optimal value function $V^*$. That is, after $k$ iterations, the distance between $V$ and $V^*$ is at most $\gamma^k$.
   \end{enumerate}
 \end{solution}
+
+\newpage
+\begin{problem}[Problem 6]
+  
+\end{problem}
 
 \end{document}
