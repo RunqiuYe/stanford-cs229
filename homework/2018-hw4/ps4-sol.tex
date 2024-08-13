@@ -413,7 +413,7 @@ We also use mini-batch gradient descent with a batch size of 16. Normally we wou
 \end{problem}
 \begin{solution}
   \begin{enumerate}[(a)]
-    Prove that for any two finite-valued vectors $V_1$, $V_2$, it holds true that
+    \item Prove that for any two finite-valued vectors $V_1$, $V_2$, it holds true that
     \[
     \norm{B(V_1) - B(V_2)}_{\infty} \leq \gamma \norm{V_1 - V_2}_{\infty},
     \]
@@ -422,8 +422,28 @@ We also use mini-batch gradient descent with a batch size of 16. Normally we wou
     \norm{V}_{\infty} = \max_{s \in S} \abs{V(s)}.
     \]
     This shows that the Bellman update operator is a $\gamma$-contraction in the max-norm.
+    
     \begin{proof}
-      
+      For any two finite-valued vectors $V_1$, $V_2$ and state $s$, we have
+      \[
+      \begin{aligned}
+        & B(V_1) (s) = R(s) + \gamma \max_{a} \sum_{s'} P_{sa}(s') V_1(s'), \\
+        & B(V_2) (s) = R(s) + \gamma \max_{a} \sum_{s'} P_{sa}(s') V_2(s').
+      \end{aligned}
+      \]  
+      Consider the max-norm in state space $S$. By properties of norm, we have
+      \[
+      \begin{aligned}
+        \max_{a} \sum_{s'} P_{sa}(s') V_1(s') - \max_{a} \sum_{s'} P_{sa}(s') V_2(s') &\leq \max_a \sum_{s'} P_{sa}(s') (V_1(s') - V_2(s')) \\
+        & \leq \max_a \sum_{s'} P_{sa}(s') \norm{V_1(s') - V_2(s')}_{\infty} \\
+        &= \norm{V_1(s') - V_2(s')}_{\infty}.
+      \end{aligned}
+      \]
+      It follows that 
+      \[
+      \norm{B(V_1) - B(V_2)}_{\infty} \leq \gamma \norm{V_1 - V_2}_{\infty},
+      \]
+      as desried.
     \end{proof}
   \end{enumerate}
 \end{solution}
