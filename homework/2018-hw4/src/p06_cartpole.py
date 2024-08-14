@@ -256,7 +256,7 @@ def update_mdp_value(mdp_data, tolerance, gamma):
 
 def main(plot=True):
     # Seed the randomness of the simulation so this outputs the same thing each time
-    seed = 3
+    seed = 229
     np.random.seed(seed)
 
     # Simulation parameters
