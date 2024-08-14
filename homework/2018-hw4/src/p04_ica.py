@@ -21,6 +21,9 @@ def update_W(W, x, learning_rate):
     """
     
     # *** START CODE HERE ***
+    x = np.reshape(x, (-1, 1))
+    updated_W = W
+    updated_W += learning_rate * (np.linalg.inv(W.T) - np.sign(W.dot(x)).dot(x.T))
     # *** END CODE HERE ***
 
     return updated_W
@@ -42,6 +45,7 @@ def unmix(X, W):
 
 
     # *** START CODE HERE ***
+    S = (W.dot(X.T)).T
     # *** END CODE HERE ***
 
     return S
