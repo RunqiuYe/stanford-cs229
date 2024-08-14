@@ -364,6 +364,7 @@ We also use mini-batch gradient descent with a batch size of 16. Normally we wou
     Here, we can see that if $W$ is a solution, any rotation of $W$ is also a solution. In other words, the rotational invariance causes the unmixing matrix here to be ambigious.
 
     \item \textbf{Laplace source}
+    
     Assume sources are distributed according to a standard Laplace distribution. That is, $s_i \sim \mathcal L(0,1)$. The Laplace distribution $\mathcal{L} (0,1)$ has PDF $f(s) = \frac{1}{2} \exp(- \abs{s})$. With this assumption, derive the update rule for a single example.
 
     To derive the update rule, we again consider the gradient of the log-likelihood 
@@ -386,7 +387,7 @@ We also use mini-batch gradient descent with a batch size of 16. Normally we wou
     \]
     Hence, the update rule is
     \[
-    W := W + \alpha \qty( (W^T)^{-1} + 
+    W := W + \alpha \qty( (W^T)^{-1} - 
       \begin{bmatrix}
         \sgn(w_1^T \xx) \\
         \vdots \\
