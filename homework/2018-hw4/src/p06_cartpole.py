@@ -95,11 +95,16 @@ def initialize_mdp_data(num_states):
 
     Returns: The initial MDP parameters
     """
+    # transition counts from state_1 to state_2 with action (1 or 0)
     transition_counts = np.zeros((num_states, num_states, 2))
+    # initialize transition probabilities to be uniform
+    # transitional probabilities from state_1 to state_2 with action (1 or 0)
     transition_probs = np.ones((num_states, num_states, 2)) / num_states
     # Index zero is count of rewards being -1 , index 1 is count of total num state is reached
     reward_counts = np.zeros((num_states, 2))
+    # initialize all state rewards to zero (need to learn the reward)
     reward = np.zeros(num_states)
+    # initialize value function for each states
     value = np.random.rand(num_states) * 0.1
 
     return {
@@ -125,6 +130,16 @@ def choose_action(state, mdp_data):
     """
 
     # *** START CODE HERE ***
+    transition_probs = mdp_data['transition_probs']
+    value = mdp_data['value']
+    exp_payoff_0 = np.dot(transition_probs[state, :, 0], value)
+    exp_payoff_1 = np.dot(transition_probs[state, :, 1], value)
+    if exp_payoff_0 > exp_payoff_1:
+        return 0
+    elif exp_payoff_1 > exp_payoff_0:
+        return 1
+    else:
+        return np.random.randint(0, high=2)
     # *** END CODE HERE ***
 
 def update_mdp_transition_counts_reward_counts(mdp_data, state, action, new_state, reward):
