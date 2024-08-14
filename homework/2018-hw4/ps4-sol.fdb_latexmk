@@ -1,6 +1,6 @@
 # Fdb version 3
-["pdflatex"] 1723644481 "/Users/runqiuye/Desktop/studies/computer-science/ai-ml/stanford-cs229/homework/2018-hw4/ps4-sol.tex" "ps4-sol.pdf" "ps4-sol" 1723644484
-  "/Users/runqiuye/Desktop/studies/computer-science/ai-ml/stanford-cs229/homework/2018-hw4/ps4-sol.tex" 1723644481 26030 5afac59b2b548e8dbd16e242c04f093e ""
+["pdflatex"] 1723650918 "/Users/runqiuye/Desktop/studies/computer-science/ai-ml/stanford-cs229/homework/2018-hw4/ps4-sol.tex" "ps4-sol.pdf" "ps4-sol" 1723650922
+  "/Users/runqiuye/Desktop/studies/computer-science/ai-ml/stanford-cs229/homework/2018-hw4/ps4-sol.tex" 1723650918 26793 58d6517459194c98b8a4f11109823f5d ""
   "/usr/local/texlive/2022/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
   "/usr/local/texlive/2022/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1246382020 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -304,8 +304,12 @@
   "/usr/local/texlive/2022/texmf-var/web2c/pdftex/pdflatex.fmt" 1678448550 2826436 192ceea0118c32aad5ddcb5f5712f0af ""
   "/usr/local/texlive/2022/texmf.cnf" 1647878952 577 209b46be99c9075fd74d4c0369380e8c ""
   "hmcpset.cls" 1722810791 11022 81a0f87a03247fafa695edcffa3a4953 ""
-  "ps4-sol.aux" 1723644484 33 caafbda2f246531a72f60df9bc4c0d5b "pdflatex"
-  "ps4-sol.tex" 1723644481 26030 5afac59b2b548e8dbd16e242c04f093e ""
+  "ps4-sol.aux" 1723650922 299 dc9c3732b23240edacb74ff400f2db24 "pdflatex"
+  "ps4-sol.tex" 1723650918 26793 58d6517459194c98b8a4f11109823f5d ""
+  "src/output/control_0.png" 1723649919 35277 ce54d47d675a92d0aebff827986e7031 ""
+  "src/output/control_1.png" 1723650386 32431 cad06382253d89b9e7737183c2670ef0 ""
+  "src/output/control_2.png" 1723650376 37199 ddf2e5a55844c40b273a8d1b7ca6955f ""
+  "src/output/control_3.png" 1723650365 33554 393a25d3ad0d3a6ca11640e2fe22f695 ""
   (generated)
   "ps4-sol.aux"
   "ps4-sol.log"

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.3.10)  14 AUG 2024 10:08
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.3.10)  14 AUG 2024 11:55
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -976,20 +976,51 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             See the microtype manual for details.
  [1
 
-{/usr/local/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2] [3] [4] [5] [6] [7] [8] [9] [10] [11] [12] [13] (./ps4-sol.aux) ) 
+{/usr/local/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2] [3] [4] [5] [6] [7] [8] [9] [10] [11] [12]
+<src/output/control_0.png, id=58, 462.528pt x 346.896pt>
+File: src/output/control_0.png Graphic file (type png)
+<use src/output/control_0.png>
+Package pdftex.def Info: src/output/control_0.png  used on input line 500.
+(pdftex.def)             Requested size: 234.8775pt x 176.15768pt.
+<src/output/control_1.png, id=60, 462.528pt x 346.896pt>
+File: src/output/control_1.png Graphic file (type png)
+<use src/output/control_1.png>
+Package pdftex.def Info: src/output/control_1.png  used on input line 501.
+(pdftex.def)             Requested size: 234.8775pt x 176.15768pt.
+<src/output/control_2.png, id=61, 462.528pt x 346.896pt>
+File: src/output/control_2.png Graphic file (type png)
+<use src/output/control_2.png>
+Package pdftex.def Info: src/output/control_2.png  used on input line 502.
+(pdftex.def)             Requested size: 234.8775pt x 176.15768pt.
+<src/output/control_3.png, id=62, 462.528pt x 346.896pt>
+File: src/output/control_3.png Graphic file (type png)
+<use src/output/control_3.png>
+Package pdftex.def Info: src/output/control_3.png  used on input line 503.
+(pdftex.def)             Requested size: 234.8775pt x 176.15768pt.
+
+Overfull \hbox (2.61107pt too wide) in paragraph at lines 500--504
+[][] []
+ []
+
+
+Overfull \hbox (2.61107pt too wide) in paragraph at lines 500--504
+[] [] 
+ []
+
+[13] [14 <./src/output/control_0.png> <./src/output/control_1.png> <./src/output/control_2.png> <./src/output/control_3.png>] (./ps4-sol.aux) ) 
 Here is how much of TeX's memory you used:
- 40121 strings out of 478268
- 966117 string characters out of 5846347
- 1380381 words of memory out of 5000000
- 57491 multiletter control sequences out of 15000+600000
- 479766 words of font info for 107 fonts, out of 8000000 for 9000
+ 40156 strings out of 478268
+ 966994 string characters out of 5846347
+ 1380390 words of memory out of 5000000
+ 57522 multiletter control sequences out of 15000+600000
+ 479717 words of font info for 106 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  99i,13n,103p,3327b,609s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmss17.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msam7.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on ps4-sol.pdf (13 pages, 201760 bytes).
+Output written on ps4-sol.pdf (14 pages, 336639 bytes).
 PDF statistics:
- 125 PDF objects out of 1000 (max. 8388607)
- 79 compressed objects within 1 object stream
+ 137 PDF objects out of 1000 (max. 8388607)
+ 82 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 14861 words of extra memory for PDF output out of 17280 (max. 10000000)
+ 14881 words of extra memory for PDF output out of 17280 (max. 10000000)
 

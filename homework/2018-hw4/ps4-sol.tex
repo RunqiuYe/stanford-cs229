@@ -489,8 +489,21 @@ We also use mini-batch gradient descent with a batch size of 16. Normally we wou
 \begin{solution}
   \begin{enumerate}[(a)]
     \item How many trials did it take before the algorithm convergeed?
-    \item Plot a learning curve showing the number of time-steps for which the pole was balanced on each trial.
-    \item Rerun the code with \verb|np.random.seed| set to 1, 2, and 3. What do you observe? What does this imply about the algorithm?
+    
+    It takes around 60 trials for the algorithm to converge. 
+    
+    \item Plot a learning curve showing the number of time-steps for which the pole was balanced on each trial. Rerun the code with \verb|np.random.seed| set to 1, 2, and 3. What do you observe? What does this imply about the algorithm?
+    
+    The learning curve for 4 different random seed is shown in Figure \ref{learning-curve} below. It can be seen that the algorithm performance varies a lot with respect to different random seed. In other words, initialization has a huge impact on performance of RL algorithm.
+
+    \begin{figure}
+      \includegraphics[width=0.5\linewidth]{src/output/control_0.png}
+      \includegraphics[width=0.5\linewidth]{src/output/control_1.png}
+      \includegraphics[width=0.5\linewidth]{src/output/control_2.png}
+      \includegraphics[width=0.5\linewidth]{src/output/control_3.png}
+      \caption{Learning curve of algorithm for 4 different random seed.}
+      \label{learning-curve}
+    \end{figure}
   \end{enumerate}
 \end{solution}
 
