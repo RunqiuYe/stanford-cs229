@@ -139,7 +139,7 @@ def choose_action(state, mdp_data):
     elif exp_payoff_1 > exp_payoff_0:
         return 1
     else:
-        return np.random.randint(0, high=2)
+        return np.random.randint(2)
     # *** END CODE HERE ***
 
 def update_mdp_transition_counts_reward_counts(mdp_data, state, action, new_state, reward):
@@ -164,12 +164,10 @@ def update_mdp_transition_counts_reward_counts(mdp_data, state, action, new_stat
     """
 
     # *** START CODE HERE ***
-    transition_counts = mdp_data['transition_counts']
-    reward_counts = mdp_data['reward_counts']
-    transition_counts[state, new_state, action] += 1
+    mdp_data['transition_counts'][state, new_state, action] += 1
     if reward == -1:
-        reward_counts[new_state, 0] += 1
-    reward_counts[new_state, 1] += 1
+        mdp_data['reward_counts'][new_state, 0] += 1
+    mdp_data['reward_counts'][new_state, 1] += 1
     # *** END CODE HERE ***
 
     # This function does not return anything
@@ -194,9 +192,7 @@ def update_mdp_transition_probs_reward(mdp_data):
 
     # *** START CODE HERE ***
     transition_counts = mdp_data['transition_counts']
-    transition_probs = mdp_data['transition_probs']
     reward_counts = mdp_data['reward_counts']
-    reward = mdp_data['reward']
     num_states, _, _ = transition_counts.shape
 
     for old_state in range(num_states):
@@ -204,13 +200,13 @@ def update_mdp_transition_probs_reward(mdp_data):
             total = np.sum(transition_counts[old_state, :, action])
             if total == 0:
                 continue
-            transition_counts[old_state, :, action] = transition_counts[old_state, :, action] / total
+            mdp_data['transition_probs'][old_state, :, action] = transition_counts[old_state, :, action] / total
 
     for state in range(num_states):
         total_count = reward_counts[state, 1]
         if total_count == 0:
             continue
-        reward[state] = -reward_counts[state, 0] / total_count
+        mdp_data['reward'][state] = -reward_counts[state, 0] / total_count
 
     # *** END CODE HERE ***
 
@@ -238,6 +234,24 @@ def update_mdp_value(mdp_data, tolerance, gamma):
     """
 
     # *** START CODE HERE ***
+    transition_probs = mdp_data['transition_probs']
+    reward = mdp_data['reward']
+    num_states, _, _ = transition_probs.shape
+    
+    prev_value = None
+    it = 0
+
+    while (it == 0 or np.linalg.norm(mdp_data['value'] - prev_value) > tolerance):
+        new_value = np.zeros(mdp_data['value'].shape)
+        for state in range(num_states):
+            exp_payoff_0 = np.dot(transition_probs[state, :, 0], mdp_data['value'])
+            exp_payoff_1 = np.dot(transition_probs[state, :, 1], mdp_data['value'])
+            new_value[state] = reward[state] + gamma * max(exp_payoff_0, exp_payoff_1)
+        prev_value = mdp_data['value']
+        mdp_data['value'] = new_value
+        it += 1
+
+    return it == 1
     # *** END CODE HERE ***
 
 def main(plot=True):
