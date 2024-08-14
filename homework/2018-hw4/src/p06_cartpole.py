@@ -164,6 +164,12 @@ def update_mdp_transition_counts_reward_counts(mdp_data, state, action, new_stat
     """
 
     # *** START CODE HERE ***
+    transition_counts = mdp_data['transition_counts']
+    reward_counts = mdp_data['reward_counts']
+    transition_counts[state, new_state, action] += 1
+    if reward == -1:
+        reward_counts[new_state, 0] += 1
+    reward_counts[new_state, 1] += 1
     # *** END CODE HERE ***
 
     # This function does not return anything
@@ -187,6 +193,25 @@ def update_mdp_transition_probs_reward(mdp_data):
     """
 
     # *** START CODE HERE ***
+    transition_counts = mdp_data['transition_counts']
+    transition_probs = mdp_data['transition_probs']
+    reward_counts = mdp_data['reward_counts']
+    reward = mdp_data['reward']
+    num_states, _, _ = transition_counts.shape
+
+    for old_state in range(num_states):
+        for action in [0, 1]:
+            total = np.sum(transition_counts[old_state, :, action])
+            if total == 0:
+                continue
+            transition_counts[old_state, :, action] = transition_counts[old_state, :, action] / total
+
+    for state in range(num_states):
+        total_count = reward_counts[state, 1]
+        if total_count == 0:
+            continue
+        reward[state] = -reward_counts[state, 0] / total_count
+
     # *** END CODE HERE ***
 
     # This function does not return anything
